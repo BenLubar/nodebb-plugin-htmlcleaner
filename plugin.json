@@ -1,0 +1,12 @@
+{
+	"id": "nodebb-plugin-htmlcleaner",
+	"name": "HTML Cleaner",
+	"description": "HTML cleaner for NodeBB, written in Go",
+	"url": "https://github.com/BenLubar/nodebb-plugin-htmlcleaner",
+	"library": "./nodebb-plugin-htmlcleaner.js",
+	"hooks": [
+		{"hook": "filter:parse.post", "method": "cleanPost", "priority": 6},
+		{"hook": "filter:parse.signature", "method": "cleanSignature", "priority": 6},
+		{"hook": "filter:parse.raw", "method": "cleanRaw", "priority": 6}
+	]
+}

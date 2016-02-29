@@ -1,0 +1,22 @@
+{
+  "name": "nodebb-plugin-htmlcleaner",
+  "version": "0.0.1",
+  "description": "HTML cleaner for NodeBB, written in Go",
+  "main": "nodebb-plugin-htmlcleaner.js",
+  "scripts": {
+    "test": "go test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BenLubar/nodebb-plugin-htmlcleaner"
+  },
+  "author": "Ben Lubar <ben.lubar@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BenLubar/nodebb-plugin-htmlcleaner/issues"
+  },
+  "homepage": "https://github.com/BenLubar/nodebb-plugin-htmlcleaner#readme",
+  "nbbpm": {
+    "compatibility": "^0.9.2"
+  }
+}
