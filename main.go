@@ -3,6 +3,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/BenLubar/htmlcleaner"
 	"github.com/gopherjs/gopherjs/js"
 	"golang.org/x/net/html/atom"
@@ -110,7 +112,11 @@ var config = &htmlcleaner.Config{
 }
 
 func clean(content string) string {
-	return htmlcleaner.Clean(config, content)
+	content = htmlcleaner.Clean(config, content)
+	if !strings.HasPrefix(content, "<") {
+		content = htmlcleaner.Clean(config, "<p>"+content)
+	}
+	return content
 }
 
 func cleanPost(data, callback *js.Object) {

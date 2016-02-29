@@ -22970,10 +22970,11 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
-	var $pkg = {}, $init, htmlcleaner, js, atom, funcType, ptrType, funcType$1, funcType$2, config, main, clean, cleanPost, cleanSignature, cleanRaw;
+	var $pkg = {}, $init, htmlcleaner, js, atom, strings, funcType, ptrType, funcType$1, funcType$2, config, main, clean, cleanPost, cleanSignature, cleanRaw;
 	htmlcleaner = $packages["github.com/BenLubar/htmlcleaner"];
 	js = $packages["github.com/gopherjs/gopherjs/js"];
 	atom = $packages["golang.org/x/net/html/atom"];
+	strings = $packages["strings"];
 	funcType = $funcType([$String], [$String], false);
 	ptrType = $ptrType(js.Object);
 	funcType$1 = $funcType([ptrType, ptrType], [], false);
@@ -22987,12 +22988,18 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 		exports.cleanRaw = $externalize(cleanRaw, funcType$2);
 	};
 	clean = function(content) {
-		var $ptr, _r, content, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; content = $f.content; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var $ptr, _r, _r$1, content, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _r$1 = $f._r$1; content = $f.content; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		_r = htmlcleaner.Clean(config, content); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-		/* */ $s = 2; case 2:
-		return _r;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: clean }; } $f.$ptr = $ptr; $f._r = _r; $f.content = content; $f.$s = $s; $f.$r = $r; return $f;
+		content = _r;
+		/* */ if (!strings.HasPrefix(content, "<")) { $s = 2; continue; }
+		/* */ $s = 3; continue;
+		/* if (!strings.HasPrefix(content, "<")) { */ case 2:
+			_r$1 = htmlcleaner.Clean(config, "<p>" + content); /* */ $s = 4; case 4: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+			content = _r$1;
+		/* } */ case 3:
+		return content;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: clean }; } $f.$ptr = $ptr; $f._r = _r; $f._r$1 = _r$1; $f.content = content; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	cleanPost = function(data, callback) {
 		var $ptr, _r, callback, data, $s, $r;
@@ -23031,6 +23038,7 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 		$r = htmlcleaner.$init(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$r = js.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$r = atom.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = strings.$init(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		config = new htmlcleaner.Config.ptr($makeMap(atom.Atom.keyFor, [{ k: 1, v: $makeMap(atom.Atom.keyFor, [{ k: 159748, v: true }]) }, { k: 172291, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 17667, v: true }]) }, { k: 164101, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 87814, v: true }, { k: 100360, v: true }]) }, { k: 42501, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 100360, v: true }]) }, { k: 257, v: false }, { k: 1537, v: false }, { k: 2817, v: false }, { k: 11265, v: false }, { k: 25858, v: false }, { k: 350470, v: false }, { k: 340742, v: false }, { k: 74755, v: false }, { k: 102149, v: false }, { k: 400643, v: false }, { k: 370947, v: false }, { k: 108547, v: false }, { k: 257795, v: false }, { k: 4, v: false }, { k: 324359, v: false }, { k: 247812, v: false }, { k: 78081, v: false }, { k: 3073, v: false }, { k: 76810, v: false }, { k: 155139, v: false }, { k: 84228, v: false }, { k: 6403, v: false }, { k: 21250, v: false }, { k: 18439, v: false }, { k: 398855, v: false }, { k: 159234, v: false }, { k: 168962, v: false }, { k: 173826, v: false }, { k: 190722, v: false }, { k: 193282, v: false }, { k: 330498, v: false }, { k: 35330, v: $makeMap(atom.Atom.keyFor, [{ k: 230917, v: true }]) }, { k: 51458, v: $makeMap(atom.Atom.keyFor, [{ k: 230917, v: true }]) }, { k: 4610, v: $makeMap(atom.Atom.keyFor, [{ k: 16389, v: true }]) }, { k: 159746, v: false }, { k: 514, v: false }, { k: 70403, v: false }, { k: 273669, v: false }, { k: 185349, v: false }, { k: 11781, v: false }, { k: 35845, v: false }, { k: 66818, v: false }, { k: 142850, v: false }, { k: 18178, v: false }, { k: 113415, v: false }]), $makeMap(atom.Atom.keyFor, [{ k: 41221, v: true }]), false);
 		if ($pkg === $mainPkg) {
 			main();
