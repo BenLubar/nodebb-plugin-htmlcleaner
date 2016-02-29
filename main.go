@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	exports := js.Global.Get("module").Get("exports")
+	exports := js.Module.Get("exports")
 	exports.Set("clean", clean)
 	exports.Set("cleanPost", cleanPost)
 	exports.Set("cleanSignature", cleanSignature)

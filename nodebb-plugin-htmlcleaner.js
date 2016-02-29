@@ -22980,7 +22980,7 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 	funcType$2 = $funcType([$String, ptrType], [], false);
 	main = function() {
 		var $ptr, exports;
-		exports = $global.module.exports;
+		exports = $module.exports;
 		exports.clean = $externalize(clean, funcType);
 		exports.cleanPost = $externalize(cleanPost, funcType$1);
 		exports.cleanSignature = $externalize(cleanSignature, funcType$1);
