@@ -18019,7 +18019,7 @@ $packages["golang.org/x/net/html/atom"] = (function() {
 	return $pkg;
 })();
 $packages["golang.org/x/net/html"] = (function() {
-	var $pkg = {}, $init, bufio, bytes, errors, fmt, atom, io, strconv, strings, utf8, NodeType, Node, nodeStack, parser, scope, insertionMode, writer, TokenType, Attribute, Token, span, Tokenizer, sliceType, ptrType, sliceType$1, sliceType$2, sliceType$3, arrayType, arrayType$1, arrayType$2, ptrType$1, ptrType$2, sliceType$4, sliceType$5, arrayType$3, arrayType$4, sliceType$6, ptrType$3, isSpecialElementMap, entity, entity2, replacementTable, breakout, svgTagNameAdjustments, mathMLAttributeAdjustments, svgAttributeAdjustments, scopeMarker, scopeMarker$24ptr, defaultScopeStopTags, plaintextAbort, voidElements, nul, replacement, isSpecialElement, unescapeEntity, unescape, lower, escape, EscapeString, adjustAttributeNames, adjustForeignAttributes, htmlIntegrationPoint, mathMLTextIntegrationPoint, reparentChildren, beforeHeadIM, inHeadIM, afterHeadIM, copyAttributes, inBodyIM, textIM, inTableIM, inCaptionIM, inColumnGroupIM, inTableBodyIM, inRowIM, inCellIM, inSelectIM, inSelectInTableIM, afterBodyIM, inFramesetIM, afterFramesetIM, afterAfterBodyIM, afterAfterFramesetIM, parseForeignContent, ParseFragment, Render, render, render1, writeQuoted, readAtLeastOneByte, convertNewlines, NewTokenizerFragment;
+	var $pkg = {}, $init, bufio, bytes, errors, fmt, atom, io, strconv, strings, utf8, NodeType, Node, nodeStack, parser, scope, insertionMode, writer, TokenType, Attribute, Token, span, Tokenizer, sliceType, ptrType, sliceType$1, sliceType$2, sliceType$3, arrayType, arrayType$1, arrayType$2, ptrType$1, ptrType$2, sliceType$4, sliceType$5, arrayType$3, arrayType$4, sliceType$6, ptrType$3, isSpecialElementMap, entity, entity2, replacementTable, breakout, svgTagNameAdjustments, mathMLAttributeAdjustments, svgAttributeAdjustments, scopeMarker, scopeMarker$24ptr, defaultScopeStopTags, plaintextAbort, voidElements, nul, replacement, isSpecialElement, unescapeEntity, unescape, lower, escape, EscapeString, UnescapeString, adjustAttributeNames, adjustForeignAttributes, htmlIntegrationPoint, mathMLTextIntegrationPoint, reparentChildren, beforeHeadIM, inHeadIM, afterHeadIM, copyAttributes, inBodyIM, textIM, inTableIM, inCaptionIM, inColumnGroupIM, inTableBodyIM, inRowIM, inCellIM, inSelectIM, inSelectInTableIM, afterBodyIM, inFramesetIM, afterFramesetIM, afterAfterBodyIM, afterAfterFramesetIM, parseForeignContent, ParseFragment, Render, render, render1, writeQuoted, readAtLeastOneByte, convertNewlines, NewTokenizerFragment;
 	bufio = $packages["bufio"];
 	bytes = $packages["bytes"];
 	errors = $packages["errors"];
@@ -18447,6 +18447,22 @@ $packages["golang.org/x/net/html"] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: EscapeString }; } $f.$ptr = $ptr; $f._r = _r; $f.buf = buf; $f.s = s; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.EscapeString = EscapeString;
+	UnescapeString = function(s) {
+		var $ptr, _i, _ref, _rune, c, s;
+		_ref = s;
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.length)) { break; }
+			_rune = $decodeRune(_ref, _i);
+			c = _rune[0];
+			if (c === 38) {
+				return $bytesToString(unescape(new sliceType$3($stringToBytes(s)), false));
+			}
+			_i += _rune[1];
+		}
+		return s;
+	};
+	$pkg.UnescapeString = UnescapeString;
 	adjustAttributeNames = function(aa, nameMap) {
 		var $ptr, _entry, _i, _ref, _tuple, aa, i, nameMap, newName, ok;
 		_ref = aa;
@@ -22848,8 +22864,8 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 		return new html.Node.ptr(ptrType.nil, ptrType.nil, ptrType.nil, ptrType.nil, ptrType.nil, 1, 0, s, "", sliceType.nil);
 	};
 	CleanNode = function(c, n) {
-		var $ptr, _entry, _entry$1, _entry$2, _i, _r, _r$1, _r$2, _r$3, _r$4, _r$5, _r$6, _ref, _tuple, a, aatom, allowedAttr, attr, c, i, n, ok, protocol, tmp, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _entry = $f._entry; _entry$1 = $f._entry$1; _entry$2 = $f._entry$2; _i = $f._i; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _ref = $f._ref; _tuple = $f._tuple; a = $f.a; aatom = $f.aatom; allowedAttr = $f.allowedAttr; attr = $f.attr; c = $f.c; i = $f.i; n = $f.n; ok = $f.ok; protocol = $f.protocol; tmp = $f.tmp; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var $ptr, _entry, _entry$1, _entry$2, _i, _r, _r$1, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, _ref, _tuple, a, aatom, allowedAttr, attr, c, i, n, ok, protocol, tmp, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _entry = $f._entry; _entry$1 = $f._entry$1; _entry$2 = $f._entry$2; _i = $f._i; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; _ref = $f._ref; _tuple = $f._tuple; a = $f.a; aatom = $f.aatom; allowedAttr = $f.allowedAttr; attr = $f.attr; c = $f.c; i = $f.i; n = $f.n; ok = $f.ok; protocol = $f.protocol; tmp = $f.tmp; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		tmp = [tmp];
 		/* */ if (n.Type === 5) { $s = 1; continue; }
 		/* */ $s = 2; continue;
@@ -22917,10 +22933,11 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 			return n;
 		/* } */ case 12:
 		_r$5 = Render(new sliceType$2([n])); /* */ $s = 23; case 23: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
-		_r$6 = text(_r$5); /* */ $s = 24; case 24: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
-		/* */ $s = 25; case 25:
-		return _r$6;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: CleanNode }; } $f.$ptr = $ptr; $f._entry = _entry; $f._entry$1 = _entry$1; $f._entry$2 = _entry$2; $f._i = _i; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._ref = _ref; $f._tuple = _tuple; $f.a = a; $f.aatom = aatom; $f.allowedAttr = allowedAttr; $f.attr = attr; $f.c = c; $f.i = i; $f.n = n; $f.ok = ok; $f.protocol = protocol; $f.tmp = tmp; $f.$s = $s; $f.$r = $r; return $f;
+		_r$6 = html.UnescapeString(_r$5); /* */ $s = 24; case 24: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
+		_r$7 = text(_r$6); /* */ $s = 25; case 25: if($c) { $c = false; _r$7 = _r$7.$blk(); } if (_r$7 && _r$7.$blk !== undefined) { break s; }
+		/* */ $s = 26; case 26:
+		return _r$7;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: CleanNode }; } $f.$ptr = $ptr; $f._entry = _entry; $f._entry$1 = _entry$1; $f._entry$2 = _entry$2; $f._i = _i; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._ref = _ref; $f._tuple = _tuple; $f.a = a; $f.aatom = aatom; $f.allowedAttr = allowedAttr; $f.attr = attr; $f.c = c; $f.i = i; $f.n = n; $f.ok = ok; $f.protocol = protocol; $f.tmp = tmp; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.CleanNode = CleanNode;
 	cleanChildren = function(c, parent) {
