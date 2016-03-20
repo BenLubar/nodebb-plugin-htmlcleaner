@@ -98,4 +98,6 @@ var config = &htmlcleaner.Config{
 	AllowJavascriptURL: false,
 
 	EscapeComments: true, // work around https://github.com/psychobunny/templates.js/issues/54
+
+	WrapText: true,
 }
