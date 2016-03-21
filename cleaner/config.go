@@ -1,6 +1,8 @@
 package cleaner
 
 import (
+	"regexp"
+
 	"github.com/BenLubar/htmlcleaner"
 	"golang.org/x/net/html/atom"
 )
@@ -11,8 +13,9 @@ var config = &htmlcleaner.Config{
 			atom.Href: true,
 		},
 		atom.Img: {
-			atom.Src: true,
-			atom.Alt: true,
+			atom.Src:   true,
+			atom.Alt:   true,
+			atom.Class: true,
 		},
 		atom.Video: {
 			atom.Src:      true,
@@ -100,4 +103,8 @@ var config = &htmlcleaner.Config{
 	EscapeComments: true, // work around https://github.com/psychobunny/templates.js/issues/54
 
 	WrapText: true,
+
+	AttrMatch: map[atom.Atom]*regexp.Regexp{
+		atom.Class: regexp.MustCompile(`\A((emoji)(\s+|\s*\z))*\z`),
+	},
 }
