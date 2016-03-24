@@ -105,6 +105,6 @@ var config = &htmlcleaner.Config{
 	WrapText: true,
 
 	AttrMatch: map[atom.Atom]*regexp.Regexp{
-		atom.Class: regexp.MustCompile(`\A((emoji)(\s+|\s*\z))*\z`),
+		atom.Class: regexp.MustCompile(`\A((emoji|img-markdown|img-responsive)(\s+|\s*\z))*\z`),
 	},
 }
