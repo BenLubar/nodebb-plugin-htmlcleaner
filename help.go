@@ -26,22 +26,20 @@ var helpString = func() string {
 
 	list = nil
 	for el, attr := range cleaner.Config.Elem {
-		buf := []byte("&lt;")
-		buf = append(buf, el.String()...)
+		var attrs []string
 		for a, ok := range attr {
 			if !ok {
 				continue
 			}
 
-			buf = append(buf, " "...)
-			buf = append(buf, a.String()...)
+			attrs = append(attrs, " "+a.String())
 		}
-		buf = append(buf, "&gt;"...)
-		list = append(list, string(buf))
+		sort.Strings(attrs)
+		list = append(list, el.String()+strings.Join(attrs, ""))
 	}
 	if len(list) != 0 {
 		sort.Strings(list)
-		str += "<p>The following elements are allowed: <code>" + strings.Join(list, "</code>, <code>") + "</code></p>"
+		str += "<p>The following elements are allowed: <code>&lt;" + strings.Join(list, "&gt;</code>, <code>&lt;") + "&gt;</code></p>"
 	}
 
 	return str

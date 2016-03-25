@@ -31037,13 +31037,12 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"] = (function()
 	return $pkg;
 })();
 $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
-	var $pkg = {}, $init, cleaner, js, sort, strings, sliceType, sliceType$1, funcType, ptrType, funcType$1, funcType$2, fixer, remover, helpString, _r, fix, clean, renderHelp, main, post, signature, raw;
+	var $pkg = {}, $init, cleaner, js, sort, strings, sliceType, funcType, ptrType, funcType$1, funcType$2, fixer, remover, helpString, _r, fix, clean, renderHelp, main, post, signature, raw;
 	cleaner = $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"];
 	js = $packages["github.com/gopherjs/gopherjs/js"];
 	sort = $packages["sort"];
 	strings = $packages["strings"];
 	sliceType = $sliceType($String);
-	sliceType$1 = $sliceType($Uint8);
 	funcType = $funcType([$String], [$String], false);
 	ptrType = $ptrType(js.Object);
 	funcType$1 = $funcType([ptrType, ptrType], [], false);
@@ -31132,8 +31131,8 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 		fixer = strings.NewReplacer(new sliceType(["\n<", "\n\xEF\xBB\xBF<"]));
 		remover = strings.NewReplacer(new sliceType(["\xEF\xBB\xBF", ""]));
 		_r = (function $b() {
-			var $ptr, _entry, _entry$1, _entry$2, _i, _i$1, _i$2, _keys, _keys$1, _keys$2, _ref, _ref$1, _ref$2, a, a$1, attr, buf, el, list, ok, ok$1, str, $s, $r;
-			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _entry = $f._entry; _entry$1 = $f._entry$1; _entry$2 = $f._entry$2; _i = $f._i; _i$1 = $f._i$1; _i$2 = $f._i$2; _keys = $f._keys; _keys$1 = $f._keys$1; _keys$2 = $f._keys$2; _ref = $f._ref; _ref$1 = $f._ref$1; _ref$2 = $f._ref$2; a = $f.a; a$1 = $f.a$1; attr = $f.attr; buf = $f.buf; el = $f.el; list = $f.list; ok = $f.ok; ok$1 = $f.ok$1; str = $f.str; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+			var $ptr, _entry, _entry$1, _entry$2, _i, _i$1, _i$2, _keys, _keys$1, _keys$2, _ref, _ref$1, _ref$2, a, a$1, attr, attrs, el, list, ok, ok$1, str, $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _entry = $f._entry; _entry$1 = $f._entry$1; _entry$2 = $f._entry$2; _i = $f._i; _i$1 = $f._i$1; _i$2 = $f._i$2; _keys = $f._keys; _keys$1 = $f._keys$1; _keys$2 = $f._keys$2; _ref = $f._ref; _ref$1 = $f._ref$1; _ref$2 = $f._ref$2; a = $f.a; a$1 = $f.a$1; attr = $f.attr; attrs = $f.attrs; el = $f.el; list = $f.list; ok = $f.ok; ok$1 = $f.ok$1; str = $f.str; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 			str = "<h2>HTML Cleaner</h2><p>You are allowed to use a subset of HTML.</p>";
 			list = sliceType.nil;
 			_ref = cleaner.Config.Attr;
@@ -31174,40 +31173,38 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 				}
 				el = _entry$1.k;
 				attr = _entry$1.v;
-				buf = new sliceType$1($stringToBytes("&lt;"));
-				buf = $appendSlice(buf, new $packages["golang.org/x/net/html/atom"].Atom(el).String());
+				attrs = sliceType.nil;
 				_ref$2 = attr;
 				_i$2 = 0;
 				_keys$2 = $keys(_ref$2);
-				while (true) {
-					if (!(_i$2 < _keys$2.length)) { break; }
+				/* while (true) { */ case 8:
+					/* if (!(_i$2 < _keys$2.length)) { break; } */ if(!(_i$2 < _keys$2.length)) { $s = 9; continue; }
 					_entry$2 = _ref$2[_keys$2[_i$2]];
 					if (_entry$2 === undefined) {
 						_i$2++;
-						continue;
+						/* continue; */ $s = 8; continue;
 					}
 					a$1 = _entry$2.k;
 					ok$1 = _entry$2.v;
 					if (!ok$1) {
 						_i$2++;
-						continue;
+						/* continue; */ $s = 8; continue;
 					}
-					buf = $appendSlice(buf, " ");
-					buf = $appendSlice(buf, new $packages["golang.org/x/net/html/atom"].Atom(a$1).String());
+					attrs = $append(attrs, " " + new $packages["golang.org/x/net/html/atom"].Atom(a$1).String());
 					_i$2++;
-				}
-				buf = $appendSlice(buf, "&gt;");
-				list = $append(list, $bytesToString(buf));
+				/* } */ $s = 8; continue; case 9:
+				$r = sort.Strings(attrs); /* */ $s = 10; case 10: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+				list = $append(list, new $packages["golang.org/x/net/html/atom"].Atom(el).String() + strings.Join(attrs, ""));
 				_i$1++;
 			/* } */ $s = 6; continue; case 7:
-			/* */ if (!((list.$length === 0))) { $s = 8; continue; }
-			/* */ $s = 9; continue;
-			/* if (!((list.$length === 0))) { */ case 8:
-				$r = sort.Strings(list); /* */ $s = 10; case 10: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-				str = str + ("<p>The following elements are allowed: <code>" + strings.Join(list, "</code>, <code>") + "</code></p>");
-			/* } */ case 9:
+			/* */ if (!((list.$length === 0))) { $s = 11; continue; }
+			/* */ $s = 12; continue;
+			/* if (!((list.$length === 0))) { */ case 11:
+				$r = sort.Strings(list); /* */ $s = 13; case 13: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+				str = str + ("<p>The following elements are allowed: <code>&lt;" + strings.Join(list, "&gt;</code>, <code>&lt;") + "&gt;</code></p>");
+			/* } */ case 12:
 			return str;
-			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f._entry = _entry; $f._entry$1 = _entry$1; $f._entry$2 = _entry$2; $f._i = _i; $f._i$1 = _i$1; $f._i$2 = _i$2; $f._keys = _keys; $f._keys$1 = _keys$1; $f._keys$2 = _keys$2; $f._ref = _ref; $f._ref$1 = _ref$1; $f._ref$2 = _ref$2; $f.a = a; $f.a$1 = a$1; $f.attr = attr; $f.buf = buf; $f.el = el; $f.list = list; $f.ok = ok; $f.ok$1 = ok$1; $f.str = str; $f.$s = $s; $f.$r = $r; return $f;
+			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f._entry = _entry; $f._entry$1 = _entry$1; $f._entry$2 = _entry$2; $f._i = _i; $f._i$1 = _i$1; $f._i$2 = _i$2; $f._keys = _keys; $f._keys$1 = _keys$1; $f._keys$2 = _keys$2; $f._ref = _ref; $f._ref$1 = _ref$1; $f._ref$2 = _ref$2; $f.a = a; $f.a$1 = a$1; $f.attr = attr; $f.attrs = attrs; $f.el = el; $f.list = list; $f.ok = ok; $f.ok$1 = ok$1; $f.str = str; $f.$s = $s; $f.$r = $r; return $f;
 		})(); /* */ $s = 5; case 5: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 		helpString = _r;
 		if ($pkg === $mainPkg) {
