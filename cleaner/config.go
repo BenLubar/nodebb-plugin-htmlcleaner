@@ -13,9 +13,11 @@ var config = &htmlcleaner.Config{
 			atom.Href: true,
 		},
 		atom.Img: {
-			atom.Src:   true,
-			atom.Alt:   true,
-			atom.Class: true,
+			atom.Src:    true,
+			atom.Alt:    true,
+			atom.Class:  true,
+			atom.Width:  true,
+			atom.Height: true,
 		},
 		atom.Video: {
 			atom.Src:      true,
