@@ -5961,7 +5961,7 @@ $packages["github.com/gopherjs/gopherjs/nosync"] = (function() {
 	return $pkg;
 })();
 $packages["strings"] = (function() {
-	var $pkg = {}, $init, errors, js, io, unicode, utf8, Reader, Replacer, replacer, trieNode, genericReplacer, appendSliceWriter, stringWriterIface, stringWriter, singleStringReplacer, byteReplacer, byteStringReplacer, stringFinder, arrayType, ptrType, sliceType, arrayType$1, ptrType$1, ptrType$2, sliceType$1, ptrType$3, ptrType$4, arrayType$2, sliceType$2, ptrType$5, ptrType$6, ptrType$7, ptrType$8, IndexByte, Index, Count, NewReader, NewReplacer, makeGenericReplacer, getStringWriter, makeSingleStringReplacer, makeStringFinder, longestCommonSuffix, max, Contains, IndexRune, IndexAny, HasPrefix, Map, ToLower, TrimLeftFunc, TrimRightFunc, TrimFunc, indexFunc, lastIndexFunc, makeCutsetFunc, Trim, TrimLeft, TrimSpace, Replace, EqualFold;
+	var $pkg = {}, $init, errors, js, io, unicode, utf8, Reader, Replacer, replacer, trieNode, genericReplacer, appendSliceWriter, stringWriterIface, stringWriter, singleStringReplacer, byteReplacer, byteStringReplacer, stringFinder, arrayType, ptrType, sliceType, arrayType$1, ptrType$1, ptrType$2, sliceType$1, ptrType$3, ptrType$4, arrayType$2, sliceType$2, ptrType$5, ptrType$6, ptrType$7, ptrType$8, IndexByte, Index, Count, NewReader, NewReplacer, makeGenericReplacer, getStringWriter, makeSingleStringReplacer, makeStringFinder, longestCommonSuffix, max, Contains, IndexRune, IndexAny, Join, HasPrefix, Map, ToLower, TrimLeftFunc, TrimRightFunc, TrimFunc, indexFunc, lastIndexFunc, makeCutsetFunc, Trim, TrimLeft, TrimSpace, Replace, EqualFold;
 	errors = $packages["errors"];
 	js = $packages["github.com/gopherjs/gopherjs/js"];
 	io = $packages["io"];
@@ -6995,6 +6995,35 @@ $packages["strings"] = (function() {
 		return -1;
 	};
 	$pkg.IndexAny = IndexAny;
+	Join = function(a, sep) {
+		var $ptr, _i, _ref, a, b, bp, i, n, s, sep;
+		if (a.$length === 0) {
+			return "";
+		}
+		if (a.$length === 1) {
+			return (0 >= a.$length ? $throwRuntimeError("index out of range") : a.$array[a.$offset + 0]);
+		}
+		n = $imul(sep.length, ((a.$length - 1 >> 0)));
+		i = 0;
+		while (true) {
+			if (!(i < a.$length)) { break; }
+			n = n + (((i < 0 || i >= a.$length) ? $throwRuntimeError("index out of range") : a.$array[a.$offset + i]).length) >> 0;
+			i = i + (1) >> 0;
+		}
+		b = $makeSlice(sliceType, n);
+		bp = $copyString(b, (0 >= a.$length ? $throwRuntimeError("index out of range") : a.$array[a.$offset + 0]));
+		_ref = $subslice(a, 1);
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.$length)) { break; }
+			s = ((_i < 0 || _i >= _ref.$length) ? $throwRuntimeError("index out of range") : _ref.$array[_ref.$offset + _i]);
+			bp = bp + ($copyString($subslice(b, bp), sep)) >> 0;
+			bp = bp + ($copyString($subslice(b, bp), s)) >> 0;
+			_i++;
+		}
+		return $bytesToString(b);
+	};
+	$pkg.Join = Join;
 	HasPrefix = function(s, prefix) {
 		var $ptr, prefix, s;
 		return s.length >= prefix.length && s.substring(0, prefix.length) === prefix;
@@ -24117,7 +24146,57 @@ $packages["golang.org/x/net/html"] = (function() {
 	return $pkg;
 })();
 $packages["sort"] = (function() {
-	var $pkg = {}, $init, insertionSort, siftDown, heapSort, medianOfThree, doPivot, quickSort, Sort;
+	var $pkg = {}, $init, StringSlice, sliceType$2, Search, SearchStrings, insertionSort, siftDown, heapSort, medianOfThree, doPivot, quickSort, Sort, Strings;
+	StringSlice = $pkg.StringSlice = $newType(12, $kindSlice, "sort.StringSlice", "StringSlice", "sort", null);
+	sliceType$2 = $sliceType($String);
+	Search = function(n, f) {
+		var $ptr, _q, _r, _tmp, _tmp$1, f, h, i, j, n, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _q = $f._q; _r = $f._r; _tmp = $f._tmp; _tmp$1 = $f._tmp$1; f = $f.f; h = $f.h; i = $f.i; j = $f.j; n = $f.n; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		_tmp = 0;
+		_tmp$1 = n;
+		i = _tmp;
+		j = _tmp$1;
+		/* while (true) { */ case 1:
+			/* if (!(i < j)) { break; } */ if(!(i < j)) { $s = 2; continue; }
+			h = i + (_q = ((j - i >> 0)) / 2, (_q === _q && _q !== 1/0 && _q !== -1/0) ? _q >> 0 : $throwRuntimeError("integer divide by zero")) >> 0;
+			_r = f(h); /* */ $s = 6; case 6: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+			/* */ if (!_r) { $s = 3; continue; }
+			/* */ $s = 4; continue;
+			/* if (!_r) { */ case 3:
+				i = h + 1 >> 0;
+				$s = 5; continue;
+			/* } else { */ case 4:
+				j = h;
+			/* } */ case 5:
+		/* } */ $s = 1; continue; case 2:
+		return i;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Search }; } $f.$ptr = $ptr; $f._q = _q; $f._r = _r; $f._tmp = _tmp; $f._tmp$1 = _tmp$1; $f.f = f; $f.h = h; $f.i = i; $f.j = j; $f.n = n; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.Search = Search;
+	SearchStrings = function(a, x) {
+		var $ptr, _r, a, x, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; a = $f.a; x = $f.x; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		a = [a];
+		x = [x];
+		_r = Search(a[0].$length, (function(a, x) { return function(i) {
+			var $ptr, i;
+			return ((i < 0 || i >= a[0].$length) ? $throwRuntimeError("index out of range") : a[0].$array[a[0].$offset + i]) >= x[0];
+		}; })(a, x)); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		/* */ $s = 2; case 2:
+		return _r;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: SearchStrings }; } $f.$ptr = $ptr; $f._r = _r; $f.a = a; $f.x = x; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.SearchStrings = SearchStrings;
+	StringSlice.prototype.Search = function(x) {
+		var $ptr, _r, p, x, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; p = $f.p; x = $f.x; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		p = this;
+		_r = SearchStrings($subslice(new sliceType$2(p.$array), p.$offset, p.$offset + p.$length), x); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		/* */ $s = 2; case 2:
+		return _r;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: StringSlice.prototype.Search }; } $f.$ptr = $ptr; $f._r = _r; $f.p = p; $f.x = x; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$ptrType(StringSlice).prototype.Search = function(x) { return this.$get().Search(x); };
 	insertionSort = function(data, a, b) {
 		var $ptr, _r, _v, a, b, data, i, j, $s, $r;
 		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _v = $f._v; a = $f.a; b = $f.b; data = $f.data; i = $f.i; j = $f.j; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -24385,6 +24464,44 @@ $packages["sort"] = (function() {
 		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: Sort }; } $f.$ptr = $ptr; $f._r = _r; $f.data = data; $f.i = i; $f.maxDepth = maxDepth; $f.n = n; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.Sort = Sort;
+	StringSlice.prototype.Len = function() {
+		var $ptr, p;
+		p = this;
+		return p.$length;
+	};
+	$ptrType(StringSlice).prototype.Len = function() { return this.$get().Len(); };
+	StringSlice.prototype.Less = function(i, j) {
+		var $ptr, i, j, p;
+		p = this;
+		return ((i < 0 || i >= p.$length) ? $throwRuntimeError("index out of range") : p.$array[p.$offset + i]) < ((j < 0 || j >= p.$length) ? $throwRuntimeError("index out of range") : p.$array[p.$offset + j]);
+	};
+	$ptrType(StringSlice).prototype.Less = function(i, j) { return this.$get().Less(i, j); };
+	StringSlice.prototype.Swap = function(i, j) {
+		var $ptr, _tmp, _tmp$1, i, j, p;
+		p = this;
+		_tmp = ((j < 0 || j >= p.$length) ? $throwRuntimeError("index out of range") : p.$array[p.$offset + j]);
+		_tmp$1 = ((i < 0 || i >= p.$length) ? $throwRuntimeError("index out of range") : p.$array[p.$offset + i]);
+		((i < 0 || i >= p.$length) ? $throwRuntimeError("index out of range") : p.$array[p.$offset + i] = _tmp);
+		((j < 0 || j >= p.$length) ? $throwRuntimeError("index out of range") : p.$array[p.$offset + j] = _tmp$1);
+	};
+	$ptrType(StringSlice).prototype.Swap = function(i, j) { return this.$get().Swap(i, j); };
+	StringSlice.prototype.Sort = function() {
+		var $ptr, p, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; p = $f.p; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		p = this;
+		$r = Sort(p); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: StringSlice.prototype.Sort }; } $f.$ptr = $ptr; $f.p = p; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$ptrType(StringSlice).prototype.Sort = function() { return this.$get().Sort(); };
+	Strings = function(a) {
+		var $ptr, a, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; a = $f.a; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		$r = Sort($subslice(new StringSlice(a.$array), a.$offset, a.$offset + a.$length)); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: Strings }; } $f.$ptr = $ptr; $f.a = a; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.Strings = Strings;
+	StringSlice.methods = [{prop: "Search", name: "Search", pkg: "", typ: $funcType([$String], [$Int], false)}, {prop: "Len", name: "Len", pkg: "", typ: $funcType([], [$Int], false)}, {prop: "Less", name: "Less", pkg: "", typ: $funcType([$Int, $Int], [$Bool], false)}, {prop: "Swap", name: "Swap", pkg: "", typ: $funcType([$Int, $Int], [], false)}, {prop: "Sort", name: "Sort", pkg: "", typ: $funcType([], [], false)}];
+	StringSlice.init($String);
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -30920,9 +31037,10 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"] = (function()
 	return $pkg;
 })();
 $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
-	var $pkg = {}, $init, cleaner, js, strings, sliceType, sliceType$1, funcType, ptrType, funcType$1, funcType$2, fixer, remover, helpString, fix, clean, renderHelp, main, post, signature, raw;
+	var $pkg = {}, $init, cleaner, js, sort, strings, sliceType, sliceType$1, funcType, ptrType, funcType$1, funcType$2, fixer, remover, helpString, _r, fix, clean, renderHelp, main, post, signature, raw;
 	cleaner = $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"];
 	js = $packages["github.com/gopherjs/gopherjs/js"];
+	sort = $packages["sort"];
 	strings = $packages["strings"];
 	sliceType = $sliceType($String);
 	sliceType$1 = $sliceType($Uint8);
@@ -30931,21 +31049,21 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 	funcType$1 = $funcType([ptrType, ptrType], [], false);
 	funcType$2 = $funcType([$String, ptrType], [], false);
 	fix = function(s) {
-		var $ptr, _r, s, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; s = $f.s; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		_r = fixer.Replace(s); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		var $ptr, _r$1, s, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$1 = $f._r$1; s = $f.s; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		_r$1 = fixer.Replace(s); /* */ $s = 1; case 1: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
 		/* */ $s = 2; case 2:
-		return _r;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: fix }; } $f.$ptr = $ptr; $f._r = _r; $f.s = s; $f.$s = $s; $f.$r = $r; return $f;
+		return _r$1;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: fix }; } $f.$ptr = $ptr; $f._r$1 = _r$1; $f.s = s; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	clean = function(s) {
-		var $ptr, _r, _r$1, s, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _r$1 = $f._r$1; s = $f.s; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		_r = remover.Replace(s); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-		_r$1 = cleaner.Clean(_r); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		var $ptr, _r$1, _r$2, s, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$1 = $f._r$1; _r$2 = $f._r$2; s = $f.s; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		_r$1 = remover.Replace(s); /* */ $s = 1; case 1: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		_r$2 = cleaner.Clean(_r$1); /* */ $s = 2; case 2: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
 		/* */ $s = 3; case 3:
-		return _r$1;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: clean }; } $f.$ptr = $ptr; $f._r = _r; $f._r$1 = _r$1; $f.s = s; $f.$s = $s; $f.$r = $r; return $f;
+		return _r$2;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: clean }; } $f.$ptr = $ptr; $f._r$1 = _r$1; $f._r$2 = _r$2; $f.s = s; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	renderHelp = function(helpContent, callback) {
 		var $ptr, callback, helpContent;
@@ -30967,41 +31085,41 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 	post = function(fn) {
 		var $ptr, fn;
 		return (function $b(data, callback) {
-			var $ptr, _r, callback, data, $s, $r;
-			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; callback = $f.callback; data = $f.data; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+			var $ptr, _r$1, callback, data, $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$1 = $f._r$1; callback = $f.callback; data = $f.data; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 			/* */ if (!(data === null) && !(data.postData === null) && !(data.postData.content === null)) { $s = 1; continue; }
 			/* */ $s = 2; continue;
 			/* if (!(data === null) && !(data.postData === null) && !(data.postData.content === null)) { */ case 1:
-				_r = fn($internalize(data.postData.content, $String)); /* */ $s = 3; case 3: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-				data.postData.content = $externalize(_r, $String);
+				_r$1 = fn($internalize(data.postData.content, $String)); /* */ $s = 3; case 3: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+				data.postData.content = $externalize(_r$1, $String);
 			/* } */ case 2:
 			callback(null, data);
-			/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f._r = _r; $f.callback = callback; $f.data = data; $f.$s = $s; $f.$r = $r; return $f;
+			/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f._r$1 = _r$1; $f.callback = callback; $f.data = data; $f.$s = $s; $f.$r = $r; return $f;
 		});
 	};
 	signature = function(fn) {
 		var $ptr, fn;
 		return (function $b(data, callback) {
-			var $ptr, _r, callback, data, $s, $r;
-			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; callback = $f.callback; data = $f.data; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+			var $ptr, _r$1, callback, data, $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$1 = $f._r$1; callback = $f.callback; data = $f.data; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 			/* */ if (!(data === null) && !(data.userData === null) && !(data.userData.signature === null)) { $s = 1; continue; }
 			/* */ $s = 2; continue;
 			/* if (!(data === null) && !(data.userData === null) && !(data.userData.signature === null)) { */ case 1:
-				_r = fn($internalize(data.userData.signature, $String)); /* */ $s = 3; case 3: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-				data.userData.signature = $externalize(_r, $String);
+				_r$1 = fn($internalize(data.userData.signature, $String)); /* */ $s = 3; case 3: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+				data.userData.signature = $externalize(_r$1, $String);
 			/* } */ case 2:
 			callback(null, data);
-			/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f._r = _r; $f.callback = callback; $f.data = data; $f.$s = $s; $f.$r = $r; return $f;
+			/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f._r$1 = _r$1; $f.callback = callback; $f.data = data; $f.$s = $s; $f.$r = $r; return $f;
 		});
 	};
 	raw = function(fn) {
 		var $ptr, fn;
 		return (function $b(raw$1, callback) {
-			var $ptr, _r, callback, raw$1, $s, $r;
-			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; callback = $f.callback; raw$1 = $f.raw$1; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-			_r = fn(raw$1); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-			callback(null, $externalize(_r, $String));
-			/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f._r = _r; $f.callback = callback; $f.raw$1 = raw$1; $f.$s = $s; $f.$r = $r; return $f;
+			var $ptr, _r$1, callback, raw$1, $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$1 = $f._r$1; callback = $f.callback; raw$1 = $f.raw$1; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+			_r$1 = fn(raw$1); /* */ $s = 1; case 1: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+			callback(null, $externalize(_r$1, $String));
+			/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f._r$1 = _r$1; $f.callback = callback; $f.raw$1 = raw$1; $f.$s = $s; $f.$r = $r; return $f;
 		});
 	};
 	$init = function() {
@@ -31009,63 +31127,54 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		$r = cleaner.$init(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$r = js.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = strings.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = sort.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = strings.$init(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		fixer = strings.NewReplacer(new sliceType(["\n<", "\n\xEF\xBB\xBF<"]));
 		remover = strings.NewReplacer(new sliceType(["\xEF\xBB\xBF", ""]));
-		helpString = (function() {
-			var $ptr, _entry, _entry$1, _entry$2, _i, _i$1, _i$2, _keys, _keys$1, _keys$2, _ref, _ref$1, _ref$2, a, a$1, attr, buf, el, first, ok, ok$1;
-			buf = new sliceType$1($stringToBytes("<h2>HTML Cleaner</h2><p>You are allowed to use a subset of HTML.</p>"));
-			first = true;
+		_r = (function $b() {
+			var $ptr, _entry, _entry$1, _entry$2, _i, _i$1, _i$2, _keys, _keys$1, _keys$2, _ref, _ref$1, _ref$2, a, a$1, attr, buf, el, list, ok, ok$1, str, $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _entry = $f._entry; _entry$1 = $f._entry$1; _entry$2 = $f._entry$2; _i = $f._i; _i$1 = $f._i$1; _i$2 = $f._i$2; _keys = $f._keys; _keys$1 = $f._keys$1; _keys$2 = $f._keys$2; _ref = $f._ref; _ref$1 = $f._ref$1; _ref$2 = $f._ref$2; a = $f.a; a$1 = $f.a$1; attr = $f.attr; buf = $f.buf; el = $f.el; list = $f.list; ok = $f.ok; ok$1 = $f.ok$1; str = $f.str; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+			str = "<h2>HTML Cleaner</h2><p>You are allowed to use a subset of HTML.</p>";
+			list = sliceType.nil;
 			_ref = cleaner.Config.Attr;
 			_i = 0;
 			_keys = $keys(_ref);
-			while (true) {
-				if (!(_i < _keys.length)) { break; }
+			/* while (true) { */ case 1:
+				/* if (!(_i < _keys.length)) { break; } */ if(!(_i < _keys.length)) { $s = 2; continue; }
 				_entry = _ref[_keys[_i]];
 				if (_entry === undefined) {
 					_i++;
-					continue;
+					/* continue; */ $s = 1; continue;
 				}
 				a = _entry.k;
 				ok = _entry.v;
 				if (!ok) {
 					_i++;
-					continue;
+					/* continue; */ $s = 1; continue;
 				}
-				if (first) {
-					buf = $appendSlice(buf, "<p>The following attributes are allowed on all elements: ");
-					first = false;
-				} else {
-					buf = $appendSlice(buf, ", ");
-				}
-				buf = $appendSlice(buf, "<code>");
-				buf = $appendSlice(buf, new $packages["golang.org/x/net/html/atom"].Atom(a).String());
-				buf = $appendSlice(buf, "</code>");
+				list = $append(list, new $packages["golang.org/x/net/html/atom"].Atom(a).String());
 				_i++;
-			}
-			if (!first) {
-				buf = $appendSlice(buf, "</p>");
-			}
-			first = true;
+			/* } */ $s = 1; continue; case 2:
+			/* */ if (!((list.$length === 0))) { $s = 3; continue; }
+			/* */ $s = 4; continue;
+			/* if (!((list.$length === 0))) { */ case 3:
+				$r = sort.Strings(list); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+				str = str + ("<p>The following attributes are allowed on all elements: <code>" + strings.Join(list, "</code>, <code>") + "</code></p>");
+			/* } */ case 4:
+			list = sliceType.nil;
 			_ref$1 = cleaner.Config.Elem;
 			_i$1 = 0;
 			_keys$1 = $keys(_ref$1);
-			while (true) {
-				if (!(_i$1 < _keys$1.length)) { break; }
+			/* while (true) { */ case 6:
+				/* if (!(_i$1 < _keys$1.length)) { break; } */ if(!(_i$1 < _keys$1.length)) { $s = 7; continue; }
 				_entry$1 = _ref$1[_keys$1[_i$1]];
 				if (_entry$1 === undefined) {
 					_i$1++;
-					continue;
+					/* continue; */ $s = 6; continue;
 				}
 				el = _entry$1.k;
 				attr = _entry$1.v;
-				if (first) {
-					buf = $appendSlice(buf, "<p>The following elements are allowed: ");
-					first = false;
-				} else {
-					buf = $appendSlice(buf, ", ");
-				}
-				buf = $appendSlice(buf, "<code>&lt;");
+				buf = new sliceType$1($stringToBytes("&lt;"));
 				buf = $appendSlice(buf, new $packages["golang.org/x/net/html/atom"].Atom(el).String());
 				_ref$2 = attr;
 				_i$2 = 0;
@@ -31087,14 +31196,20 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 					buf = $appendSlice(buf, new $packages["golang.org/x/net/html/atom"].Atom(a$1).String());
 					_i$2++;
 				}
-				buf = $appendSlice(buf, "&gt;</code>");
+				buf = $appendSlice(buf, "&gt;");
+				list = $append(list, $bytesToString(buf));
 				_i$1++;
-			}
-			if (!first) {
-				buf = $appendSlice(buf, "</p>");
-			}
-			return $bytesToString(buf);
-		})();
+			/* } */ $s = 6; continue; case 7:
+			/* */ if (!((list.$length === 0))) { $s = 8; continue; }
+			/* */ $s = 9; continue;
+			/* if (!((list.$length === 0))) { */ case 8:
+				$r = sort.Strings(list); /* */ $s = 10; case 10: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+				str = str + ("<p>The following elements are allowed: <code>" + strings.Join(list, "</code>, <code>") + "</code></p>");
+			/* } */ case 9:
+			return str;
+			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f._entry = _entry; $f._entry$1 = _entry$1; $f._entry$2 = _entry$2; $f._i = _i; $f._i$1 = _i$1; $f._i$2 = _i$2; $f._keys = _keys; $f._keys$1 = _keys$1; $f._keys$2 = _keys$2; $f._ref = _ref; $f._ref$1 = _ref$1; $f._ref$2 = _ref$2; $f.a = a; $f.a$1 = a$1; $f.attr = attr; $f.buf = buf; $f.el = el; $f.list = list; $f.ok = ok; $f.ok$1 = ok$1; $f.str = str; $f.$s = $s; $f.$r = $r; return $f;
+		})(); /* */ $s = 5; case 5: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		helpString = _r;
 		if ($pkg === $mainPkg) {
 			main();
 			$mainFinished = true;

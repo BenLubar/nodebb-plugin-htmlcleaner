@@ -1,44 +1,32 @@
 package main
 
 import (
+	"sort"
+	"strings"
+
 	"github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"
 	"github.com/gopherjs/gopherjs/js"
 )
 
 var helpString = func() string {
-	buf := []byte("<h2>HTML Cleaner</h2><p>You are allowed to use a subset of HTML.</p>")
+	str := "<h2>HTML Cleaner</h2><p>You are allowed to use a subset of HTML.</p>"
 
-	first := true
+	var list []string
 	for a, ok := range cleaner.Config.Attr {
 		if !ok {
 			continue
 		}
 
-		if first {
-			buf = append(buf, "<p>The following attributes are allowed on all elements: "...)
-			first = false
-		} else {
-			buf = append(buf, ", "...)
-		}
-
-		buf = append(buf, "<code>"...)
-		buf = append(buf, a.String()...)
-		buf = append(buf, "</code>"...)
+		list = append(list, a.String())
 	}
-	if !first {
-		buf = append(buf, "</p>"...)
+	if len(list) != 0 {
+		sort.Strings(list)
+		str += "<p>The following attributes are allowed on all elements: <code>" + strings.Join(list, "</code>, <code>") + "</code></p>"
 	}
 
-	first = true
+	list = nil
 	for el, attr := range cleaner.Config.Elem {
-		if first {
-			buf = append(buf, "<p>The following elements are allowed: "...)
-			first = false
-		} else {
-			buf = append(buf, ", "...)
-		}
-
-		buf = append(buf, "<code>&lt;"...)
+		buf := []byte("&lt;")
 		buf = append(buf, el.String()...)
 		for a, ok := range attr {
 			if !ok {
@@ -48,13 +36,15 @@ var helpString = func() string {
 			buf = append(buf, " "...)
 			buf = append(buf, a.String()...)
 		}
-		buf = append(buf, "&gt;</code>"...)
+		buf = append(buf, "&gt;"...)
+		list = append(list, string(buf))
 	}
-	if !first {
-		buf = append(buf, "</p>"...)
+	if len(list) != 0 {
+		sort.Strings(list)
+		str += "<p>The following elements are allowed: <code>" + strings.Join(list, "</code>, <code>") + "</code></p>"
 	}
 
-	return string(buf)
+	return str
 }()
 
 func renderHelp(helpContent string, callback *js.Object) {
