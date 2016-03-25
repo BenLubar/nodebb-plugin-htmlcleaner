@@ -16,6 +16,8 @@ func main() {
 	exports.Set("cleanPost", post(clean))
 	exports.Set("cleanSignature", signature(clean))
 	exports.Set("cleanRaw", raw(clean))
+
+	exports.Set("renderHelp", renderHelp)
 }
 
 func post(fn func(string) string) func(data, callback *js.Object) {

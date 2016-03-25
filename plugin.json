@@ -10,6 +10,7 @@
 		{"hook": "filter:parse.raw", "method": "fixRaw", "priority": 4},
 		{"hook": "filter:parse.post", "method": "cleanPost", "priority": 6},
 		{"hook": "filter:parse.signature", "method": "cleanSignature", "priority": 6},
-		{"hook": "filter:parse.raw", "method": "cleanRaw", "priority": 6}
+		{"hook": "filter:parse.raw", "method": "cleanRaw", "priority": 6},
+		{"hook": "filter:composer.help", "method": "renderHelp"}
 	]
 }

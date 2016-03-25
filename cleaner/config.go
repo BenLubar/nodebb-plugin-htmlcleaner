@@ -7,7 +7,7 @@ import (
 	"golang.org/x/net/html/atom"
 )
 
-var config = &htmlcleaner.Config{
+var Config = &htmlcleaner.Config{
 	Elem: map[atom.Atom]map[atom.Atom]bool{
 		atom.A: {
 			atom.Href: true,
