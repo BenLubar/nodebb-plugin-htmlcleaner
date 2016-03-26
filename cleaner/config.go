@@ -54,10 +54,14 @@ var Config = &htmlcleaner.Config{
 		atom.P:          nil,
 		atom.Blockquote: nil,
 
-		atom.Pre:  nil,
-		atom.Code: nil,
-		atom.Kbd:  nil,
-		atom.Tt:   nil,
+		atom.Pre: {
+			atom.Class: true,
+		},
+		atom.Code: {
+			atom.Class: true,
+		},
+		atom.Kbd: nil,
+		atom.Tt:  nil,
 
 		atom.Details: nil,
 		atom.Summary: nil,
@@ -106,7 +110,15 @@ var Config = &htmlcleaner.Config{
 
 	WrapText: true,
 
-	AttrMatch: map[atom.Atom]*regexp.Regexp{
-		atom.Class: regexp.MustCompile(`\A((emoji|img-markdown|img-responsive)(\s+|\s*\z))*\z`),
+	AttrMatch: map[atom.Atom]map[atom.Atom]*regexp.Regexp{
+		atom.Img: {
+			atom.Class: regexp.MustCompile(`\A((emoji|img-markdown|img-responsive)(\s+|\s*\z))*\z`),
+		},
+		atom.Pre: {
+			atom.Class: regexp.MustCompile(`\A((markdown-highlight)(\s+|\s*\z))*\z`),
+		},
+		atom.Code: {
+			atom.Class: regexp.MustCompile(`\A((language-[a-z]+)(\s+|\s*\z))*\z`),
+		},
 	},
 }

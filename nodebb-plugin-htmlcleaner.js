@@ -14003,19 +14003,19 @@ $packages["reflect"] = (function() {
 			typ[0] = tt.elem;
 			fl = (v.flag & 480) >>> 0;
 			fl = (fl | ((typ[0].Kind() >>> 0))) >>> 0;
-			a$1[0] = v.ptr;
+			a[0] = v.ptr;
 			/* */ if (!((((fl & 128) >>> 0) === 0)) && !((typ[0].Kind() === 17)) && !((typ[0].Kind() === 25))) { $s = 6; continue; }
 			/* */ $s = 7; continue;
 			/* if (!((((fl & 128) >>> 0) === 0)) && !((typ[0].Kind() === 17)) && !((typ[0].Kind() === 25))) { */ case 6:
 				return new Value.ptr(typ[0], new (jsType(PtrTo(typ[0])))((function(a, a$1, c, i, typ, typ$1) { return function() {
 					var $ptr;
-					return wrapJsObject(typ[0], a$1[0][i[0]]);
+					return wrapJsObject(typ[0], a[0][i[0]]);
 				}; })(a, a$1, c, i, typ, typ$1), (function(a, a$1, c, i, typ, typ$1) { return function(x) {
 					var $ptr, x;
-					a$1[0][i[0]] = unwrapJsObject(typ[0], x);
+					a[0][i[0]] = unwrapJsObject(typ[0], x);
 				}; })(a, a$1, c, i, typ, typ$1)), fl);
 			/* } */ case 7:
-			_r = makeValue(typ[0], wrapJsObject(typ[0], a$1[0][i[0]]), fl); /* */ $s = 8; case 8: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+			_r = makeValue(typ[0], wrapJsObject(typ[0], a[0][i[0]]), fl); /* */ $s = 8; case 8: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 			/* */ $s = 9; case 9:
 			return _r;
 		/* } else if (_ref === 23) { */ case 2:
@@ -14028,19 +14028,19 @@ $packages["reflect"] = (function() {
 			fl$1 = (384 | ((v.flag & 96) >>> 0)) >>> 0;
 			fl$1 = (fl$1 | ((typ$1[0].Kind() >>> 0))) >>> 0;
 			i[0] = i[0] + (($parseInt(s.$offset) >> 0)) >> 0;
-			a[0] = s.$array;
+			a$1[0] = s.$array;
 			/* */ if (!((((fl$1 & 128) >>> 0) === 0)) && !((typ$1[0].Kind() === 17)) && !((typ$1[0].Kind() === 25))) { $s = 10; continue; }
 			/* */ $s = 11; continue;
 			/* if (!((((fl$1 & 128) >>> 0) === 0)) && !((typ$1[0].Kind() === 17)) && !((typ$1[0].Kind() === 25))) { */ case 10:
 				return new Value.ptr(typ$1[0], new (jsType(PtrTo(typ$1[0])))((function(a, a$1, c, i, typ, typ$1) { return function() {
 					var $ptr;
-					return wrapJsObject(typ$1[0], a[0][i[0]]);
+					return wrapJsObject(typ$1[0], a$1[0][i[0]]);
 				}; })(a, a$1, c, i, typ, typ$1), (function(a, a$1, c, i, typ, typ$1) { return function(x) {
 					var $ptr, x;
-					a[0][i[0]] = unwrapJsObject(typ$1[0], x);
+					a$1[0][i[0]] = unwrapJsObject(typ$1[0], x);
 				}; })(a, a$1, c, i, typ, typ$1)), fl$1);
 			/* } */ case 11:
-			_r$1 = makeValue(typ$1[0], wrapJsObject(typ$1[0], a[0][i[0]]), fl$1); /* */ $s = 12; case 12: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+			_r$1 = makeValue(typ$1[0], wrapJsObject(typ$1[0], a$1[0][i[0]]), fl$1); /* */ $s = 12; case 12: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
 			/* */ $s = 13; case 13:
 			return _r$1;
 		/* } else if (_ref === 24) { */ case 3:
@@ -30709,7 +30709,7 @@ $packages["regexp"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/BenLubar/htmlcleaner"] = (function() {
-	var $pkg = {}, $init, bytes, html, atom, regexp, strings, Config, ptrType, sliceType, sliceType$1, arrayType, arrayType$1, ptrType$1, sliceType$2, ptrType$2, mapType, mapType$1, mapType$2, Parse, Render, Clean, text, CleanNode, cleanNodeMax, cleanChildren;
+	var $pkg = {}, $init, bytes, html, atom, regexp, strings, Config, ptrType, sliceType, sliceType$1, arrayType, arrayType$1, ptrType$1, sliceType$2, ptrType$2, mapType, mapType$1, mapType$2, mapType$3, Parse, Render, Clean, text, CleanNode, cleanNodeMax, cleanChildren;
 	bytes = $packages["bytes"];
 	html = $packages["golang.org/x/net/html"];
 	atom = $packages["golang.org/x/net/html/atom"];
@@ -30744,6 +30744,7 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 	mapType = $mapType(atom.Atom, $Bool);
 	mapType$1 = $mapType(atom.Atom, mapType);
 	mapType$2 = $mapType(atom.Atom, ptrType$2);
+	mapType$3 = $mapType(atom.Atom, mapType$2);
 	Parse = function(fragment) {
 		var $ptr, _r, _tuple, err, fragment, nodes, $s, $r;
 		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _tuple = $f._tuple; err = $f.err; fragment = $f.fragment; nodes = $f.nodes; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -30864,8 +30865,8 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 	};
 	$pkg.CleanNode = CleanNode;
 	cleanNodeMax = function(c, n, depth) {
-		var $ptr, _entry, _entry$1, _entry$2, _entry$3, _i, _r, _r$1, _r$10, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, _r$8, _r$9, _ref, _tuple, _tuple$1, _v, a, aatom, allowedAttr, attr, c, depth, i, n, ok, ok$1, protocol, re, tmp, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _entry = $f._entry; _entry$1 = $f._entry$1; _entry$2 = $f._entry$2; _entry$3 = $f._entry$3; _i = $f._i; _r = $f._r; _r$1 = $f._r$1; _r$10 = $f._r$10; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; _r$8 = $f._r$8; _r$9 = $f._r$9; _ref = $f._ref; _tuple = $f._tuple; _tuple$1 = $f._tuple$1; _v = $f._v; a = $f.a; aatom = $f.aatom; allowedAttr = $f.allowedAttr; attr = $f.attr; c = $f.c; depth = $f.depth; i = $f.i; n = $f.n; ok = $f.ok; ok$1 = $f.ok$1; protocol = $f.protocol; re = $f.re; tmp = $f.tmp; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var $ptr, _entry, _entry$1, _entry$2, _entry$3, _entry$4, _i, _r, _r$1, _r$10, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, _r$8, _r$9, _ref, _tuple, _tuple$1, _v, a, aatom, allowedAttr, attr, c, depth, i, n, ok, ok$1, protocol, re, tmp, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _entry = $f._entry; _entry$1 = $f._entry$1; _entry$2 = $f._entry$2; _entry$3 = $f._entry$3; _entry$4 = $f._entry$4; _i = $f._i; _r = $f._r; _r$1 = $f._r$1; _r$10 = $f._r$10; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; _r$8 = $f._r$8; _r$9 = $f._r$9; _ref = $f._ref; _tuple = $f._tuple; _tuple$1 = $f._tuple$1; _v = $f._v; a = $f.a; aatom = $f.aatom; allowedAttr = $f.allowedAttr; attr = $f.attr; c = $f.c; depth = $f.depth; i = $f.i; n = $f.n; ok = $f.ok; ok$1 = $f.ok$1; protocol = $f.protocol; re = $f.re; tmp = $f.tmp; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		tmp = [tmp];
 		if (c === ptrType$1.nil) {
 			c = $pkg.DefaultConfig;
@@ -30938,7 +30939,7 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 						}
 					/* } */ case 26:
 				/* } */ case 24:
-				_tuple$1 = (_entry$3 = c.AttrMatch[atom.Atom.keyFor(aatom)], _entry$3 !== undefined ? [_entry$3.v, true] : [ptrType$2.nil, false]);
+				_tuple$1 = (_entry$3 = (_entry$4 = c.AttrMatch[atom.Atom.keyFor(n.DataAtom)], _entry$4 !== undefined ? _entry$4.v : false)[atom.Atom.keyFor(aatom)], _entry$3 !== undefined ? [_entry$3.v, true] : [ptrType$2.nil, false]);
 				re = _tuple$1[0];
 				ok$1 = _tuple$1[1];
 				if (!(ok$1)) { _v = false; $s = 30; continue s; }
@@ -30960,7 +30961,7 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 		_r$10 = text(_r$9); /* */ $s = 34; case 34: if($c) { $c = false; _r$10 = _r$10.$blk(); } if (_r$10 && _r$10.$blk !== undefined) { break s; }
 		/* */ $s = 35; case 35:
 		return _r$10;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: cleanNodeMax }; } $f.$ptr = $ptr; $f._entry = _entry; $f._entry$1 = _entry$1; $f._entry$2 = _entry$2; $f._entry$3 = _entry$3; $f._i = _i; $f._r = _r; $f._r$1 = _r$1; $f._r$10 = _r$10; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._r$8 = _r$8; $f._r$9 = _r$9; $f._ref = _ref; $f._tuple = _tuple; $f._tuple$1 = _tuple$1; $f._v = _v; $f.a = a; $f.aatom = aatom; $f.allowedAttr = allowedAttr; $f.attr = attr; $f.c = c; $f.depth = depth; $f.i = i; $f.n = n; $f.ok = ok; $f.ok$1 = ok$1; $f.protocol = protocol; $f.re = re; $f.tmp = tmp; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: cleanNodeMax }; } $f.$ptr = $ptr; $f._entry = _entry; $f._entry$1 = _entry$1; $f._entry$2 = _entry$2; $f._entry$3 = _entry$3; $f._entry$4 = _entry$4; $f._i = _i; $f._r = _r; $f._r$1 = _r$1; $f._r$10 = _r$10; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._r$8 = _r$8; $f._r$9 = _r$9; $f._ref = _ref; $f._tuple = _tuple; $f._tuple$1 = _tuple$1; $f._v = _v; $f.a = a; $f.aatom = aatom; $f.allowedAttr = allowedAttr; $f.attr = attr; $f.c = c; $f.depth = depth; $f.i = i; $f.n = n; $f.ok = ok; $f.ok$1 = ok$1; $f.protocol = protocol; $f.re = re; $f.tmp = tmp; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	cleanChildren = function(c, parent, depth) {
 		var $ptr, _i, _r, _ref, c, child, child$1, children, depth, i, parent, x, x$1, $s, $r;
@@ -30994,7 +30995,7 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 		}
 		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: cleanChildren }; } $f.$ptr = $ptr; $f._i = _i; $f._r = _r; $f._ref = _ref; $f.c = c; $f.child = child; $f.child$1 = child$1; $f.children = children; $f.depth = depth; $f.i = i; $f.parent = parent; $f.x = x; $f.x$1 = x$1; $f.$s = $s; $f.$r = $r; return $f;
 	};
-	Config.init([{prop: "Elem", name: "Elem", pkg: "", typ: mapType$1, tag: ""}, {prop: "Attr", name: "Attr", pkg: "", typ: mapType, tag: ""}, {prop: "AllowJavascriptURL", name: "AllowJavascriptURL", pkg: "", typ: $Bool, tag: ""}, {prop: "EscapeComments", name: "EscapeComments", pkg: "", typ: $Bool, tag: ""}, {prop: "WrapText", name: "WrapText", pkg: "", typ: $Bool, tag: ""}, {prop: "AttrMatch", name: "AttrMatch", pkg: "", typ: mapType$2, tag: ""}]);
+	Config.init([{prop: "Elem", name: "Elem", pkg: "", typ: mapType$1, tag: ""}, {prop: "Attr", name: "Attr", pkg: "", typ: mapType, tag: ""}, {prop: "AllowJavascriptURL", name: "AllowJavascriptURL", pkg: "", typ: $Bool, tag: ""}, {prop: "EscapeComments", name: "EscapeComments", pkg: "", typ: $Bool, tag: ""}, {prop: "WrapText", name: "WrapText", pkg: "", typ: $Bool, tag: ""}, {prop: "AttrMatch", name: "AttrMatch", pkg: "", typ: mapType$3, tag: ""}]);
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -31010,17 +31011,17 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"] = (function() {
-	var $pkg = {}, $init, htmlcleaner, atom, regexp, _r, Clean;
+	var $pkg = {}, $init, htmlcleaner, atom, regexp, _r, _r$1, _r$2, Clean;
 	htmlcleaner = $packages["github.com/BenLubar/htmlcleaner"];
 	atom = $packages["golang.org/x/net/html/atom"];
 	regexp = $packages["regexp"];
 	Clean = function(content) {
-		var $ptr, _r$1, content, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$1 = $f._r$1; content = $f.content; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		_r$1 = htmlcleaner.Clean($pkg.Config, content); /* */ $s = 1; case 1: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		var $ptr, _r$3, content, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$3 = $f._r$3; content = $f.content; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		_r$3 = htmlcleaner.Clean($pkg.Config, content); /* */ $s = 1; case 1: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
 		/* */ $s = 2; case 2:
-		return _r$1;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: Clean }; } $f.$ptr = $ptr; $f._r$1 = _r$1; $f.content = content; $f.$s = $s; $f.$r = $r; return $f;
+		return _r$3;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Clean }; } $f.$ptr = $ptr; $f._r$3 = _r$3; $f.content = content; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.Clean = Clean;
 	$init = function() {
@@ -31030,7 +31031,9 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"] = (function()
 		$r = atom.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$r = regexp.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		_r = regexp.MustCompile("\\A((emoji|img-markdown|img-responsive)(\\s+|\\s*\\z))*\\z"); /* */ $s = 4; case 4: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-		$pkg.Config = new htmlcleaner.Config.ptr($makeMap(atom.Atom.keyFor, [{ k: 1, v: $makeMap(atom.Atom.keyFor, [{ k: 159748, v: true }]) }, { k: 172291, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 17667, v: true }, { k: 318981, v: true }, { k: 329477, v: true }, { k: 151814, v: true }]) }, { k: 164101, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 87814, v: true }, { k: 100360, v: true }]) }, { k: 42501, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 100360, v: true }]) }, { k: 257, v: false }, { k: 1537, v: false }, { k: 2817, v: false }, { k: 11265, v: false }, { k: 25858, v: false }, { k: 350470, v: false }, { k: 340742, v: false }, { k: 74755, v: false }, { k: 102149, v: false }, { k: 400643, v: false }, { k: 370947, v: false }, { k: 108547, v: false }, { k: 257795, v: false }, { k: 4, v: false }, { k: 324359, v: false }, { k: 247812, v: false }, { k: 78081, v: false }, { k: 3073, v: false }, { k: 76810, v: false }, { k: 155139, v: false }, { k: 84228, v: false }, { k: 6403, v: false }, { k: 21250, v: false }, { k: 18439, v: false }, { k: 398855, v: false }, { k: 159234, v: false }, { k: 168962, v: false }, { k: 173826, v: false }, { k: 190722, v: false }, { k: 193282, v: false }, { k: 330498, v: false }, { k: 35330, v: $makeMap(atom.Atom.keyFor, [{ k: 230917, v: true }]) }, { k: 51458, v: $makeMap(atom.Atom.keyFor, [{ k: 230917, v: true }]) }, { k: 4610, v: $makeMap(atom.Atom.keyFor, [{ k: 16389, v: true }]) }, { k: 159746, v: false }, { k: 514, v: false }, { k: 70403, v: false }, { k: 273669, v: false }, { k: 185349, v: false }, { k: 11781, v: false }, { k: 35845, v: false }, { k: 66818, v: false }, { k: 142850, v: false }, { k: 18178, v: false }, { k: 113415, v: false }]), $makeMap(atom.Atom.keyFor, [{ k: 41221, v: true }]), false, true, true, $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r }]));
+		_r$1 = regexp.MustCompile("\\A((markdown-highlight)(\\s+|\\s*\\z))*\\z"); /* */ $s = 5; case 5: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		_r$2 = regexp.MustCompile("\\A((language-[a-z]+)(\\s+|\\s*\\z))*\\z"); /* */ $s = 6; case 6: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+		$pkg.Config = new htmlcleaner.Config.ptr($makeMap(atom.Atom.keyFor, [{ k: 1, v: $makeMap(atom.Atom.keyFor, [{ k: 159748, v: true }]) }, { k: 172291, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 17667, v: true }, { k: 318981, v: true }, { k: 329477, v: true }, { k: 151814, v: true }]) }, { k: 164101, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 87814, v: true }, { k: 100360, v: true }]) }, { k: 42501, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 100360, v: true }]) }, { k: 257, v: false }, { k: 1537, v: false }, { k: 2817, v: false }, { k: 11265, v: false }, { k: 25858, v: false }, { k: 350470, v: false }, { k: 340742, v: false }, { k: 74755, v: false }, { k: 102149, v: false }, { k: 400643, v: false }, { k: 370947, v: false }, { k: 108547, v: false }, { k: 257795, v: false }, { k: 4, v: false }, { k: 324359, v: false }, { k: 247812, v: false }, { k: 78081, v: false }, { k: 3073, v: false }, { k: 76810, v: false }, { k: 155139, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: true }]) }, { k: 84228, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: true }]) }, { k: 6403, v: false }, { k: 21250, v: false }, { k: 18439, v: false }, { k: 398855, v: false }, { k: 159234, v: false }, { k: 168962, v: false }, { k: 173826, v: false }, { k: 190722, v: false }, { k: 193282, v: false }, { k: 330498, v: false }, { k: 35330, v: $makeMap(atom.Atom.keyFor, [{ k: 230917, v: true }]) }, { k: 51458, v: $makeMap(atom.Atom.keyFor, [{ k: 230917, v: true }]) }, { k: 4610, v: $makeMap(atom.Atom.keyFor, [{ k: 16389, v: true }]) }, { k: 159746, v: false }, { k: 514, v: false }, { k: 70403, v: false }, { k: 273669, v: false }, { k: 185349, v: false }, { k: 11781, v: false }, { k: 35845, v: false }, { k: 66818, v: false }, { k: 142850, v: false }, { k: 18178, v: false }, { k: 113415, v: false }]), $makeMap(atom.Atom.keyFor, [{ k: 41221, v: true }]), false, true, true, $makeMap(atom.Atom.keyFor, [{ k: 172291, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r }]) }, { k: 155139, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r$1 }]) }, { k: 84228, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r$2 }]) }]));
 		/* */ } return; } if ($f === undefined) { $f = { $blk: $init }; } $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.$init = $init;
