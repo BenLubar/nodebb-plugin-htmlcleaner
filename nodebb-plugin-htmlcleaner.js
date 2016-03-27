@@ -14003,19 +14003,19 @@ $packages["reflect"] = (function() {
 			typ[0] = tt.elem;
 			fl = (v.flag & 480) >>> 0;
 			fl = (fl | ((typ[0].Kind() >>> 0))) >>> 0;
-			a[0] = v.ptr;
+			a$1[0] = v.ptr;
 			/* */ if (!((((fl & 128) >>> 0) === 0)) && !((typ[0].Kind() === 17)) && !((typ[0].Kind() === 25))) { $s = 6; continue; }
 			/* */ $s = 7; continue;
 			/* if (!((((fl & 128) >>> 0) === 0)) && !((typ[0].Kind() === 17)) && !((typ[0].Kind() === 25))) { */ case 6:
 				return new Value.ptr(typ[0], new (jsType(PtrTo(typ[0])))((function(a, a$1, c, i, typ, typ$1) { return function() {
 					var $ptr;
-					return wrapJsObject(typ[0], a[0][i[0]]);
+					return wrapJsObject(typ[0], a$1[0][i[0]]);
 				}; })(a, a$1, c, i, typ, typ$1), (function(a, a$1, c, i, typ, typ$1) { return function(x) {
 					var $ptr, x;
-					a[0][i[0]] = unwrapJsObject(typ[0], x);
+					a$1[0][i[0]] = unwrapJsObject(typ[0], x);
 				}; })(a, a$1, c, i, typ, typ$1)), fl);
 			/* } */ case 7:
-			_r = makeValue(typ[0], wrapJsObject(typ[0], a[0][i[0]]), fl); /* */ $s = 8; case 8: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+			_r = makeValue(typ[0], wrapJsObject(typ[0], a$1[0][i[0]]), fl); /* */ $s = 8; case 8: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 			/* */ $s = 9; case 9:
 			return _r;
 		/* } else if (_ref === 23) { */ case 2:
@@ -14028,19 +14028,19 @@ $packages["reflect"] = (function() {
 			fl$1 = (384 | ((v.flag & 96) >>> 0)) >>> 0;
 			fl$1 = (fl$1 | ((typ$1[0].Kind() >>> 0))) >>> 0;
 			i[0] = i[0] + (($parseInt(s.$offset) >> 0)) >> 0;
-			a$1[0] = s.$array;
+			a[0] = s.$array;
 			/* */ if (!((((fl$1 & 128) >>> 0) === 0)) && !((typ$1[0].Kind() === 17)) && !((typ$1[0].Kind() === 25))) { $s = 10; continue; }
 			/* */ $s = 11; continue;
 			/* if (!((((fl$1 & 128) >>> 0) === 0)) && !((typ$1[0].Kind() === 17)) && !((typ$1[0].Kind() === 25))) { */ case 10:
 				return new Value.ptr(typ$1[0], new (jsType(PtrTo(typ$1[0])))((function(a, a$1, c, i, typ, typ$1) { return function() {
 					var $ptr;
-					return wrapJsObject(typ$1[0], a$1[0][i[0]]);
+					return wrapJsObject(typ$1[0], a[0][i[0]]);
 				}; })(a, a$1, c, i, typ, typ$1), (function(a, a$1, c, i, typ, typ$1) { return function(x) {
 					var $ptr, x;
-					a$1[0][i[0]] = unwrapJsObject(typ$1[0], x);
+					a[0][i[0]] = unwrapJsObject(typ$1[0], x);
 				}; })(a, a$1, c, i, typ, typ$1)), fl$1);
 			/* } */ case 11:
-			_r$1 = makeValue(typ$1[0], wrapJsObject(typ$1[0], a$1[0][i[0]]), fl$1); /* */ $s = 12; case 12: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+			_r$1 = makeValue(typ$1[0], wrapJsObject(typ$1[0], a[0][i[0]]), fl$1); /* */ $s = 12; case 12: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
 			/* */ $s = 13; case 13:
 			return _r$1;
 		/* } else if (_ref === 24) { */ case 3:
@@ -30709,7 +30709,7 @@ $packages["regexp"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/BenLubar/htmlcleaner"] = (function() {
-	var $pkg = {}, $init, bytes, html, atom, regexp, strings, Config, ptrType, sliceType, sliceType$1, arrayType, arrayType$1, ptrType$1, sliceType$2, ptrType$2, mapType, mapType$1, mapType$2, mapType$3, Parse, Render, Clean, text, CleanNode, cleanNodeMax, cleanChildren;
+	var $pkg = {}, $init, bytes, html, atom, regexp, strings, Config, ptrType, sliceType, sliceType$1, arrayType, arrayType$1, ptrType$1, sliceType$2, ptrType$2, mapType, mapType$1, mapType$2, mapType$3, Parse, Render, CleanNodes, text, CleanNode, cleanNodeMax, cleanChildren;
 	bytes = $packages["bytes"];
 	html = $packages["golang.org/x/net/html"];
 	atom = $packages["golang.org/x/net/html/atom"];
@@ -30782,37 +30782,35 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: Render }; } $f.$ptr = $ptr; $f._i = _i; $f._r = _r; $f._ref = _ref; $f.buf = buf; $f.err = err; $f.n = n; $f.nodes = nodes; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.Render = Render;
-	Clean = function(c, fragment) {
-		var $ptr, _i, _i$1, _r, _r$1, _r$2, _r$3, _ref, _ref$1, _ref$2, _v, c, fragment, i, n, n$1, nodes, wrapped, wrapper, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _i = $f._i; _i$1 = $f._i$1; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _ref = $f._ref; _ref$1 = $f._ref$1; _ref$2 = $f._ref$2; _v = $f._v; c = $f.c; fragment = $f.fragment; i = $f.i; n = $f.n; n$1 = $f.n$1; nodes = $f.nodes; wrapped = $f.wrapped; wrapper = $f.wrapper; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		_r = Parse(fragment); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-		nodes = _r;
+	CleanNodes = function(c, nodes) {
+		var $ptr, _i, _i$1, _r, _r$1, _ref, _ref$1, _ref$2, _v, c, i, n, n$1, nodes, wrapped, wrapper, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _i = $f._i; _i$1 = $f._i$1; _r = $f._r; _r$1 = $f._r$1; _ref = $f._ref; _ref$1 = $f._ref$1; _ref$2 = $f._ref$2; _v = $f._v; c = $f.c; i = $f.i; n = $f.n; n$1 = $f.n$1; nodes = $f.nodes; wrapped = $f.wrapped; wrapper = $f.wrapper; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		if (c === ptrType$1.nil) {
 			c = $pkg.DefaultConfig;
 		}
 		_ref = nodes;
 		_i = 0;
-		/* while (true) { */ case 2:
-			/* if (!(_i < _ref.$length)) { break; } */ if(!(_i < _ref.$length)) { $s = 3; continue; }
+		/* while (true) { */ case 1:
+			/* if (!(_i < _ref.$length)) { break; } */ if(!(_i < _ref.$length)) { $s = 2; continue; }
 			i = _i;
 			n = ((_i < 0 || _i >= _ref.$length) ? $throwRuntimeError("index out of range") : _ref.$array[_ref.$offset + _i]);
-			_r$1 = CleanNode(c, n); /* */ $s = 4; case 4: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
-			((i < 0 || i >= nodes.$length) ? $throwRuntimeError("index out of range") : nodes.$array[nodes.$offset + i] = _r$1);
+			_r = CleanNode(c, n); /* */ $s = 3; case 3: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+			((i < 0 || i >= nodes.$length) ? $throwRuntimeError("index out of range") : nodes.$array[nodes.$offset + i] = _r);
 			_i++;
-		/* } */ $s = 2; continue; case 3:
-		/* */ if (c.WrapText) { $s = 5; continue; }
-		/* */ $s = 6; continue;
-		/* if (c.WrapText) { */ case 5:
+		/* } */ $s = 1; continue; case 2:
+		/* */ if (c.WrapText) { $s = 4; continue; }
+		/* */ $s = 5; continue;
+		/* if (c.WrapText) { */ case 4:
 			wrapped = $makeSlice(sliceType$2, 0, nodes.$length);
 			wrapper = ptrType.nil;
 			_ref$1 = nodes;
 			_i$1 = 0;
-			/* while (true) { */ case 7:
-				/* if (!(_i$1 < _ref$1.$length)) { break; } */ if(!(_i$1 < _ref$1.$length)) { $s = 8; continue; }
+			/* while (true) { */ case 6:
+				/* if (!(_i$1 < _ref$1.$length)) { break; } */ if(!(_i$1 < _ref$1.$length)) { $s = 7; continue; }
 				n$1 = ((_i$1 < 0 || _i$1 >= _ref$1.$length) ? $throwRuntimeError("index out of range") : _ref$1.$array[_ref$1.$offset + _i$1]);
-				/* */ if (n$1.Type === 3) { $s = 9; continue; }
-				/* */ $s = 10; continue;
-				/* if (n$1.Type === 3) { */ case 9:
+				/* */ if (n$1.Type === 3) { $s = 8; continue; }
+				/* */ $s = 9; continue;
+				/* if (n$1.Type === 3) { */ case 8:
 					_ref$2 = n$1.DataAtom;
 					if (_ref$2 === 324359 || _ref$2 === 231431 || _ref$2 === 33541 || _ref$2 === 76810 || _ref$2 === 374022 || _ref$2 === 157442 || _ref$2 === 18439 || _ref$2 === 26883 || _ref$2 === 70403 || _ref$2 === 73218 || _ref$2 === 329986 || _ref$2 === 110600 || _ref$2 === 112650 || _ref$2 === 117766 || _ref$2 === 36102 || _ref$2 === 127492 || _ref$2 === 159234 || _ref$2 === 168962 || _ref$2 === 173826 || _ref$2 === 190722 || _ref$2 === 193282 || _ref$2 === 330498 || _ref$2 === 185606 || _ref$2 === 153862 || _ref$2 === 159746 || _ref$2 === 4610 || _ref$2 === 282119 || _ref$2 === 210948 || _ref$2 === 15875 || _ref$2 === 51458 || _ref$2 === 3073 || _ref$2 === 64777 || _ref$2 === 155139 || _ref$2 === 320007 || _ref$2 === 398855 || _ref$2 === 273669 || _ref$2 === 35330) {
 						if (!(wrapper === ptrType.nil)) {
@@ -30821,36 +30819,34 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 						}
 						wrapped = $append(wrapped, n$1);
 						_i$1++;
-						/* continue; */ $s = 7; continue;
+						/* continue; */ $s = 6; continue;
 					}
-				/* } */ case 10:
-				if (!(wrapper === ptrType.nil && (n$1.Type === 1))) { _v = false; $s = 13; continue s; }
-				_r$2 = strings.TrimSpace(n$1.Data); /* */ $s = 14; case 14: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
-				_v = _r$2 === ""; case 13:
-				/* */ if (_v) { $s = 11; continue; }
-				/* */ $s = 12; continue;
-				/* if (_v) { */ case 11:
+				/* } */ case 9:
+				if (!(wrapper === ptrType.nil && (n$1.Type === 1))) { _v = false; $s = 12; continue s; }
+				_r$1 = strings.TrimSpace(n$1.Data); /* */ $s = 13; case 13: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+				_v = _r$1 === ""; case 12:
+				/* */ if (_v) { $s = 10; continue; }
+				/* */ $s = 11; continue;
+				/* if (_v) { */ case 10:
 					wrapped = $append(wrapped, n$1);
 					_i$1++;
-					/* continue; */ $s = 7; continue;
-				/* } */ case 12:
+					/* continue; */ $s = 6; continue;
+				/* } */ case 11:
 				if (wrapper === ptrType.nil) {
 					wrapper = new html.Node.ptr(ptrType.nil, ptrType.nil, ptrType.nil, ptrType.nil, ptrType.nil, 3, 3073, "p", "", sliceType.nil);
 				}
 				wrapper.AppendChild(n$1);
 				_i$1++;
-			/* } */ $s = 7; continue; case 8:
+			/* } */ $s = 6; continue; case 7:
 			if (!(wrapper === ptrType.nil)) {
 				wrapped = $append(wrapped, wrapper);
 			}
 			nodes = wrapped;
-		/* } */ case 6:
-		_r$3 = Render(nodes); /* */ $s = 15; case 15: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
-		/* */ $s = 16; case 16:
-		return _r$3;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: Clean }; } $f.$ptr = $ptr; $f._i = _i; $f._i$1 = _i$1; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._ref = _ref; $f._ref$1 = _ref$1; $f._ref$2 = _ref$2; $f._v = _v; $f.c = c; $f.fragment = fragment; $f.i = i; $f.n = n; $f.n$1 = n$1; $f.nodes = nodes; $f.wrapped = wrapped; $f.wrapper = wrapper; $f.$s = $s; $f.$r = $r; return $f;
+		/* } */ case 5:
+		return nodes;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: CleanNodes }; } $f.$ptr = $ptr; $f._i = _i; $f._i$1 = _i$1; $f._r = _r; $f._r$1 = _r$1; $f._ref = _ref; $f._ref$1 = _ref$1; $f._ref$2 = _ref$2; $f._v = _v; $f.c = c; $f.i = i; $f.n = n; $f.n$1 = n$1; $f.nodes = nodes; $f.wrapped = wrapped; $f.wrapper = wrapper; $f.$s = $s; $f.$r = $r; return $f;
 	};
-	$pkg.Clean = Clean;
+	$pkg.CleanNodes = CleanNodes;
 	text = function(s) {
 		var $ptr, s;
 		return new html.Node.ptr(ptrType.nil, ptrType.nil, ptrType.nil, ptrType.nil, ptrType.nil, 1, 0, s, "", sliceType.nil);
@@ -31011,28 +31007,116 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"] = (function() {
-	var $pkg = {}, $init, htmlcleaner, atom, regexp, _r, _r$1, _r$2, Clean;
+	var $pkg = {}, $init, htmlcleaner, html, atom, regexp, sliceType, ptrType, sliceType$1, _r, _r$1, _r$2, Clean, dataToSrc, srcToData;
 	htmlcleaner = $packages["github.com/BenLubar/htmlcleaner"];
+	html = $packages["golang.org/x/net/html"];
 	atom = $packages["golang.org/x/net/html/atom"];
 	regexp = $packages["regexp"];
+	sliceType = $sliceType(html.Attribute);
+	ptrType = $ptrType(html.Node);
+	sliceType$1 = $sliceType(ptrType);
 	Clean = function(content) {
-		var $ptr, _r$3, content, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$3 = $f._r$3; content = $f.content; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		_r$3 = htmlcleaner.Clean($pkg.Config, content); /* */ $s = 1; case 1: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
-		/* */ $s = 2; case 2:
-		return _r$3;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: Clean }; } $f.$ptr = $ptr; $f._r$3 = _r$3; $f.content = content; $f.$s = $s; $f.$r = $r; return $f;
+		var $ptr, _r$3, _r$4, _r$5, content, nodes, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; content = $f.content; nodes = $f.nodes; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		_r$3 = htmlcleaner.Parse(content); /* */ $s = 1; case 1: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
+		nodes = _r$3;
+		dataToSrc(nodes);
+		_r$4 = htmlcleaner.CleanNodes($pkg.Config, nodes); /* */ $s = 2; case 2: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
+		nodes = _r$4;
+		srcToData(nodes);
+		_r$5 = htmlcleaner.Render(nodes); /* */ $s = 3; case 3: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
+		/* */ $s = 4; case 4:
+		return _r$5;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Clean }; } $f.$ptr = $ptr; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f.content = content; $f.nodes = nodes; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.Clean = Clean;
+	dataToSrc = function(nodes) {
+		var $ptr, _i, _i$1, _ref, _ref$1, a, attrs, c, hasPixel, hasSrc, n, nodes;
+		_ref = nodes;
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.$length)) { break; }
+			n = ((_i < 0 || _i >= _ref.$length) ? $throwRuntimeError("index out of range") : _ref.$array[_ref.$offset + _i]);
+			if ((n.Type === 3) && (n.DataAtom === 172291)) {
+				attrs = $makeSlice(sliceType, 0, n.Attr.$length);
+				hasSrc = false;
+				hasPixel = false;
+				_ref$1 = n.Attr;
+				_i$1 = 0;
+				while (true) {
+					if (!(_i$1 < _ref$1.$length)) { break; }
+					a = $clone(((_i$1 < 0 || _i$1 >= _ref$1.$length) ? $throwRuntimeError("index out of range") : _ref$1.$array[_ref$1.$offset + _i$1]), html.Attribute);
+					if (a.Namespace === "" && a.Key === "data-src") {
+						hasSrc = true;
+						attrs = $append(attrs, new html.Attribute.ptr("", "src", a.Val));
+					} else if (a.Namespace === "" && a.Key === "data-state" && a.Val === "unloaded") {
+						_i$1++;
+						continue;
+					} else if (a.Namespace === "" && a.Key === "src" && a.Val === "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7") {
+						hasPixel = true;
+						_i$1++;
+						continue;
+					} else {
+						attrs = $append(attrs, a);
+					}
+					_i$1++;
+				}
+				if (hasPixel && !hasSrc) {
+					attrs = $append(attrs, new html.Attribute.ptr("", "src", "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"));
+				}
+				n.Attr = attrs;
+			}
+			c = n.FirstChild;
+			while (true) {
+				if (!(!(c === ptrType.nil))) { break; }
+				dataToSrc(new sliceType$1([c]));
+				c = c.NextSibling;
+			}
+			_i++;
+		}
+	};
+	srcToData = function(nodes) {
+		var $ptr, _i, _i$1, _ref, _ref$1, a, attrs, c, n, nodes;
+		_ref = nodes;
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.$length)) { break; }
+			n = ((_i < 0 || _i >= _ref.$length) ? $throwRuntimeError("index out of range") : _ref.$array[_ref.$offset + _i]);
+			if ((n.Type === 3) && (n.DataAtom === 172291)) {
+				attrs = $makeSlice(sliceType, 0, n.Attr.$length);
+				_ref$1 = n.Attr;
+				_i$1 = 0;
+				while (true) {
+					if (!(_i$1 < _ref$1.$length)) { break; }
+					a = $clone(((_i$1 < 0 || _i$1 >= _ref$1.$length) ? $throwRuntimeError("index out of range") : _ref$1.$array[_ref$1.$offset + _i$1]), html.Attribute);
+					if (a.Namespace === "" && a.Key === "src") {
+						attrs = $append(attrs, new html.Attribute.ptr("", "src", "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"), new html.Attribute.ptr("", "data-src", a.Val), new html.Attribute.ptr("", "data-state", "unloaded"));
+					} else {
+						attrs = $append(attrs, a);
+					}
+					_i$1++;
+				}
+				n.Attr = attrs;
+			}
+			c = n.FirstChild;
+			while (true) {
+				if (!(!(c === ptrType.nil))) { break; }
+				srcToData(new sliceType$1([c]));
+				c = c.NextSibling;
+			}
+			_i++;
+		}
+	};
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		$r = htmlcleaner.$init(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = atom.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = regexp.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		_r = regexp.MustCompile("\\A((emoji|img-markdown|img-responsive)(\\s+|\\s*\\z))*\\z"); /* */ $s = 4; case 4: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-		_r$1 = regexp.MustCompile("\\A((markdown-highlight)(\\s+|\\s*\\z))*\\z"); /* */ $s = 5; case 5: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
-		_r$2 = regexp.MustCompile("\\A((hljs|language-[a-z0-9]+)(\\s+|\\s*\\z))*\\z"); /* */ $s = 6; case 6: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+		$r = html.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = atom.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = regexp.$init(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		_r = regexp.MustCompile("\\A((emoji|img-markdown|img-responsive)(\\s+|\\s*\\z))*\\z"); /* */ $s = 5; case 5: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		_r$1 = regexp.MustCompile("\\A((markdown-highlight)(\\s+|\\s*\\z))*\\z"); /* */ $s = 6; case 6: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		_r$2 = regexp.MustCompile("\\A((hljs|language-[a-z0-9]+)(\\s+|\\s*\\z))*\\z"); /* */ $s = 7; case 7: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
 		$pkg.Config = new htmlcleaner.Config.ptr($makeMap(atom.Atom.keyFor, [{ k: 1, v: $makeMap(atom.Atom.keyFor, [{ k: 159748, v: true }]) }, { k: 172291, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 17667, v: true }, { k: 318981, v: true }, { k: 329477, v: true }, { k: 151814, v: true }]) }, { k: 164101, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 87814, v: true }, { k: 100360, v: true }]) }, { k: 42501, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 100360, v: true }]) }, { k: 257, v: false }, { k: 1537, v: false }, { k: 2817, v: false }, { k: 11265, v: false }, { k: 25858, v: false }, { k: 350470, v: false }, { k: 340742, v: false }, { k: 74755, v: false }, { k: 102149, v: false }, { k: 400643, v: false }, { k: 370947, v: false }, { k: 108547, v: false }, { k: 257795, v: false }, { k: 4, v: false }, { k: 324359, v: false }, { k: 247812, v: false }, { k: 78081, v: false }, { k: 3073, v: false }, { k: 76810, v: false }, { k: 155139, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: true }]) }, { k: 84228, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: true }]) }, { k: 6403, v: false }, { k: 21250, v: false }, { k: 18439, v: false }, { k: 398855, v: false }, { k: 159234, v: false }, { k: 168962, v: false }, { k: 173826, v: false }, { k: 190722, v: false }, { k: 193282, v: false }, { k: 330498, v: false }, { k: 35330, v: $makeMap(atom.Atom.keyFor, [{ k: 230917, v: true }]) }, { k: 51458, v: $makeMap(atom.Atom.keyFor, [{ k: 230917, v: true }]) }, { k: 4610, v: $makeMap(atom.Atom.keyFor, [{ k: 16389, v: true }]) }, { k: 159746, v: false }, { k: 514, v: false }, { k: 70403, v: false }, { k: 273669, v: false }, { k: 185349, v: false }, { k: 11781, v: false }, { k: 35845, v: false }, { k: 66818, v: false }, { k: 142850, v: false }, { k: 18178, v: false }, { k: 113415, v: false }]), $makeMap(atom.Atom.keyFor, [{ k: 41221, v: true }]), false, true, true, $makeMap(atom.Atom.keyFor, [{ k: 172291, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r }]) }, { k: 155139, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r$1 }]) }, { k: 84228, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r$2 }]) }]));
 		/* */ } return; } if ($f === undefined) { $f = { $blk: $init }; } $f.$s = $s; $f.$r = $r; return $f;
 	};
