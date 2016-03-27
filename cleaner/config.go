@@ -118,7 +118,7 @@ var Config = &htmlcleaner.Config{
 			atom.Class: regexp.MustCompile(`\A((markdown-highlight)(\s+|\s*\z))*\z`),
 		},
 		atom.Code: {
-			atom.Class: regexp.MustCompile(`\A((language-[a-z]+)(\s+|\s*\z))*\z`),
+			atom.Class: regexp.MustCompile(`\A((hljs|language-[a-z0-9]+)(\s+|\s*\z))*\z`),
 		},
 	},
 }
