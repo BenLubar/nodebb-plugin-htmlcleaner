@@ -30709,7 +30709,7 @@ $packages["regexp"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/BenLubar/htmlcleaner"] = (function() {
-	var $pkg = {}, $init, bytes, html, atom, regexp, strings, Config, ptrType, sliceType, sliceType$1, arrayType, arrayType$1, ptrType$1, sliceType$2, ptrType$2, mapType, mapType$1, mapType$2, mapType$3, Parse, Render, CleanNodes, text, CleanNode, cleanNodeMax, cleanChildren;
+	var $pkg = {}, $init, bytes, html, atom, regexp, strings, Config, ptrType, sliceType, sliceType$1, arrayType, arrayType$1, ptrType$1, sliceType$2, ptrType$2, mapType, mapType$1, mapType$2, mapType$3, Parse, Render, Clean, CleanNodes, text, CleanNode, cleanNodeMax, cleanChildren;
 	bytes = $packages["bytes"];
 	html = $packages["golang.org/x/net/html"];
 	atom = $packages["golang.org/x/net/html/atom"];
@@ -30782,6 +30782,19 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: Render }; } $f.$ptr = $ptr; $f._i = _i; $f._r = _r; $f._ref = _ref; $f.buf = buf; $f.err = err; $f.n = n; $f.nodes = nodes; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.Render = Render;
+	Clean = function(c, fragment) {
+		var $ptr, _arg, _arg$1, _r, _r$1, _r$2, c, fragment, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _arg = $f._arg; _arg$1 = $f._arg$1; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; c = $f.c; fragment = $f.fragment; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		_arg = c;
+		_r = Parse(fragment); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		_arg$1 = _r;
+		_r$1 = CleanNodes(_arg, _arg$1); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		_r$2 = Render(_r$1); /* */ $s = 3; case 3: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+		/* */ $s = 4; case 4:
+		return _r$2;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Clean }; } $f.$ptr = $ptr; $f._arg = _arg; $f._arg$1 = _arg$1; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f.c = c; $f.fragment = fragment; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.Clean = Clean;
 	CleanNodes = function(c, nodes) {
 		var $ptr, _i, _i$1, _r, _r$1, _ref, _ref$1, _ref$2, _v, c, i, n, n$1, nodes, wrapped, wrapper, $s, $r;
 		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _i = $f._i; _i$1 = $f._i$1; _r = $f._r; _r$1 = $f._r$1; _ref = $f._ref; _ref$1 = $f._ref$1; _ref$2 = $f._ref$2; _v = $f._v; c = $f.c; i = $f.i; n = $f.n; n$1 = $f.n$1; nodes = $f.nodes; wrapped = $f.wrapped; wrapper = $f.wrapper; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -31007,116 +31020,28 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"] = (function() {
-	var $pkg = {}, $init, htmlcleaner, html, atom, regexp, sliceType, ptrType, sliceType$1, _r, _r$1, _r$2, Clean, dataToSrc, srcToData;
+	var $pkg = {}, $init, htmlcleaner, atom, regexp, _r, _r$1, _r$2, Clean;
 	htmlcleaner = $packages["github.com/BenLubar/htmlcleaner"];
-	html = $packages["golang.org/x/net/html"];
 	atom = $packages["golang.org/x/net/html/atom"];
 	regexp = $packages["regexp"];
-	sliceType = $sliceType(html.Attribute);
-	ptrType = $ptrType(html.Node);
-	sliceType$1 = $sliceType(ptrType);
 	Clean = function(content) {
-		var $ptr, _r$3, _r$4, _r$5, content, nodes, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; content = $f.content; nodes = $f.nodes; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		_r$3 = htmlcleaner.Parse(content); /* */ $s = 1; case 1: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
-		nodes = _r$3;
-		dataToSrc(nodes);
-		_r$4 = htmlcleaner.CleanNodes($pkg.Config, nodes); /* */ $s = 2; case 2: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
-		nodes = _r$4;
-		srcToData(nodes);
-		_r$5 = htmlcleaner.Render(nodes); /* */ $s = 3; case 3: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
-		/* */ $s = 4; case 4:
-		return _r$5;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: Clean }; } $f.$ptr = $ptr; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f.content = content; $f.nodes = nodes; $f.$s = $s; $f.$r = $r; return $f;
+		var $ptr, _r$3, content, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$3 = $f._r$3; content = $f.content; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		_r$3 = htmlcleaner.Clean($pkg.Config, content); /* */ $s = 1; case 1: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
+		/* */ $s = 2; case 2:
+		return _r$3;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Clean }; } $f.$ptr = $ptr; $f._r$3 = _r$3; $f.content = content; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.Clean = Clean;
-	dataToSrc = function(nodes) {
-		var $ptr, _i, _i$1, _ref, _ref$1, a, attrs, c, hasPixel, hasSrc, n, nodes;
-		_ref = nodes;
-		_i = 0;
-		while (true) {
-			if (!(_i < _ref.$length)) { break; }
-			n = ((_i < 0 || _i >= _ref.$length) ? $throwRuntimeError("index out of range") : _ref.$array[_ref.$offset + _i]);
-			if ((n.Type === 3) && (n.DataAtom === 172291)) {
-				attrs = $makeSlice(sliceType, 0, n.Attr.$length);
-				hasSrc = false;
-				hasPixel = false;
-				_ref$1 = n.Attr;
-				_i$1 = 0;
-				while (true) {
-					if (!(_i$1 < _ref$1.$length)) { break; }
-					a = $clone(((_i$1 < 0 || _i$1 >= _ref$1.$length) ? $throwRuntimeError("index out of range") : _ref$1.$array[_ref$1.$offset + _i$1]), html.Attribute);
-					if (a.Namespace === "" && a.Key === "data-src") {
-						hasSrc = true;
-						attrs = $append(attrs, new html.Attribute.ptr("", "src", a.Val));
-					} else if (a.Namespace === "" && a.Key === "data-state" && a.Val === "unloaded") {
-						_i$1++;
-						continue;
-					} else if (a.Namespace === "" && a.Key === "src" && a.Val === "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7") {
-						hasPixel = true;
-						_i$1++;
-						continue;
-					} else {
-						attrs = $append(attrs, a);
-					}
-					_i$1++;
-				}
-				if (hasPixel && !hasSrc) {
-					attrs = $append(attrs, new html.Attribute.ptr("", "src", "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"));
-				}
-				n.Attr = attrs;
-			}
-			c = n.FirstChild;
-			while (true) {
-				if (!(!(c === ptrType.nil))) { break; }
-				dataToSrc(new sliceType$1([c]));
-				c = c.NextSibling;
-			}
-			_i++;
-		}
-	};
-	srcToData = function(nodes) {
-		var $ptr, _i, _i$1, _ref, _ref$1, a, attrs, c, n, nodes;
-		_ref = nodes;
-		_i = 0;
-		while (true) {
-			if (!(_i < _ref.$length)) { break; }
-			n = ((_i < 0 || _i >= _ref.$length) ? $throwRuntimeError("index out of range") : _ref.$array[_ref.$offset + _i]);
-			if ((n.Type === 3) && (n.DataAtom === 172291)) {
-				attrs = $makeSlice(sliceType, 0, n.Attr.$length);
-				_ref$1 = n.Attr;
-				_i$1 = 0;
-				while (true) {
-					if (!(_i$1 < _ref$1.$length)) { break; }
-					a = $clone(((_i$1 < 0 || _i$1 >= _ref$1.$length) ? $throwRuntimeError("index out of range") : _ref$1.$array[_ref$1.$offset + _i$1]), html.Attribute);
-					if (a.Namespace === "" && a.Key === "src") {
-						attrs = $append(attrs, new html.Attribute.ptr("", "src", "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"), new html.Attribute.ptr("", "data-src", a.Val), new html.Attribute.ptr("", "data-state", "unloaded"));
-					} else {
-						attrs = $append(attrs, a);
-					}
-					_i$1++;
-				}
-				n.Attr = attrs;
-			}
-			c = n.FirstChild;
-			while (true) {
-				if (!(!(c === ptrType.nil))) { break; }
-				srcToData(new sliceType$1([c]));
-				c = c.NextSibling;
-			}
-			_i++;
-		}
-	};
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		$r = htmlcleaner.$init(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = html.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = atom.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = regexp.$init(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		_r = regexp.MustCompile("\\A((emoji|img-markdown|img-responsive)(\\s+|\\s*\\z))*\\z"); /* */ $s = 5; case 5: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-		_r$1 = regexp.MustCompile("\\A((markdown-highlight)(\\s+|\\s*\\z))*\\z"); /* */ $s = 6; case 6: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
-		_r$2 = regexp.MustCompile("\\A((hljs|language-[a-z0-9]+)(\\s+|\\s*\\z))*\\z"); /* */ $s = 7; case 7: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+		$r = atom.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = regexp.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		_r = regexp.MustCompile("\\A((emoji|img-markdown|img-responsive)(\\s+|\\s*\\z))*\\z"); /* */ $s = 4; case 4: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		_r$1 = regexp.MustCompile("\\A((markdown-highlight)(\\s+|\\s*\\z))*\\z"); /* */ $s = 5; case 5: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		_r$2 = regexp.MustCompile("\\A((hljs|language-[a-z0-9]+)(\\s+|\\s*\\z))*\\z"); /* */ $s = 6; case 6: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
 		$pkg.Config = new htmlcleaner.Config.ptr($makeMap(atom.Atom.keyFor, [{ k: 1, v: $makeMap(atom.Atom.keyFor, [{ k: 159748, v: true }]) }, { k: 172291, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 17667, v: true }, { k: 318981, v: true }, { k: 329477, v: true }, { k: 151814, v: true }]) }, { k: 164101, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 87814, v: true }, { k: 100360, v: true }]) }, { k: 42501, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 100360, v: true }]) }, { k: 257, v: false }, { k: 1537, v: false }, { k: 2817, v: false }, { k: 11265, v: false }, { k: 25858, v: false }, { k: 350470, v: false }, { k: 340742, v: false }, { k: 74755, v: false }, { k: 102149, v: false }, { k: 400643, v: false }, { k: 370947, v: false }, { k: 108547, v: false }, { k: 257795, v: false }, { k: 4, v: false }, { k: 324359, v: false }, { k: 247812, v: false }, { k: 78081, v: false }, { k: 3073, v: false }, { k: 76810, v: false }, { k: 155139, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: true }]) }, { k: 84228, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: true }]) }, { k: 6403, v: false }, { k: 21250, v: false }, { k: 18439, v: false }, { k: 398855, v: false }, { k: 159234, v: false }, { k: 168962, v: false }, { k: 173826, v: false }, { k: 190722, v: false }, { k: 193282, v: false }, { k: 330498, v: false }, { k: 35330, v: $makeMap(atom.Atom.keyFor, [{ k: 230917, v: true }]) }, { k: 51458, v: $makeMap(atom.Atom.keyFor, [{ k: 230917, v: true }]) }, { k: 4610, v: $makeMap(atom.Atom.keyFor, [{ k: 16389, v: true }]) }, { k: 159746, v: false }, { k: 514, v: false }, { k: 70403, v: false }, { k: 273669, v: false }, { k: 185349, v: false }, { k: 11781, v: false }, { k: 35845, v: false }, { k: 66818, v: false }, { k: 142850, v: false }, { k: 18178, v: false }, { k: 113415, v: false }]), $makeMap(atom.Atom.keyFor, [{ k: 41221, v: true }]), false, true, true, $makeMap(atom.Atom.keyFor, [{ k: 172291, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r }]) }, { k: 155139, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r$1 }]) }, { k: 84228, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r$2 }]) }]));
 		/* */ } return; } if ($f === undefined) { $f = { $blk: $init }; } $f.$s = $s; $f.$r = $r; return $f;
 	};
