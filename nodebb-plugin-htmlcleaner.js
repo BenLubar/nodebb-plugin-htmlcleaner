@@ -14000,22 +14000,22 @@ $packages["reflect"] = (function() {
 			if (i[0] < 0 || i[0] > (tt.len >> 0)) {
 				$panic(new $String("reflect: array index out of range"));
 			}
-			typ[0] = tt.elem;
+			typ$1[0] = tt.elem;
 			fl = (v.flag & 480) >>> 0;
-			fl = (fl | ((typ[0].Kind() >>> 0))) >>> 0;
+			fl = (fl | ((typ$1[0].Kind() >>> 0))) >>> 0;
 			a$1[0] = v.ptr;
-			/* */ if (!((((fl & 128) >>> 0) === 0)) && !((typ[0].Kind() === 17)) && !((typ[0].Kind() === 25))) { $s = 6; continue; }
+			/* */ if (!((((fl & 128) >>> 0) === 0)) && !((typ$1[0].Kind() === 17)) && !((typ$1[0].Kind() === 25))) { $s = 6; continue; }
 			/* */ $s = 7; continue;
-			/* if (!((((fl & 128) >>> 0) === 0)) && !((typ[0].Kind() === 17)) && !((typ[0].Kind() === 25))) { */ case 6:
-				return new Value.ptr(typ[0], new (jsType(PtrTo(typ[0])))((function(a, a$1, c, i, typ, typ$1) { return function() {
+			/* if (!((((fl & 128) >>> 0) === 0)) && !((typ$1[0].Kind() === 17)) && !((typ$1[0].Kind() === 25))) { */ case 6:
+				return new Value.ptr(typ$1[0], new (jsType(PtrTo(typ$1[0])))((function(a, a$1, c, i, typ, typ$1) { return function() {
 					var $ptr;
-					return wrapJsObject(typ[0], a$1[0][i[0]]);
+					return wrapJsObject(typ$1[0], a$1[0][i[0]]);
 				}; })(a, a$1, c, i, typ, typ$1), (function(a, a$1, c, i, typ, typ$1) { return function(x) {
 					var $ptr, x;
-					a$1[0][i[0]] = unwrapJsObject(typ[0], x);
+					a$1[0][i[0]] = unwrapJsObject(typ$1[0], x);
 				}; })(a, a$1, c, i, typ, typ$1)), fl);
 			/* } */ case 7:
-			_r = makeValue(typ[0], wrapJsObject(typ[0], a$1[0][i[0]]), fl); /* */ $s = 8; case 8: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+			_r = makeValue(typ$1[0], wrapJsObject(typ$1[0], a$1[0][i[0]]), fl); /* */ $s = 8; case 8: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 			/* */ $s = 9; case 9:
 			return _r;
 		/* } else if (_ref === 23) { */ case 2:
@@ -14024,23 +14024,23 @@ $packages["reflect"] = (function() {
 				$panic(new $String("reflect: slice index out of range"));
 			}
 			tt$1 = v.typ.kindType;
-			typ$1[0] = tt$1.elem;
+			typ[0] = tt$1.elem;
 			fl$1 = (384 | ((v.flag & 96) >>> 0)) >>> 0;
-			fl$1 = (fl$1 | ((typ$1[0].Kind() >>> 0))) >>> 0;
+			fl$1 = (fl$1 | ((typ[0].Kind() >>> 0))) >>> 0;
 			i[0] = i[0] + (($parseInt(s.$offset) >> 0)) >> 0;
 			a[0] = s.$array;
-			/* */ if (!((((fl$1 & 128) >>> 0) === 0)) && !((typ$1[0].Kind() === 17)) && !((typ$1[0].Kind() === 25))) { $s = 10; continue; }
+			/* */ if (!((((fl$1 & 128) >>> 0) === 0)) && !((typ[0].Kind() === 17)) && !((typ[0].Kind() === 25))) { $s = 10; continue; }
 			/* */ $s = 11; continue;
-			/* if (!((((fl$1 & 128) >>> 0) === 0)) && !((typ$1[0].Kind() === 17)) && !((typ$1[0].Kind() === 25))) { */ case 10:
-				return new Value.ptr(typ$1[0], new (jsType(PtrTo(typ$1[0])))((function(a, a$1, c, i, typ, typ$1) { return function() {
+			/* if (!((((fl$1 & 128) >>> 0) === 0)) && !((typ[0].Kind() === 17)) && !((typ[0].Kind() === 25))) { */ case 10:
+				return new Value.ptr(typ[0], new (jsType(PtrTo(typ[0])))((function(a, a$1, c, i, typ, typ$1) { return function() {
 					var $ptr;
-					return wrapJsObject(typ$1[0], a[0][i[0]]);
+					return wrapJsObject(typ[0], a[0][i[0]]);
 				}; })(a, a$1, c, i, typ, typ$1), (function(a, a$1, c, i, typ, typ$1) { return function(x) {
 					var $ptr, x;
-					a[0][i[0]] = unwrapJsObject(typ$1[0], x);
+					a[0][i[0]] = unwrapJsObject(typ[0], x);
 				}; })(a, a$1, c, i, typ, typ$1)), fl$1);
 			/* } */ case 11:
-			_r$1 = makeValue(typ$1[0], wrapJsObject(typ$1[0], a[0][i[0]]), fl$1); /* */ $s = 12; case 12: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+			_r$1 = makeValue(typ[0], wrapJsObject(typ[0], a[0][i[0]]), fl$1); /* */ $s = 12; case 12: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
 			/* */ $s = 13; case 13:
 			return _r$1;
 		/* } else if (_ref === 24) { */ case 3:
@@ -30709,7 +30709,7 @@ $packages["regexp"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/BenLubar/htmlcleaner"] = (function() {
-	var $pkg = {}, $init, bytes, html, atom, regexp, strings, Config, ptrType, sliceType, sliceType$1, arrayType, arrayType$1, ptrType$1, sliceType$2, ptrType$2, mapType, mapType$1, mapType$2, mapType$3, Parse, Render, Clean, CleanNodes, text, CleanNode, cleanNodeMax, cleanChildren;
+	var $pkg = {}, $init, bytes, html, atom, regexp, strings, Config, ptrType, sliceType, sliceType$1, arrayType, arrayType$1, ptrType$1, sliceType$2, ptrType$2, mapType, mapType$1, mapType$2, mapType$3, Parse, Render, Clean, CleanNodes, text, CleanNode, cleanNode, cleanChildren, forceMaxDepth;
 	bytes = $packages["bytes"];
 	html = $packages["golang.org/x/net/html"];
 	atom = $packages["golang.org/x/net/html/atom"];
@@ -30746,8 +30746,8 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 	mapType$2 = $mapType(atom.Atom, ptrType$2);
 	mapType$3 = $mapType(atom.Atom, mapType$2);
 	Parse = function(fragment) {
-		var $ptr, _r, _tuple, err, fragment, nodes, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _tuple = $f._tuple; err = $f.err; fragment = $f.fragment; nodes = $f.nodes; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var $ptr, _i, _r, _ref, _tuple, err, fragment, n, nodes, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _i = $f._i; _r = $f._r; _ref = $f._ref; _tuple = $f._tuple; err = $f.err; fragment = $f.fragment; n = $f.n; nodes = $f.nodes; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		_r = html.ParseFragment(strings.NewReader(fragment), new html.Node.ptr(ptrType.nil, ptrType.nil, ptrType.nil, ptrType.nil, ptrType.nil, 3, 70403, "div", "", sliceType.nil)); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 		_tuple = _r;
 		nodes = _tuple[0];
@@ -30755,8 +30755,16 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 		if (!($interfaceIsEqual(err, $ifaceNil))) {
 			$panic(err);
 		}
+		_ref = nodes;
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.$length)) { break; }
+			n = ((_i < 0 || _i >= _ref.$length) ? $throwRuntimeError("index out of range") : _ref.$array[_ref.$offset + _i]);
+			forceMaxDepth(n, 100);
+			_i++;
+		}
 		return nodes;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: Parse }; } $f.$ptr = $ptr; $f._r = _r; $f._tuple = _tuple; $f.err = err; $f.fragment = fragment; $f.nodes = nodes; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Parse }; } $f.$ptr = $ptr; $f._i = _i; $f._r = _r; $f._ref = _ref; $f._tuple = _tuple; $f.err = err; $f.fragment = fragment; $f.n = n; $f.nodes = nodes; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.Parse = Parse;
 	Render = function(nodes) {
@@ -30867,21 +30875,18 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 	CleanNode = function(c, n) {
 		var $ptr, _r, c, n, $s, $r;
 		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; c = $f.c; n = $f.n; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		_r = cleanNodeMax(c, n, 100); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		_r = cleanNode(c, n); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 		/* */ $s = 2; case 2:
 		return _r;
 		/* */ } return; } if ($f === undefined) { $f = { $blk: CleanNode }; } $f.$ptr = $ptr; $f._r = _r; $f.c = c; $f.n = n; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.CleanNode = CleanNode;
-	cleanNodeMax = function(c, n, depth) {
-		var $ptr, _entry, _entry$1, _entry$2, _entry$3, _entry$4, _i, _r, _r$1, _r$10, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, _r$8, _r$9, _ref, _tuple, _tuple$1, _v, a, aatom, allowedAttr, attr, c, depth, i, n, ok, ok$1, protocol, re, tmp, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _entry = $f._entry; _entry$1 = $f._entry$1; _entry$2 = $f._entry$2; _entry$3 = $f._entry$3; _entry$4 = $f._entry$4; _i = $f._i; _r = $f._r; _r$1 = $f._r$1; _r$10 = $f._r$10; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; _r$8 = $f._r$8; _r$9 = $f._r$9; _ref = $f._ref; _tuple = $f._tuple; _tuple$1 = $f._tuple$1; _v = $f._v; a = $f.a; aatom = $f.aatom; allowedAttr = $f.allowedAttr; attr = $f.attr; c = $f.c; depth = $f.depth; i = $f.i; n = $f.n; ok = $f.ok; ok$1 = $f.ok$1; protocol = $f.protocol; re = $f.re; tmp = $f.tmp; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+	cleanNode = function(c, n) {
+		var $ptr, _entry, _entry$1, _entry$2, _entry$3, _entry$4, _i, _r, _r$1, _r$10, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, _r$8, _r$9, _ref, _tuple, _tuple$1, _v, a, aatom, allowedAttr, attr, c, i, n, ok, ok$1, protocol, re, tmp, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _entry = $f._entry; _entry$1 = $f._entry$1; _entry$2 = $f._entry$2; _entry$3 = $f._entry$3; _entry$4 = $f._entry$4; _i = $f._i; _r = $f._r; _r$1 = $f._r$1; _r$10 = $f._r$10; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; _r$8 = $f._r$8; _r$9 = $f._r$9; _ref = $f._ref; _tuple = $f._tuple; _tuple$1 = $f._tuple$1; _v = $f._v; a = $f.a; aatom = $f.aatom; allowedAttr = $f.allowedAttr; attr = $f.attr; c = $f.c; i = $f.i; n = $f.n; ok = $f.ok; ok$1 = $f.ok$1; protocol = $f.protocol; re = $f.re; tmp = $f.tmp; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		tmp = [tmp];
 		if (c === ptrType$1.nil) {
 			c = $pkg.DefaultConfig;
-		}
-		if (depth === 0) {
-			return text("[omitted]");
 		}
 		/* */ if (n.Type === 5) { $s = 1; continue; }
 		/* */ $s = 2; continue;
@@ -30918,7 +30923,7 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 		/* if (ok) { */ case 16:
 			tmp[0] = $clone(n, html.Node);
 			n = tmp[0];
-			$r = cleanChildren(c, n, depth); /* */ $s = 18; case 18: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$r = cleanChildren(c, n); /* */ $s = 18; case 18: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 			attr = n.Attr;
 			n.Attr = $makeSlice(sliceType, 0, attr.$length);
 			_ref = attr;
@@ -30970,16 +30975,16 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 		_r$10 = text(_r$9); /* */ $s = 34; case 34: if($c) { $c = false; _r$10 = _r$10.$blk(); } if (_r$10 && _r$10.$blk !== undefined) { break s; }
 		/* */ $s = 35; case 35:
 		return _r$10;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: cleanNodeMax }; } $f.$ptr = $ptr; $f._entry = _entry; $f._entry$1 = _entry$1; $f._entry$2 = _entry$2; $f._entry$3 = _entry$3; $f._entry$4 = _entry$4; $f._i = _i; $f._r = _r; $f._r$1 = _r$1; $f._r$10 = _r$10; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._r$8 = _r$8; $f._r$9 = _r$9; $f._ref = _ref; $f._tuple = _tuple; $f._tuple$1 = _tuple$1; $f._v = _v; $f.a = a; $f.aatom = aatom; $f.allowedAttr = allowedAttr; $f.attr = attr; $f.c = c; $f.depth = depth; $f.i = i; $f.n = n; $f.ok = ok; $f.ok$1 = ok$1; $f.protocol = protocol; $f.re = re; $f.tmp = tmp; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: cleanNode }; } $f.$ptr = $ptr; $f._entry = _entry; $f._entry$1 = _entry$1; $f._entry$2 = _entry$2; $f._entry$3 = _entry$3; $f._entry$4 = _entry$4; $f._i = _i; $f._r = _r; $f._r$1 = _r$1; $f._r$10 = _r$10; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._r$8 = _r$8; $f._r$9 = _r$9; $f._ref = _ref; $f._tuple = _tuple; $f._tuple$1 = _tuple$1; $f._v = _v; $f.a = a; $f.aatom = aatom; $f.allowedAttr = allowedAttr; $f.attr = attr; $f.c = c; $f.i = i; $f.n = n; $f.ok = ok; $f.ok$1 = ok$1; $f.protocol = protocol; $f.re = re; $f.tmp = tmp; $f.$s = $s; $f.$r = $r; return $f;
 	};
-	cleanChildren = function(c, parent, depth) {
-		var $ptr, _i, _r, _ref, c, child, child$1, children, depth, i, parent, x, x$1, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _i = $f._i; _r = $f._r; _ref = $f._ref; c = $f.c; child = $f.child; child$1 = $f.child$1; children = $f.children; depth = $f.depth; i = $f.i; parent = $f.parent; x = $f.x; x$1 = $f.x$1; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+	cleanChildren = function(c, parent) {
+		var $ptr, _i, _r, _ref, c, child, child$1, children, i, parent, x, x$1, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _i = $f._i; _r = $f._r; _ref = $f._ref; c = $f.c; child = $f.child; child$1 = $f.child$1; children = $f.children; i = $f.i; parent = $f.parent; x = $f.x; x$1 = $f.x$1; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		children = sliceType$2.nil;
 		child = parent.FirstChild;
 		/* while (true) { */ case 1:
 			/* if (!(!(child === ptrType.nil))) { break; } */ if(!(!(child === ptrType.nil))) { $s = 2; continue; }
-			_r = cleanNodeMax(c, child, depth - 1 >> 0); /* */ $s = 3; case 3: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+			_r = cleanNode(c, child); /* */ $s = 3; case 3: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 			children = $append(children, _r);
 			child = child.NextSibling;
 		/* } */ $s = 1; continue; case 2:
@@ -31002,7 +31007,29 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 			}
 			_i++;
 		}
-		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: cleanChildren }; } $f.$ptr = $ptr; $f._i = _i; $f._r = _r; $f._ref = _ref; $f.c = c; $f.child = child; $f.child$1 = child$1; $f.children = children; $f.depth = depth; $f.i = i; $f.parent = parent; $f.x = x; $f.x$1 = x$1; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: cleanChildren }; } $f.$ptr = $ptr; $f._i = _i; $f._r = _r; $f._ref = _ref; $f.c = c; $f.child = child; $f.child$1 = child$1; $f.children = children; $f.i = i; $f.parent = parent; $f.x = x; $f.x$1 = x$1; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	forceMaxDepth = function(n, depth) {
+		var $ptr, _tmp, _tmp$1, c, depth, n;
+		if (depth === 0) {
+			n.Type = 1;
+			_tmp = ptrType.nil;
+			_tmp$1 = ptrType.nil;
+			n.FirstChild = _tmp;
+			n.LastChild = _tmp$1;
+			n.Attr = sliceType.nil;
+			n.Data = "[omitted]";
+			return;
+		}
+		if (!((n.Type === 3))) {
+			return;
+		}
+		c = n.FirstChild;
+		while (true) {
+			if (!(!(c === ptrType.nil))) { break; }
+			forceMaxDepth(c, depth - 1 >> 0);
+			c = c.NextSibling;
+		}
 	};
 	Config.init([{prop: "Elem", name: "Elem", pkg: "", typ: mapType$1, tag: ""}, {prop: "Attr", name: "Attr", pkg: "", typ: mapType, tag: ""}, {prop: "AllowJavascriptURL", name: "AllowJavascriptURL", pkg: "", typ: $Bool, tag: ""}, {prop: "EscapeComments", name: "EscapeComments", pkg: "", typ: $Bool, tag: ""}, {prop: "WrapText", name: "WrapText", pkg: "", typ: $Bool, tag: ""}, {prop: "AttrMatch", name: "AttrMatch", pkg: "", typ: mapType$3, tag: ""}]);
 	$init = function() {
