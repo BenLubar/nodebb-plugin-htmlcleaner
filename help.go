@@ -9,7 +9,7 @@ import (
 )
 
 var helpString = func() string {
-	str := "<h2>HTML Cleaner</h2><p>You are allowed to use a subset of HTML.</p>"
+	str := "<h2>Safe HTML</h2><p>You are allowed to use a subset of HTML.</p>"
 
 	var list []string
 	for a, ok := range cleaner.Config.Attr {
