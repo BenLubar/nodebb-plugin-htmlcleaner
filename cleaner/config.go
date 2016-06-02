@@ -1,9 +1,11 @@
 package cleaner
 
 import (
+	"net/url"
 	"regexp"
 
 	"github.com/BenLubar/htmlcleaner"
+	"github.com/gopherjs/gopherjs/js"
 	"golang.org/x/net/html/atom"
 )
 
@@ -105,6 +107,16 @@ var Config = &htmlcleaner.Config{
 	},
 
 	AllowJavascriptURL: false,
+
+	ValidateURL: func(u *url.URL) (ok bool) {
+		defer func() {
+			if recover() != nil {
+				ok = false
+			}
+		}()
+		js.Global.Get("url").Call("parse", u.String())
+		return true
+	},
 
 	EscapeComments: true, // work around https://github.com/psychobunny/templates.js/issues/54
 

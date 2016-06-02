@@ -28,7 +28,7 @@ var $flushConsole = function() {};
 var $throwRuntimeError; /* set by package "runtime" */
 var $throwNilPointerError = function() { $throwRuntimeError("invalid memory address or nil pointer dereference"); };
 var $call = function(fn, rcvr, args) { return fn.apply(rcvr, args); };
-var $makeFunc = function(fn) { return function() { return fn(new ($sliceType($jsObjectPtr))($global.Array.prototype.slice.call(arguments, []))); } };
+var $makeFunc = function(fn) { return function() { return $externalize(fn(this, new ($sliceType($jsObjectPtr))($global.Array.prototype.slice.call(arguments, []))), $emptyInterface); }; };
 
 var $mapArray = function(array, f) {
   var newArray = new array.constructor(array.length);
@@ -2076,7 +2076,7 @@ var $internalize = function(v, t, recv) {
 };
 
 $packages["github.com/gopherjs/gopherjs/js"] = (function() {
-	var $pkg = {}, $init, Object, Error, sliceType, ptrType, ptrType$1, init;
+	var $pkg = {}, $init, Object, Error, sliceType, ptrType, ptrType$1, MakeFunc, init;
 	Object = $pkg.Object = $newType(0, $kindStruct, "js.Object", "Object", "github.com/gopherjs/gopherjs/js", function(object_) {
 		this.$val = this;
 		if (arguments.length === 0) {
@@ -2210,6 +2210,11 @@ $packages["github.com/gopherjs/gopherjs/js"] = (function() {
 		return $internalize(err.Object.stack, $String);
 	};
 	Error.prototype.Stack = function() { return this.$val.Stack(); };
+	MakeFunc = function(param) {
+		var $ptr, param;
+		return null;
+	};
+	$pkg.MakeFunc = MakeFunc;
 	init = function() {
 		var $ptr, e;
 		e = new Error.ptr(null);
@@ -5116,8 +5121,7 @@ $packages["math"] = (function() {
 	return $pkg;
 })();
 $packages["syscall"] = (function() {
-	var $pkg = {}, $init, bytes, js, race, runtime, sync, mmapper, Errno, Timespec, Stat_t, Dirent, sliceType, sliceType$1, ptrType$2, arrayType$5, arrayType$13, arrayType$14, structType, ptrType$22, ptrType$25, mapType, funcType, funcType$1, ptrType$29, arrayType$18, warningPrinted, lineBuffer, syscallModule, alreadyTriedToLoad, minusOne, envOnce, envLock, env, envs, mapper, errEAGAIN, errEINVAL, errENOENT, ioSync, ioSync$24ptr, errors, init, printWarning, printToConsole, use, runtime_envs, syscall, Syscall, Syscall6, BytePtrFromString, copyenv, Getenv, msanRead, msanWrite, itoa, uitoa, clen, ReadDirent, ParseDirent, errnoErr, Read, Write, Close, Fchdir, Fchmod, Fsync, Getdents, read, write, munmap, Fchown, Fstat, Ftruncate, Lstat, Pread, Pwrite, Seek, mmap;
-	bytes = $packages["bytes"];
+	var $pkg = {}, $init, js, race, runtime, sync, mmapper, Errno, Timespec, Stat_t, Dirent, sliceType, sliceType$1, ptrType$2, arrayType$5, arrayType$13, arrayType$14, structType, ptrType$22, ptrType$25, mapType, funcType, funcType$1, ptrType$29, arrayType$18, warningPrinted, lineBuffer, syscallModule, alreadyTriedToLoad, minusOne, envOnce, envLock, env, envs, mapper, errEAGAIN, errEINVAL, errENOENT, ioSync, ioSync$24ptr, errors, init, printWarning, printToConsole, use, indexByte, runtime_envs, syscall, Syscall, Syscall6, BytePtrFromString, copyenv, Getenv, msanRead, msanWrite, itoa, uitoa, clen, ReadDirent, ParseDirent, errnoErr, Read, Write, Close, Fchdir, Fchmod, Fsync, Getdents, read, write, munmap, Fchown, Fstat, Ftruncate, Lstat, Pread, Pwrite, Seek, mmap;
 	js = $packages["github.com/gopherjs/gopherjs/js"];
 	race = $packages["internal/race"];
 	runtime = $packages["runtime"];
@@ -5241,7 +5245,7 @@ $packages["syscall"] = (function() {
 		}
 		lineBuffer = $appendSlice(lineBuffer, b);
 		while (true) {
-			i = bytes.IndexByte(lineBuffer, 10);
+			i = indexByte(lineBuffer, 10);
 			if (i === -1) {
 				break;
 			}
@@ -5251,6 +5255,21 @@ $packages["syscall"] = (function() {
 	};
 	use = function(p) {
 		var $ptr, p;
+	};
+	indexByte = function(s, c) {
+		var $ptr, _i, _ref, b, c, i, s;
+		_ref = s;
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.$length)) { break; }
+			i = _i;
+			b = ((_i < 0 || _i >= _ref.$length) ? $throwRuntimeError("index out of range") : _ref.$array[_ref.$offset + _i]);
+			if (b === c) {
+				return i;
+			}
+			_i++;
+		}
+		return -1;
 	};
 	runtime_envs = function() {
 		var $ptr, envkeys, envs$1, i, jsEnv, key, process;
@@ -5521,7 +5540,7 @@ $packages["syscall"] = (function() {
 	};
 	$pkg.ReadDirent = ReadDirent;
 	ParseDirent = function(buf, max, names) {
-		var $ptr, _array, _struct, _tmp, _tmp$1, _tmp$2, _view, buf, bytes$1, consumed, count, dirent, max, name, names, newnames, origlen, x;
+		var $ptr, _array, _struct, _tmp, _tmp$1, _tmp$2, _view, buf, bytes, consumed, count, dirent, max, name, names, newnames, origlen, x;
 		consumed = 0;
 		count = 0;
 		newnames = sliceType$1.nil;
@@ -5534,8 +5553,8 @@ $packages["syscall"] = (function() {
 			if ((x = dirent.Ino, (x.$high === 0 && x.$low === 0))) {
 				continue;
 			}
-			bytes$1 = $sliceToArray(new sliceType(dirent.Name));
-			name = $bytesToString($subslice(new sliceType(bytes$1), 0, clen(new sliceType(bytes$1))));
+			bytes = $sliceToArray(new sliceType(dirent.Name));
+			name = $bytesToString($subslice(new sliceType(bytes), 0, clen(new sliceType(bytes))));
 			if (name === "." || name === "..") {
 				continue;
 			}
@@ -5943,11 +5962,10 @@ $packages["syscall"] = (function() {
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		$r = bytes.$init(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = js.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = race.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = runtime.$init(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = sync.$init(); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = js.$init(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = race.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = runtime.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = sync.$init(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		lineBuffer = sliceType.nil;
 		syscallModule = null;
 		envOnce = new sync.Once.ptr(new sync.Mutex.ptr(0, 0), 0);
@@ -6047,7 +6065,7 @@ $packages["github.com/gopherjs/gopherjs/nosync"] = (function() {
 	return $pkg;
 })();
 $packages["strings"] = (function() {
-	var $pkg = {}, $init, errors, js, io, unicode, utf8, Reader, Replacer, replacer, trieNode, genericReplacer, appendSliceWriter, stringWriterIface, stringWriter, singleStringReplacer, byteReplacer, byteStringReplacer, stringFinder, arrayType, ptrType, sliceType, arrayType$1, ptrType$1, ptrType$2, sliceType$1, ptrType$3, ptrType$4, arrayType$2, sliceType$2, ptrType$5, ptrType$6, ptrType$7, ptrType$8, IndexByte, Index, Count, NewReader, NewReplacer, makeGenericReplacer, getStringWriter, makeSingleStringReplacer, makeStringFinder, longestCommonSuffix, max, Contains, IndexRune, IndexAny, Join, HasPrefix, Map, ToLower, TrimLeftFunc, TrimRightFunc, TrimFunc, indexFunc, lastIndexFunc, makeCutsetFunc, Trim, TrimLeft, TrimSpace, Replace, EqualFold;
+	var $pkg = {}, $init, errors, js, io, unicode, utf8, Reader, Replacer, replacer, trieNode, genericReplacer, appendSliceWriter, stringWriterIface, stringWriter, singleStringReplacer, byteReplacer, byteStringReplacer, stringFinder, arrayType, ptrType, sliceType, arrayType$1, ptrType$1, ptrType$2, sliceType$1, ptrType$3, ptrType$4, arrayType$2, sliceType$2, sliceType$3, ptrType$5, ptrType$6, ptrType$7, ptrType$8, IndexByte, Index, LastIndex, Count, NewReader, NewReplacer, makeGenericReplacer, getStringWriter, makeSingleStringReplacer, makeStringFinder, longestCommonSuffix, max, explode, Contains, IndexRune, IndexAny, genSplit, Split, Join, HasPrefix, Map, ToLower, TrimLeftFunc, TrimRightFunc, TrimFunc, indexFunc, lastIndexFunc, makeCutsetFunc, Trim, TrimLeft, TrimSpace, Replace, EqualFold;
 	errors = $packages["errors"];
 	js = $packages["github.com/gopherjs/gopherjs/js"];
 	io = $packages["io"];
@@ -6147,6 +6165,7 @@ $packages["strings"] = (function() {
 	ptrType$4 = $ptrType(stringFinder);
 	arrayType$2 = $arrayType($Int, 256);
 	sliceType$2 = $sliceType($Int);
+	sliceType$3 = $sliceType($String);
 	ptrType$5 = $ptrType(Reader);
 	ptrType$6 = $ptrType(Replacer);
 	ptrType$7 = $ptrType(genericReplacer);
@@ -6161,6 +6180,11 @@ $packages["strings"] = (function() {
 		return $parseInt(s.indexOf(sep)) >> 0;
 	};
 	$pkg.Index = Index;
+	LastIndex = function(s, sep) {
+		var $ptr, s, sep;
+		return $parseInt(s.lastIndexOf(sep)) >> 0;
+	};
+	$pkg.LastIndex = LastIndex;
 	Count = function(s, sep) {
 		var $ptr, n, pos, s, sep;
 		n = 0;
@@ -7028,6 +7052,40 @@ $packages["strings"] = (function() {
 		}
 		return b;
 	};
+	explode = function(s, n) {
+		var $ptr, _tmp, _tmp$1, _tuple, a, ch, cur, i, l, n, s, size;
+		if (n === 0) {
+			return sliceType$3.nil;
+		}
+		l = utf8.RuneCountInString(s);
+		if (n <= 0 || n > l) {
+			n = l;
+		}
+		a = $makeSlice(sliceType$3, n);
+		size = 0;
+		ch = 0;
+		_tmp = 0;
+		_tmp$1 = 0;
+		i = _tmp;
+		cur = _tmp$1;
+		while (true) {
+			if (!((i + 1 >> 0) < n)) { break; }
+			_tuple = utf8.DecodeRuneInString(s.substring(cur));
+			ch = _tuple[0];
+			size = _tuple[1];
+			if (ch === 65533) {
+				((i < 0 || i >= a.$length) ? $throwRuntimeError("index out of range") : a.$array[a.$offset + i] = "\xEF\xBF\xBD");
+			} else {
+				((i < 0 || i >= a.$length) ? $throwRuntimeError("index out of range") : a.$array[a.$offset + i] = s.substring(cur, (cur + size >> 0)));
+			}
+			cur = cur + (size) >> 0;
+			i = i + (1) >> 0;
+		}
+		if (cur < s.length) {
+			((i < 0 || i >= a.$length) ? $throwRuntimeError("index out of range") : a.$array[a.$offset + i] = s.substring(cur));
+		}
+		return a;
+	};
 	Contains = function(s, substr) {
 		var $ptr, s, substr;
 		return Index(s, substr) >= 0;
@@ -7081,6 +7139,40 @@ $packages["strings"] = (function() {
 		return -1;
 	};
 	$pkg.IndexAny = IndexAny;
+	genSplit = function(s, sep, sepSave, n) {
+		var $ptr, a, c, i, n, na, s, sep, sepSave, start;
+		if (n === 0) {
+			return sliceType$3.nil;
+		}
+		if (sep === "") {
+			return explode(s, n);
+		}
+		if (n < 0) {
+			n = Count(s, sep) + 1 >> 0;
+		}
+		c = sep.charCodeAt(0);
+		start = 0;
+		a = $makeSlice(sliceType$3, n);
+		na = 0;
+		i = 0;
+		while (true) {
+			if (!((i + sep.length >> 0) <= s.length && (na + 1 >> 0) < n)) { break; }
+			if ((s.charCodeAt(i) === c) && ((sep.length === 1) || s.substring(i, (i + sep.length >> 0)) === sep)) {
+				((na < 0 || na >= a.$length) ? $throwRuntimeError("index out of range") : a.$array[a.$offset + na] = s.substring(start, (i + sepSave >> 0)));
+				na = na + (1) >> 0;
+				start = i + sep.length >> 0;
+				i = i + ((sep.length - 1 >> 0)) >> 0;
+			}
+			i = i + (1) >> 0;
+		}
+		((na < 0 || na >= a.$length) ? $throwRuntimeError("index out of range") : a.$array[a.$offset + na] = s.substring(start));
+		return $subslice(a, 0, (na + 1 >> 0));
+	};
+	Split = function(s, sep) {
+		var $ptr, s, sep;
+		return genSplit(s, sep, 0, -1);
+	};
+	$pkg.Split = Split;
 	Join = function(a, sep) {
 		var $ptr, _i, _ref, a, b, bp, i, n, s, sep;
 		if (a.$length === 0) {
@@ -13101,7 +13193,7 @@ $packages["reflect"] = (function() {
 	arrayType$1 = $arrayType($UnsafePointer, 100000);
 	structType$7 = $structType([{prop: "ityp", name: "ityp", pkg: "reflect", typ: ptrType$1, tag: ""}, {prop: "typ", name: "typ", pkg: "reflect", typ: ptrType$1, tag: ""}, {prop: "link", name: "link", pkg: "reflect", typ: $UnsafePointer, tag: ""}, {prop: "bad", name: "bad", pkg: "reflect", typ: $Int32, tag: ""}, {prop: "unused", name: "unused", pkg: "reflect", typ: $Int32, tag: ""}, {prop: "fun", name: "fun", pkg: "reflect", typ: arrayType$1, tag: ""}]);
 	ptrType$9 = $ptrType(structType$7);
-	sliceType$9 = $sliceType(sliceType$2);
+	sliceType$9 = $sliceType(sliceType$7);
 	ptrType$10 = $ptrType(method);
 	ptrType$11 = $ptrType(interfaceType);
 	ptrType$12 = $ptrType(imethod);
@@ -13640,9 +13732,9 @@ $packages["reflect"] = (function() {
 		if (isWrapped(v.typ)) {
 			rcvr[0] = new (jsType(v.typ))(rcvr[0]);
 		}
-		fv = $makeFunc((function(fn, rcvr) { return function(arguments$1) {
-			var $ptr, arguments$1;
-			return fn[0].apply(rcvr[0], $externalize(arguments$1, sliceType$7));
+		fv = js.MakeFunc((function(fn, rcvr) { return function(this$1, arguments$1) {
+			var $ptr, arguments$1, this$1;
+			return new $jsObjectPtr(fn[0].apply(rcvr[0], $externalize(arguments$1, sliceType$7)));
 		}; })(fn, rcvr));
 		_r = v.Type().common(); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 		/* */ $s = 2; case 2:
@@ -13713,10 +13805,10 @@ $packages["reflect"] = (function() {
 		mt = p.typ;
 		m.Type = mt;
 		prop = $internalize($methodSet(t.jsType)[i].prop, $String);
-		fn = $makeFunc((function(arguments$1) {
-			var $ptr, arguments$1, rcvr;
+		fn = js.MakeFunc((function(this$1, arguments$1) {
+			var $ptr, arguments$1, rcvr, this$1;
 			rcvr = (0 >= arguments$1.$length ? $throwRuntimeError("index out of range") : arguments$1.$array[arguments$1.$offset + 0]);
-			return rcvr[$externalize(prop, $String)].apply(rcvr, $externalize($subslice(arguments$1, 1), sliceType$7));
+			return new $jsObjectPtr(rcvr[$externalize(prop, $String)].apply(rcvr, $externalize($subslice(arguments$1, 1), sliceType$7)));
 		}));
 		m.Func = new Value.ptr(mt, fn, fl);
 		m.Index = i;
@@ -14111,22 +14203,22 @@ $packages["reflect"] = (function() {
 				if (i[0] < 0 || i[0] > (tt.len >> 0)) {
 					$panic(new $String("reflect: array index out of range"));
 				}
-				typ$1[0] = tt.elem;
+				typ[0] = tt.elem;
 				fl = (v.flag & 480) >>> 0;
-				fl = (fl | ((typ$1[0].Kind() >>> 0))) >>> 0;
-				a[0] = v.ptr;
-				/* */ if (!((((fl & 128) >>> 0) === 0)) && !((typ$1[0].Kind() === 17)) && !((typ$1[0].Kind() === 25))) { $s = 7; continue; }
+				fl = (fl | ((typ[0].Kind() >>> 0))) >>> 0;
+				a$1[0] = v.ptr;
+				/* */ if (!((((fl & 128) >>> 0) === 0)) && !((typ[0].Kind() === 17)) && !((typ[0].Kind() === 25))) { $s = 7; continue; }
 				/* */ $s = 8; continue;
-				/* if (!((((fl & 128) >>> 0) === 0)) && !((typ$1[0].Kind() === 17)) && !((typ$1[0].Kind() === 25))) { */ case 7:
-					return new Value.ptr(typ$1[0], new (jsType(PtrTo(typ$1[0])))((function(a, a$1, c, i, typ, typ$1) { return function() {
+				/* if (!((((fl & 128) >>> 0) === 0)) && !((typ[0].Kind() === 17)) && !((typ[0].Kind() === 25))) { */ case 7:
+					return new Value.ptr(typ[0], new (jsType(PtrTo(typ[0])))((function(a, a$1, c, i, typ, typ$1) { return function() {
 						var $ptr;
-						return wrapJsObject(typ$1[0], a[0][i[0]]);
+						return wrapJsObject(typ[0], a$1[0][i[0]]);
 					}; })(a, a$1, c, i, typ, typ$1), (function(a, a$1, c, i, typ, typ$1) { return function(x) {
 						var $ptr, x;
-						a[0][i[0]] = unwrapJsObject(typ$1[0], x);
+						a$1[0][i[0]] = unwrapJsObject(typ[0], x);
 					}; })(a, a$1, c, i, typ, typ$1)), fl);
 				/* } */ case 8:
-				_r = makeValue(typ$1[0], wrapJsObject(typ$1[0], a[0][i[0]]), fl); /* */ $s = 9; case 9: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+				_r = makeValue(typ[0], wrapJsObject(typ[0], a$1[0][i[0]]), fl); /* */ $s = 9; case 9: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 				/* */ $s = 10; case 10:
 				return _r;
 			/* } else if (_13 === (23)) { */ case 3:
@@ -14135,23 +14227,23 @@ $packages["reflect"] = (function() {
 					$panic(new $String("reflect: slice index out of range"));
 				}
 				tt$1 = v.typ.kindType;
-				typ[0] = tt$1.elem;
+				typ$1[0] = tt$1.elem;
 				fl$1 = (384 | ((v.flag & 96) >>> 0)) >>> 0;
-				fl$1 = (fl$1 | ((typ[0].Kind() >>> 0))) >>> 0;
+				fl$1 = (fl$1 | ((typ$1[0].Kind() >>> 0))) >>> 0;
 				i[0] = i[0] + (($parseInt(s.$offset) >> 0)) >> 0;
-				a$1[0] = s.$array;
-				/* */ if (!((((fl$1 & 128) >>> 0) === 0)) && !((typ[0].Kind() === 17)) && !((typ[0].Kind() === 25))) { $s = 11; continue; }
+				a[0] = s.$array;
+				/* */ if (!((((fl$1 & 128) >>> 0) === 0)) && !((typ$1[0].Kind() === 17)) && !((typ$1[0].Kind() === 25))) { $s = 11; continue; }
 				/* */ $s = 12; continue;
-				/* if (!((((fl$1 & 128) >>> 0) === 0)) && !((typ[0].Kind() === 17)) && !((typ[0].Kind() === 25))) { */ case 11:
-					return new Value.ptr(typ[0], new (jsType(PtrTo(typ[0])))((function(a, a$1, c, i, typ, typ$1) { return function() {
+				/* if (!((((fl$1 & 128) >>> 0) === 0)) && !((typ$1[0].Kind() === 17)) && !((typ$1[0].Kind() === 25))) { */ case 11:
+					return new Value.ptr(typ$1[0], new (jsType(PtrTo(typ$1[0])))((function(a, a$1, c, i, typ, typ$1) { return function() {
 						var $ptr;
-						return wrapJsObject(typ[0], a$1[0][i[0]]);
+						return wrapJsObject(typ$1[0], a[0][i[0]]);
 					}; })(a, a$1, c, i, typ, typ$1), (function(a, a$1, c, i, typ, typ$1) { return function(x) {
 						var $ptr, x;
-						a$1[0][i[0]] = unwrapJsObject(typ[0], x);
+						a[0][i[0]] = unwrapJsObject(typ$1[0], x);
 					}; })(a, a$1, c, i, typ, typ$1)), fl$1);
 				/* } */ case 12:
-				_r$1 = makeValue(typ[0], wrapJsObject(typ[0], a$1[0][i[0]]), fl$1); /* */ $s = 13; case 13: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+				_r$1 = makeValue(typ$1[0], wrapJsObject(typ$1[0], a[0][i[0]]), fl$1); /* */ $s = 13; case 13: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
 				/* */ $s = 14; case 14:
 				return _r$1;
 			/* } else if (_13 === (24)) { */ case 4:
@@ -14430,9 +14522,9 @@ $packages["reflect"] = (function() {
 		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _tmp = $f._tmp; _tmp$1 = $f._tmp$1; _tmp$2 = $f._tmp$2; _tmp$3 = $f._tmp$3; ch = $f.ch; comms = $f.comms; nb = $f.nb; received = $f.received; recvRes = $f.recvRes; selectRes = $f.selectRes; selected = $f.selected; t = $f.t; val = $f.val; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		selected = false;
 		received = false;
-		comms = new sliceType$9([new sliceType$2([new $jsObjectPtr(ch)])]);
+		comms = new sliceType$9([new sliceType$7([ch])]);
 		if (nb) {
-			comms = $append(comms, new sliceType$2([]));
+			comms = $append(comms, new sliceType$7([]));
 		}
 		_r = selectHelper(new sliceType$2([comms])); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 		selectRes = _r;
@@ -14455,9 +14547,9 @@ $packages["reflect"] = (function() {
 	chansend = function(t, ch, val, nb) {
 		var $ptr, _r, ch, comms, nb, selectRes, t, val, $s, $r;
 		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; ch = $f.ch; comms = $f.comms; nb = $f.nb; selectRes = $f.selectRes; t = $f.t; val = $f.val; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		comms = new sliceType$9([new sliceType$2([new $jsObjectPtr(ch), new $jsObjectPtr(val.$get())])]);
+		comms = new sliceType$9([new sliceType$7([ch, val.$get()])]);
 		if (nb) {
-			comms = $append(comms, new sliceType$2([]));
+			comms = $append(comms, new sliceType$7([]));
 		}
 		_r = selectHelper(new sliceType$2([comms])); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 		selectRes = _r;
@@ -24580,6 +24672,1067 @@ $packages["sort"] = (function() {
 	$pkg.$init = $init;
 	return $pkg;
 })();
+$packages["net/url"] = (function() {
+	var $pkg = {}, $init, bytes, errors, fmt, sort, strconv, strings, Error, timeout, temporary, EscapeError, InvalidHostError, URL, Userinfo, Values, sliceType, ptrType, ptrType$1, sliceType$1, arrayType, arrayType$1, sliceType$2, ptrType$2, ishex, unhex, shouldEscape, QueryUnescape, unescape, QueryEscape, escape, User, UserPassword, getscheme, split, Parse, parse, parseAuthority, parseHost, validEncodedPath, validOptionalPort, ParseQuery, parseQuery, resolvePath;
+	bytes = $packages["bytes"];
+	errors = $packages["errors"];
+	fmt = $packages["fmt"];
+	sort = $packages["sort"];
+	strconv = $packages["strconv"];
+	strings = $packages["strings"];
+	Error = $pkg.Error = $newType(0, $kindStruct, "url.Error", "Error", "net/url", function(Op_, URL_, Err_) {
+		this.$val = this;
+		if (arguments.length === 0) {
+			this.Op = "";
+			this.URL = "";
+			this.Err = $ifaceNil;
+			return;
+		}
+		this.Op = Op_;
+		this.URL = URL_;
+		this.Err = Err_;
+	});
+	timeout = $pkg.timeout = $newType(8, $kindInterface, "url.timeout", "timeout", "net/url", null);
+	temporary = $pkg.temporary = $newType(8, $kindInterface, "url.temporary", "temporary", "net/url", null);
+	EscapeError = $pkg.EscapeError = $newType(8, $kindString, "url.EscapeError", "EscapeError", "net/url", null);
+	InvalidHostError = $pkg.InvalidHostError = $newType(8, $kindString, "url.InvalidHostError", "InvalidHostError", "net/url", null);
+	URL = $pkg.URL = $newType(0, $kindStruct, "url.URL", "URL", "net/url", function(Scheme_, Opaque_, User_, Host_, Path_, RawPath_, RawQuery_, Fragment_) {
+		this.$val = this;
+		if (arguments.length === 0) {
+			this.Scheme = "";
+			this.Opaque = "";
+			this.User = ptrType$1.nil;
+			this.Host = "";
+			this.Path = "";
+			this.RawPath = "";
+			this.RawQuery = "";
+			this.Fragment = "";
+			return;
+		}
+		this.Scheme = Scheme_;
+		this.Opaque = Opaque_;
+		this.User = User_;
+		this.Host = Host_;
+		this.Path = Path_;
+		this.RawPath = RawPath_;
+		this.RawQuery = RawQuery_;
+		this.Fragment = Fragment_;
+	});
+	Userinfo = $pkg.Userinfo = $newType(0, $kindStruct, "url.Userinfo", "Userinfo", "net/url", function(username_, password_, passwordSet_) {
+		this.$val = this;
+		if (arguments.length === 0) {
+			this.username = "";
+			this.password = "";
+			this.passwordSet = false;
+			return;
+		}
+		this.username = username_;
+		this.password = password_;
+		this.passwordSet = passwordSet_;
+	});
+	Values = $pkg.Values = $newType(4, $kindMap, "url.Values", "Values", "net/url", null);
+	sliceType = $sliceType($Uint8);
+	ptrType = $ptrType(URL);
+	ptrType$1 = $ptrType(Userinfo);
+	sliceType$1 = $sliceType($emptyInterface);
+	arrayType = $arrayType($Uint8, 4);
+	arrayType$1 = $arrayType($Uint8, 64);
+	sliceType$2 = $sliceType($String);
+	ptrType$2 = $ptrType(Error);
+	Error.ptr.prototype.Error = function() {
+		var $ptr, _r, e, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; e = $f.e; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		e = this;
+		_r = e.Err.Error(); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		/* */ $s = 2; case 2:
+		return e.Op + " " + e.URL + ": " + _r;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Error.ptr.prototype.Error }; } $f.$ptr = $ptr; $f._r = _r; $f.e = e; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	Error.prototype.Error = function() { return this.$val.Error(); };
+	Error.ptr.prototype.Timeout = function() {
+		var $ptr, _r, _tuple, _v, e, ok, t, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _tuple = $f._tuple; _v = $f._v; e = $f.e; ok = $f.ok; t = $f.t; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		e = this;
+		_tuple = $assertType(e.Err, timeout, true);
+		t = _tuple[0];
+		ok = _tuple[1];
+		if (!(ok)) { _v = false; $s = 1; continue s; }
+		_r = t.Timeout(); /* */ $s = 2; case 2: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		_v = _r; case 1:
+		/* */ $s = 3; case 3:
+		return _v;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Error.ptr.prototype.Timeout }; } $f.$ptr = $ptr; $f._r = _r; $f._tuple = _tuple; $f._v = _v; $f.e = e; $f.ok = ok; $f.t = t; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	Error.prototype.Timeout = function() { return this.$val.Timeout(); };
+	Error.ptr.prototype.Temporary = function() {
+		var $ptr, _r, _tuple, _v, e, ok, t, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _tuple = $f._tuple; _v = $f._v; e = $f.e; ok = $f.ok; t = $f.t; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		e = this;
+		_tuple = $assertType(e.Err, temporary, true);
+		t = _tuple[0];
+		ok = _tuple[1];
+		if (!(ok)) { _v = false; $s = 1; continue s; }
+		_r = t.Temporary(); /* */ $s = 2; case 2: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		_v = _r; case 1:
+		/* */ $s = 3; case 3:
+		return _v;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Error.ptr.prototype.Temporary }; } $f.$ptr = $ptr; $f._r = _r; $f._tuple = _tuple; $f._v = _v; $f.e = e; $f.ok = ok; $f.t = t; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	Error.prototype.Temporary = function() { return this.$val.Temporary(); };
+	ishex = function(c) {
+		var $ptr, c;
+		if (48 <= c && c <= 57) {
+			return true;
+		} else if (97 <= c && c <= 102) {
+			return true;
+		} else if (65 <= c && c <= 70) {
+			return true;
+		}
+		return false;
+	};
+	unhex = function(c) {
+		var $ptr, c;
+		if (48 <= c && c <= 57) {
+			return c - 48 << 24 >>> 24;
+		} else if (97 <= c && c <= 102) {
+			return (c - 97 << 24 >>> 24) + 10 << 24 >>> 24;
+		} else if (65 <= c && c <= 70) {
+			return (c - 65 << 24 >>> 24) + 10 << 24 >>> 24;
+		}
+		return 0;
+	};
+	EscapeError.prototype.Error = function() {
+		var $ptr, e;
+		e = this.$val;
+		return "invalid URL escape " + strconv.Quote(e);
+	};
+	$ptrType(EscapeError).prototype.Error = function() { return new EscapeError(this.$get()).Error(); };
+	InvalidHostError.prototype.Error = function() {
+		var $ptr, e;
+		e = this.$val;
+		return "invalid character " + strconv.Quote(e) + " in host name";
+	};
+	$ptrType(InvalidHostError).prototype.Error = function() { return new InvalidHostError(this.$get()).Error(); };
+	shouldEscape = function(c, mode) {
+		var $ptr, _1, _2, _3, c, mode;
+		if (65 <= c && c <= 90 || 97 <= c && c <= 122 || 48 <= c && c <= 57) {
+			return false;
+		}
+		if ((mode === 2) || (mode === 3)) {
+			_1 = c;
+			if ((_1 === (33)) || (_1 === (36)) || (_1 === (38)) || (_1 === (39)) || (_1 === (40)) || (_1 === (41)) || (_1 === (42)) || (_1 === (43)) || (_1 === (44)) || (_1 === (59)) || (_1 === (61)) || (_1 === (58)) || (_1 === (91)) || (_1 === (93)) || (_1 === (60)) || (_1 === (62)) || (_1 === (34))) {
+				return false;
+			}
+		}
+		_2 = c;
+		if ((_2 === (45)) || (_2 === (95)) || (_2 === (46)) || (_2 === (126))) {
+			return false;
+		} else if ((_2 === (36)) || (_2 === (38)) || (_2 === (43)) || (_2 === (44)) || (_2 === (47)) || (_2 === (58)) || (_2 === (59)) || (_2 === (61)) || (_2 === (63)) || (_2 === (64))) {
+			_3 = mode;
+			if (_3 === (1)) {
+				return c === 63;
+			} else if (_3 === (4)) {
+				return (c === 64) || (c === 47) || (c === 63) || (c === 58);
+			} else if (_3 === (5)) {
+				return true;
+			} else if (_3 === (6)) {
+				return false;
+			}
+		}
+		return true;
+	};
+	QueryUnescape = function(s) {
+		var $ptr, s;
+		return unescape(s, 5);
+	};
+	$pkg.QueryUnescape = QueryUnescape;
+	unescape = function(s, mode) {
+		var $ptr, _4, _5, hasPlus, i, i$1, j, mode, n, s, t, v;
+		n = 0;
+		hasPlus = false;
+		i = 0;
+		while (true) {
+			if (!(i < s.length)) { break; }
+			_4 = s.charCodeAt(i);
+			if (_4 === (37)) {
+				n = n + (1) >> 0;
+				if ((i + 2 >> 0) >= s.length || !ishex(s.charCodeAt((i + 1 >> 0))) || !ishex(s.charCodeAt((i + 2 >> 0)))) {
+					s = s.substring(i);
+					if (s.length > 3) {
+						s = s.substring(0, 3);
+					}
+					return ["", new EscapeError(s)];
+				}
+				if ((mode === 2) && unhex(s.charCodeAt((i + 1 >> 0))) < 8 && !(s.substring(i, (i + 3 >> 0)) === "%25")) {
+					return ["", new EscapeError(s.substring(i, (i + 3 >> 0)))];
+				}
+				if (mode === 3) {
+					v = ((unhex(s.charCodeAt((i + 1 >> 0))) << 4 << 24 >>> 24) | unhex(s.charCodeAt((i + 2 >> 0)))) >>> 0;
+					if (!(s.substring(i, (i + 3 >> 0)) === "%25") && !((v === 32)) && shouldEscape(v, 2)) {
+						return ["", new EscapeError(s.substring(i, (i + 3 >> 0)))];
+					}
+				}
+				i = i + (3) >> 0;
+			} else if (_4 === (43)) {
+				hasPlus = mode === 5;
+				i = i + (1) >> 0;
+			} else {
+				if (((mode === 2) || (mode === 3)) && s.charCodeAt(i) < 128 && shouldEscape(s.charCodeAt(i), mode)) {
+					return ["", new InvalidHostError(s.substring(i, (i + 1 >> 0)))];
+				}
+				i = i + (1) >> 0;
+			}
+		}
+		if ((n === 0) && !hasPlus) {
+			return [s, $ifaceNil];
+		}
+		t = $makeSlice(sliceType, (s.length - ($imul(2, n)) >> 0));
+		j = 0;
+		i$1 = 0;
+		while (true) {
+			if (!(i$1 < s.length)) { break; }
+			_5 = s.charCodeAt(i$1);
+			if (_5 === (37)) {
+				((j < 0 || j >= t.$length) ? $throwRuntimeError("index out of range") : t.$array[t.$offset + j] = (((unhex(s.charCodeAt((i$1 + 1 >> 0))) << 4 << 24 >>> 24) | unhex(s.charCodeAt((i$1 + 2 >> 0)))) >>> 0));
+				j = j + (1) >> 0;
+				i$1 = i$1 + (3) >> 0;
+			} else if (_5 === (43)) {
+				if (mode === 5) {
+					((j < 0 || j >= t.$length) ? $throwRuntimeError("index out of range") : t.$array[t.$offset + j] = 32);
+				} else {
+					((j < 0 || j >= t.$length) ? $throwRuntimeError("index out of range") : t.$array[t.$offset + j] = 43);
+				}
+				j = j + (1) >> 0;
+				i$1 = i$1 + (1) >> 0;
+			} else {
+				((j < 0 || j >= t.$length) ? $throwRuntimeError("index out of range") : t.$array[t.$offset + j] = s.charCodeAt(i$1));
+				j = j + (1) >> 0;
+				i$1 = i$1 + (1) >> 0;
+			}
+		}
+		return [$bytesToString(t), $ifaceNil];
+	};
+	QueryEscape = function(s) {
+		var $ptr, s;
+		return escape(s, 5);
+	};
+	$pkg.QueryEscape = QueryEscape;
+	escape = function(s, mode) {
+		var $ptr, _tmp, _tmp$1, c, c$1, hexCount, i, i$1, j, mode, s, spaceCount, t, x, x$1;
+		_tmp = 0;
+		_tmp$1 = 0;
+		spaceCount = _tmp;
+		hexCount = _tmp$1;
+		i = 0;
+		while (true) {
+			if (!(i < s.length)) { break; }
+			c = s.charCodeAt(i);
+			if (shouldEscape(c, mode)) {
+				if ((c === 32) && (mode === 5)) {
+					spaceCount = spaceCount + (1) >> 0;
+				} else {
+					hexCount = hexCount + (1) >> 0;
+				}
+			}
+			i = i + (1) >> 0;
+		}
+		if ((spaceCount === 0) && (hexCount === 0)) {
+			return s;
+		}
+		t = $makeSlice(sliceType, (s.length + ($imul(2, hexCount)) >> 0));
+		j = 0;
+		i$1 = 0;
+		while (true) {
+			if (!(i$1 < s.length)) { break; }
+			c$1 = s.charCodeAt(i$1);
+			if ((c$1 === 32) && (mode === 5)) {
+				((j < 0 || j >= t.$length) ? $throwRuntimeError("index out of range") : t.$array[t.$offset + j] = 43);
+				j = j + (1) >> 0;
+			} else if (shouldEscape(c$1, mode)) {
+				((j < 0 || j >= t.$length) ? $throwRuntimeError("index out of range") : t.$array[t.$offset + j] = 37);
+				(x = j + 1 >> 0, ((x < 0 || x >= t.$length) ? $throwRuntimeError("index out of range") : t.$array[t.$offset + x] = "0123456789ABCDEF".charCodeAt((c$1 >>> 4 << 24 >>> 24))));
+				(x$1 = j + 2 >> 0, ((x$1 < 0 || x$1 >= t.$length) ? $throwRuntimeError("index out of range") : t.$array[t.$offset + x$1] = "0123456789ABCDEF".charCodeAt(((c$1 & 15) >>> 0))));
+				j = j + (3) >> 0;
+			} else {
+				((j < 0 || j >= t.$length) ? $throwRuntimeError("index out of range") : t.$array[t.$offset + j] = s.charCodeAt(i$1));
+				j = j + (1) >> 0;
+			}
+			i$1 = i$1 + (1) >> 0;
+		}
+		return $bytesToString(t);
+	};
+	User = function(username) {
+		var $ptr, username;
+		return new Userinfo.ptr(username, "", false);
+	};
+	$pkg.User = User;
+	UserPassword = function(username, password) {
+		var $ptr, password, username;
+		return new Userinfo.ptr(username, password, true);
+	};
+	$pkg.UserPassword = UserPassword;
+	Userinfo.ptr.prototype.Username = function() {
+		var $ptr, u;
+		u = this;
+		return u.username;
+	};
+	Userinfo.prototype.Username = function() { return this.$val.Username(); };
+	Userinfo.ptr.prototype.Password = function() {
+		var $ptr, u;
+		u = this;
+		if (u.passwordSet) {
+			return [u.password, true];
+		}
+		return ["", false];
+	};
+	Userinfo.prototype.Password = function() { return this.$val.Password(); };
+	Userinfo.ptr.prototype.String = function() {
+		var $ptr, s, u;
+		u = this;
+		s = escape(u.username, 4);
+		if (u.passwordSet) {
+			s = s + (":" + escape(u.password, 4));
+		}
+		return s;
+	};
+	Userinfo.prototype.String = function() { return this.$val.String(); };
+	getscheme = function(rawurl) {
+		var $ptr, _tmp, _tmp$1, _tmp$10, _tmp$11, _tmp$12, _tmp$13, _tmp$14, _tmp$2, _tmp$3, _tmp$4, _tmp$5, _tmp$6, _tmp$7, _tmp$8, _tmp$9, c, err, i, path, rawurl, scheme;
+		scheme = "";
+		path = "";
+		err = $ifaceNil;
+		i = 0;
+		while (true) {
+			if (!(i < rawurl.length)) { break; }
+			c = rawurl.charCodeAt(i);
+			if (97 <= c && c <= 122 || 65 <= c && c <= 90) {
+			} else if (48 <= c && c <= 57 || (c === 43) || (c === 45) || (c === 46)) {
+				if (i === 0) {
+					_tmp = "";
+					_tmp$1 = rawurl;
+					_tmp$2 = $ifaceNil;
+					scheme = _tmp;
+					path = _tmp$1;
+					err = _tmp$2;
+					return [scheme, path, err];
+				}
+			} else if ((c === 58)) {
+				if (i === 0) {
+					_tmp$3 = "";
+					_tmp$4 = "";
+					_tmp$5 = errors.New("missing protocol scheme");
+					scheme = _tmp$3;
+					path = _tmp$4;
+					err = _tmp$5;
+					return [scheme, path, err];
+				}
+				_tmp$6 = rawurl.substring(0, i);
+				_tmp$7 = rawurl.substring((i + 1 >> 0));
+				_tmp$8 = $ifaceNil;
+				scheme = _tmp$6;
+				path = _tmp$7;
+				err = _tmp$8;
+				return [scheme, path, err];
+			} else {
+				_tmp$9 = "";
+				_tmp$10 = rawurl;
+				_tmp$11 = $ifaceNil;
+				scheme = _tmp$9;
+				path = _tmp$10;
+				err = _tmp$11;
+				return [scheme, path, err];
+			}
+			i = i + (1) >> 0;
+		}
+		_tmp$12 = "";
+		_tmp$13 = rawurl;
+		_tmp$14 = $ifaceNil;
+		scheme = _tmp$12;
+		path = _tmp$13;
+		err = _tmp$14;
+		return [scheme, path, err];
+	};
+	split = function(s, c, cutc) {
+		var $ptr, c, cutc, i, s;
+		i = strings.Index(s, c);
+		if (i < 0) {
+			return [s, ""];
+		}
+		if (cutc) {
+			return [s.substring(0, i), s.substring((i + c.length >> 0))];
+		}
+		return [s.substring(0, i), s.substring(i)];
+	};
+	Parse = function(rawurl) {
+		var $ptr, _r, _tmp, _tmp$1, _tmp$2, _tmp$3, _tmp$4, _tmp$5, _tmp$6, _tmp$7, _tuple, _tuple$1, _tuple$2, err, frag, rawurl, u, url, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _tmp = $f._tmp; _tmp$1 = $f._tmp$1; _tmp$2 = $f._tmp$2; _tmp$3 = $f._tmp$3; _tmp$4 = $f._tmp$4; _tmp$5 = $f._tmp$5; _tmp$6 = $f._tmp$6; _tmp$7 = $f._tmp$7; _tuple = $f._tuple; _tuple$1 = $f._tuple$1; _tuple$2 = $f._tuple$2; err = $f.err; frag = $f.frag; rawurl = $f.rawurl; u = $f.u; url = $f.url; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		url = ptrType.nil;
+		err = $ifaceNil;
+		_tuple = split(rawurl, "#", true);
+		u = _tuple[0];
+		frag = _tuple[1];
+		_r = parse(u, false); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		_tuple$1 = _r;
+		url = _tuple$1[0];
+		err = _tuple$1[1];
+		if (!($interfaceIsEqual(err, $ifaceNil))) {
+			_tmp = ptrType.nil;
+			_tmp$1 = err;
+			url = _tmp;
+			err = _tmp$1;
+			return [url, err];
+		}
+		if (frag === "") {
+			_tmp$2 = url;
+			_tmp$3 = $ifaceNil;
+			url = _tmp$2;
+			err = _tmp$3;
+			return [url, err];
+		}
+		_tuple$2 = unescape(frag, 6);
+		url.Fragment = _tuple$2[0];
+		err = _tuple$2[1];
+		if (!($interfaceIsEqual(err, $ifaceNil))) {
+			_tmp$4 = ptrType.nil;
+			_tmp$5 = new Error.ptr("parse", rawurl, err);
+			url = _tmp$4;
+			err = _tmp$5;
+			return [url, err];
+		}
+		_tmp$6 = url;
+		_tmp$7 = $ifaceNil;
+		url = _tmp$6;
+		err = _tmp$7;
+		return [url, err];
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Parse }; } $f.$ptr = $ptr; $f._r = _r; $f._tmp = _tmp; $f._tmp$1 = _tmp$1; $f._tmp$2 = _tmp$2; $f._tmp$3 = _tmp$3; $f._tmp$4 = _tmp$4; $f._tmp$5 = _tmp$5; $f._tmp$6 = _tmp$6; $f._tmp$7 = _tmp$7; $f._tuple = _tuple; $f._tuple$1 = _tuple$1; $f._tuple$2 = _tuple$2; $f.err = err; $f.frag = frag; $f.rawurl = rawurl; $f.u = u; $f.url = url; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.Parse = Parse;
+	parse = function(rawurl, viaRequest) {
+		var $ptr, _r, _r$1, _tmp, _tmp$1, _tmp$2, _tmp$3, _tmp$4, _tmp$5, _tuple, _tuple$1, _tuple$2, _tuple$3, _tuple$4, authority, err, rawurl, rest, url, viaRequest, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _r$1 = $f._r$1; _tmp = $f._tmp; _tmp$1 = $f._tmp$1; _tmp$2 = $f._tmp$2; _tmp$3 = $f._tmp$3; _tmp$4 = $f._tmp$4; _tmp$5 = $f._tmp$5; _tuple = $f._tuple; _tuple$1 = $f._tuple$1; _tuple$2 = $f._tuple$2; _tuple$3 = $f._tuple$3; _tuple$4 = $f._tuple$4; authority = $f.authority; err = $f.err; rawurl = $f.rawurl; rest = $f.rest; url = $f.url; viaRequest = $f.viaRequest; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		url = ptrType.nil;
+		err = $ifaceNil;
+		rest = "";
+		/* */ if (rawurl === "" && viaRequest) { $s = 1; continue; }
+		/* */ $s = 2; continue;
+		/* if (rawurl === "" && viaRequest) { */ case 1:
+			err = errors.New("empty url");
+			/* goto Error */ $s = 3; continue;
+		/* } */ case 2:
+		url = new URL.ptr("", "", ptrType$1.nil, "", "", "", "", "");
+		if (rawurl === "*") {
+			url.Path = "*";
+			return [url, err];
+		}
+		_tuple = getscheme(rawurl);
+		url.Scheme = _tuple[0];
+		rest = _tuple[1];
+		err = _tuple[2];
+		/* */ if (!($interfaceIsEqual(err, $ifaceNil))) { $s = 4; continue; }
+		/* */ $s = 5; continue;
+		/* if (!($interfaceIsEqual(err, $ifaceNil))) { */ case 4:
+			/* goto Error */ $s = 3; continue;
+		/* } */ case 5:
+		_r = strings.ToLower(url.Scheme); /* */ $s = 6; case 6: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		url.Scheme = _r;
+		_tuple$1 = split(rest, "?", true);
+		rest = _tuple$1[0];
+		url.RawQuery = _tuple$1[1];
+		/* */ if (!strings.HasPrefix(rest, "/")) { $s = 7; continue; }
+		/* */ $s = 8; continue;
+		/* if (!strings.HasPrefix(rest, "/")) { */ case 7:
+			if (!(url.Scheme === "")) {
+				url.Opaque = rest;
+				_tmp = url;
+				_tmp$1 = $ifaceNil;
+				url = _tmp;
+				err = _tmp$1;
+				return [url, err];
+			}
+			/* */ if (viaRequest) { $s = 9; continue; }
+			/* */ $s = 10; continue;
+			/* if (viaRequest) { */ case 9:
+				err = errors.New("invalid URI for request");
+				/* goto Error */ $s = 3; continue;
+			/* } */ case 10:
+		/* } */ case 8:
+		/* */ if ((!(url.Scheme === "") || !viaRequest && !strings.HasPrefix(rest, "///")) && strings.HasPrefix(rest, "//")) { $s = 11; continue; }
+		/* */ $s = 12; continue;
+		/* if ((!(url.Scheme === "") || !viaRequest && !strings.HasPrefix(rest, "///")) && strings.HasPrefix(rest, "//")) { */ case 11:
+			authority = "";
+			_tuple$2 = split(rest.substring(2), "/", false);
+			authority = _tuple$2[0];
+			rest = _tuple$2[1];
+			_r$1 = parseAuthority(authority); /* */ $s = 13; case 13: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+			_tuple$3 = _r$1;
+			url.User = _tuple$3[0];
+			url.Host = _tuple$3[1];
+			err = _tuple$3[2];
+			/* */ if (!($interfaceIsEqual(err, $ifaceNil))) { $s = 14; continue; }
+			/* */ $s = 15; continue;
+			/* if (!($interfaceIsEqual(err, $ifaceNil))) { */ case 14:
+				/* goto Error */ $s = 3; continue;
+			/* } */ case 15:
+		/* } */ case 12:
+		_tuple$4 = unescape(rest, 1);
+		url.Path = _tuple$4[0];
+		err = _tuple$4[1];
+		/* */ if (!($interfaceIsEqual(err, $ifaceNil))) { $s = 16; continue; }
+		/* */ $s = 17; continue;
+		/* if (!($interfaceIsEqual(err, $ifaceNil))) { */ case 16:
+			/* goto Error */ $s = 3; continue;
+		/* } */ case 17:
+		if (!(url.EscapedPath() === rest) && validEncodedPath(rest)) {
+			url.RawPath = rest;
+		}
+		_tmp$2 = url;
+		_tmp$3 = $ifaceNil;
+		url = _tmp$2;
+		err = _tmp$3;
+		return [url, err];
+		/* Error: */ case 3:
+		_tmp$4 = ptrType.nil;
+		_tmp$5 = new Error.ptr("parse", rawurl, err);
+		url = _tmp$4;
+		err = _tmp$5;
+		return [url, err];
+		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: parse }; } $f.$ptr = $ptr; $f._r = _r; $f._r$1 = _r$1; $f._tmp = _tmp; $f._tmp$1 = _tmp$1; $f._tmp$2 = _tmp$2; $f._tmp$3 = _tmp$3; $f._tmp$4 = _tmp$4; $f._tmp$5 = _tmp$5; $f._tuple = _tuple; $f._tuple$1 = _tuple$1; $f._tuple$2 = _tuple$2; $f._tuple$3 = _tuple$3; $f._tuple$4 = _tuple$4; $f.authority = authority; $f.err = err; $f.rawurl = rawurl; $f.rest = rest; $f.url = url; $f.viaRequest = viaRequest; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	parseAuthority = function(authority) {
+		var $ptr, _r, _r$1, _tmp, _tmp$1, _tmp$10, _tmp$11, _tmp$12, _tmp$13, _tmp$14, _tmp$15, _tmp$16, _tmp$17, _tmp$2, _tmp$3, _tmp$4, _tmp$5, _tmp$6, _tmp$7, _tmp$8, _tmp$9, _tuple, _tuple$1, _tuple$2, _tuple$3, _tuple$4, _tuple$5, authority, err, host, i, password, user, userinfo, username, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _r$1 = $f._r$1; _tmp = $f._tmp; _tmp$1 = $f._tmp$1; _tmp$10 = $f._tmp$10; _tmp$11 = $f._tmp$11; _tmp$12 = $f._tmp$12; _tmp$13 = $f._tmp$13; _tmp$14 = $f._tmp$14; _tmp$15 = $f._tmp$15; _tmp$16 = $f._tmp$16; _tmp$17 = $f._tmp$17; _tmp$2 = $f._tmp$2; _tmp$3 = $f._tmp$3; _tmp$4 = $f._tmp$4; _tmp$5 = $f._tmp$5; _tmp$6 = $f._tmp$6; _tmp$7 = $f._tmp$7; _tmp$8 = $f._tmp$8; _tmp$9 = $f._tmp$9; _tuple = $f._tuple; _tuple$1 = $f._tuple$1; _tuple$2 = $f._tuple$2; _tuple$3 = $f._tuple$3; _tuple$4 = $f._tuple$4; _tuple$5 = $f._tuple$5; authority = $f.authority; err = $f.err; host = $f.host; i = $f.i; password = $f.password; user = $f.user; userinfo = $f.userinfo; username = $f.username; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		user = ptrType$1.nil;
+		host = "";
+		err = $ifaceNil;
+		i = strings.LastIndex(authority, "@");
+		/* */ if (i < 0) { $s = 1; continue; }
+		/* */ $s = 2; continue;
+		/* if (i < 0) { */ case 1:
+			_r = parseHost(authority); /* */ $s = 4; case 4: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+			_tuple = _r;
+			host = _tuple[0];
+			err = _tuple[1];
+			$s = 3; continue;
+		/* } else { */ case 2:
+			_r$1 = parseHost(authority.substring((i + 1 >> 0))); /* */ $s = 5; case 5: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+			_tuple$1 = _r$1;
+			host = _tuple$1[0];
+			err = _tuple$1[1];
+		/* } */ case 3:
+		if (!($interfaceIsEqual(err, $ifaceNil))) {
+			_tmp = ptrType$1.nil;
+			_tmp$1 = "";
+			_tmp$2 = err;
+			user = _tmp;
+			host = _tmp$1;
+			err = _tmp$2;
+			return [user, host, err];
+		}
+		if (i < 0) {
+			_tmp$3 = ptrType$1.nil;
+			_tmp$4 = host;
+			_tmp$5 = $ifaceNil;
+			user = _tmp$3;
+			host = _tmp$4;
+			err = _tmp$5;
+			return [user, host, err];
+		}
+		userinfo = authority.substring(0, i);
+		if (strings.Index(userinfo, ":") < 0) {
+			_tuple$2 = unescape(userinfo, 4);
+			userinfo = _tuple$2[0];
+			err = _tuple$2[1];
+			if (!($interfaceIsEqual(err, $ifaceNil))) {
+				_tmp$6 = ptrType$1.nil;
+				_tmp$7 = "";
+				_tmp$8 = err;
+				user = _tmp$6;
+				host = _tmp$7;
+				err = _tmp$8;
+				return [user, host, err];
+			}
+			user = User(userinfo);
+		} else {
+			_tuple$3 = split(userinfo, ":", true);
+			username = _tuple$3[0];
+			password = _tuple$3[1];
+			_tuple$4 = unescape(username, 4);
+			username = _tuple$4[0];
+			err = _tuple$4[1];
+			if (!($interfaceIsEqual(err, $ifaceNil))) {
+				_tmp$9 = ptrType$1.nil;
+				_tmp$10 = "";
+				_tmp$11 = err;
+				user = _tmp$9;
+				host = _tmp$10;
+				err = _tmp$11;
+				return [user, host, err];
+			}
+			_tuple$5 = unescape(password, 4);
+			password = _tuple$5[0];
+			err = _tuple$5[1];
+			if (!($interfaceIsEqual(err, $ifaceNil))) {
+				_tmp$12 = ptrType$1.nil;
+				_tmp$13 = "";
+				_tmp$14 = err;
+				user = _tmp$12;
+				host = _tmp$13;
+				err = _tmp$14;
+				return [user, host, err];
+			}
+			user = UserPassword(username, password);
+		}
+		_tmp$15 = user;
+		_tmp$16 = host;
+		_tmp$17 = $ifaceNil;
+		user = _tmp$15;
+		host = _tmp$16;
+		err = _tmp$17;
+		return [user, host, err];
+		/* */ } return; } if ($f === undefined) { $f = { $blk: parseAuthority }; } $f.$ptr = $ptr; $f._r = _r; $f._r$1 = _r$1; $f._tmp = _tmp; $f._tmp$1 = _tmp$1; $f._tmp$10 = _tmp$10; $f._tmp$11 = _tmp$11; $f._tmp$12 = _tmp$12; $f._tmp$13 = _tmp$13; $f._tmp$14 = _tmp$14; $f._tmp$15 = _tmp$15; $f._tmp$16 = _tmp$16; $f._tmp$17 = _tmp$17; $f._tmp$2 = _tmp$2; $f._tmp$3 = _tmp$3; $f._tmp$4 = _tmp$4; $f._tmp$5 = _tmp$5; $f._tmp$6 = _tmp$6; $f._tmp$7 = _tmp$7; $f._tmp$8 = _tmp$8; $f._tmp$9 = _tmp$9; $f._tuple = _tuple; $f._tuple$1 = _tuple$1; $f._tuple$2 = _tuple$2; $f._tuple$3 = _tuple$3; $f._tuple$4 = _tuple$4; $f._tuple$5 = _tuple$5; $f.authority = authority; $f.err = err; $f.host = host; $f.i = i; $f.password = password; $f.user = user; $f.userinfo = userinfo; $f.username = username; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	parseHost = function(host) {
+		var $ptr, _r, _tuple, _tuple$1, _tuple$2, _tuple$3, colonPort, err, err$1, host, host1, host2, host3, i, zone, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _tuple = $f._tuple; _tuple$1 = $f._tuple$1; _tuple$2 = $f._tuple$2; _tuple$3 = $f._tuple$3; colonPort = $f.colonPort; err = $f.err; err$1 = $f.err$1; host = $f.host; host1 = $f.host1; host2 = $f.host2; host3 = $f.host3; i = $f.i; zone = $f.zone; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		/* */ if (strings.HasPrefix(host, "[")) { $s = 1; continue; }
+		/* */ $s = 2; continue;
+		/* if (strings.HasPrefix(host, "[")) { */ case 1:
+			i = strings.LastIndex(host, "]");
+			if (i < 0) {
+				return ["", errors.New("missing ']' in host")];
+			}
+			colonPort = host.substring((i + 1 >> 0));
+			/* */ if (!validOptionalPort(colonPort)) { $s = 3; continue; }
+			/* */ $s = 4; continue;
+			/* if (!validOptionalPort(colonPort)) { */ case 3:
+				_r = fmt.Errorf("invalid port %q after host", new sliceType$1([new $String(colonPort)])); /* */ $s = 5; case 5: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+				/* */ $s = 6; case 6:
+				return ["", _r];
+			/* } */ case 4:
+			zone = strings.Index(host.substring(0, i), "%25");
+			if (zone >= 0) {
+				_tuple = unescape(host.substring(0, zone), 2);
+				host1 = _tuple[0];
+				err = _tuple[1];
+				if (!($interfaceIsEqual(err, $ifaceNil))) {
+					return ["", err];
+				}
+				_tuple$1 = unescape(host.substring(zone, i), 3);
+				host2 = _tuple$1[0];
+				err = _tuple$1[1];
+				if (!($interfaceIsEqual(err, $ifaceNil))) {
+					return ["", err];
+				}
+				_tuple$2 = unescape(host.substring(i), 2);
+				host3 = _tuple$2[0];
+				err = _tuple$2[1];
+				if (!($interfaceIsEqual(err, $ifaceNil))) {
+					return ["", err];
+				}
+				return [host1 + host2 + host3, $ifaceNil];
+			}
+		/* } */ case 2:
+		err$1 = $ifaceNil;
+		_tuple$3 = unescape(host, 2);
+		host = _tuple$3[0];
+		err$1 = _tuple$3[1];
+		if (!($interfaceIsEqual(err$1, $ifaceNil))) {
+			return ["", err$1];
+		}
+		return [host, $ifaceNil];
+		/* */ } return; } if ($f === undefined) { $f = { $blk: parseHost }; } $f.$ptr = $ptr; $f._r = _r; $f._tuple = _tuple; $f._tuple$1 = _tuple$1; $f._tuple$2 = _tuple$2; $f._tuple$3 = _tuple$3; $f.colonPort = colonPort; $f.err = err; $f.err$1 = err$1; $f.host = host; $f.host1 = host1; $f.host2 = host2; $f.host3 = host3; $f.i = i; $f.zone = zone; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	URL.ptr.prototype.EscapedPath = function() {
+		var $ptr, _tuple, err, p, u;
+		u = this;
+		if (!(u.RawPath === "") && validEncodedPath(u.RawPath)) {
+			_tuple = unescape(u.RawPath, 1);
+			p = _tuple[0];
+			err = _tuple[1];
+			if ($interfaceIsEqual(err, $ifaceNil) && p === u.Path) {
+				return u.RawPath;
+			}
+		}
+		if (u.Path === "*") {
+			return "*";
+		}
+		return escape(u.Path, 1);
+	};
+	URL.prototype.EscapedPath = function() { return this.$val.EscapedPath(); };
+	validEncodedPath = function(s) {
+		var $ptr, _6, i, s;
+		i = 0;
+		while (true) {
+			if (!(i < s.length)) { break; }
+			_6 = s.charCodeAt(i);
+			if ((_6 === (33)) || (_6 === (36)) || (_6 === (38)) || (_6 === (39)) || (_6 === (40)) || (_6 === (41)) || (_6 === (42)) || (_6 === (43)) || (_6 === (44)) || (_6 === (59)) || (_6 === (61)) || (_6 === (58)) || (_6 === (64))) {
+			} else if ((_6 === (91)) || (_6 === (93))) {
+			} else if (_6 === (37)) {
+			} else if (shouldEscape(s.charCodeAt(i), 1)) {
+				return false;
+			}
+			i = i + (1) >> 0;
+		}
+		return true;
+	};
+	validOptionalPort = function(port) {
+		var $ptr, _i, _ref, _rune, b, port;
+		if (port === "") {
+			return true;
+		}
+		if (!((port.charCodeAt(0) === 58))) {
+			return false;
+		}
+		_ref = port.substring(1);
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.length)) { break; }
+			_rune = $decodeRune(_ref, _i);
+			b = _rune[0];
+			if (b < 48 || b > 57) {
+				return false;
+			}
+			_i += _rune[1];
+		}
+		return true;
+	};
+	URL.ptr.prototype.String = function() {
+		var $ptr, buf, h, path, u, ui;
+		u = this;
+		buf = new bytes.Buffer.ptr(sliceType.nil, 0, arrayType.zero(), arrayType$1.zero(), 0);
+		if (!(u.Scheme === "")) {
+			buf.WriteString(u.Scheme);
+			buf.WriteByte(58);
+		}
+		if (!(u.Opaque === "")) {
+			buf.WriteString(u.Opaque);
+		} else {
+			if (!(u.Scheme === "") || !(u.Host === "") || !(u.User === ptrType$1.nil)) {
+				buf.WriteString("//");
+				ui = u.User;
+				if (!(ui === ptrType$1.nil)) {
+					buf.WriteString(ui.String());
+					buf.WriteByte(64);
+				}
+				h = u.Host;
+				if (!(h === "")) {
+					buf.WriteString(escape(h, 2));
+				}
+			}
+			path = u.EscapedPath();
+			if (!(path === "") && !((path.charCodeAt(0) === 47)) && !(u.Host === "")) {
+				buf.WriteByte(47);
+			}
+			buf.WriteString(path);
+		}
+		if (!(u.RawQuery === "")) {
+			buf.WriteByte(63);
+			buf.WriteString(u.RawQuery);
+		}
+		if (!(u.Fragment === "")) {
+			buf.WriteByte(35);
+			buf.WriteString(escape(u.Fragment, 6));
+		}
+		return buf.String();
+	};
+	URL.prototype.String = function() { return this.$val.String(); };
+	Values.prototype.Get = function(key) {
+		var $ptr, _entry, _tuple, key, ok, v, vs;
+		v = this.$val;
+		if (v === false) {
+			return "";
+		}
+		_tuple = (_entry = v[$String.keyFor(key)], _entry !== undefined ? [_entry.v, true] : [sliceType$2.nil, false]);
+		vs = _tuple[0];
+		ok = _tuple[1];
+		if (!ok || (vs.$length === 0)) {
+			return "";
+		}
+		return (0 >= vs.$length ? $throwRuntimeError("index out of range") : vs.$array[vs.$offset + 0]);
+	};
+	$ptrType(Values).prototype.Get = function(key) { return new Values(this.$get()).Get(key); };
+	Values.prototype.Set = function(key, value) {
+		var $ptr, _key, key, v, value;
+		v = this.$val;
+		_key = key; (v || $throwRuntimeError("assignment to entry in nil map"))[$String.keyFor(_key)] = { k: _key, v: new sliceType$2([value]) };
+	};
+	$ptrType(Values).prototype.Set = function(key, value) { return new Values(this.$get()).Set(key, value); };
+	Values.prototype.Add = function(key, value) {
+		var $ptr, _entry, _key, key, v, value;
+		v = this.$val;
+		_key = key; (v || $throwRuntimeError("assignment to entry in nil map"))[$String.keyFor(_key)] = { k: _key, v: $append((_entry = v[$String.keyFor(key)], _entry !== undefined ? _entry.v : sliceType$2.nil), value) };
+	};
+	$ptrType(Values).prototype.Add = function(key, value) { return new Values(this.$get()).Add(key, value); };
+	Values.prototype.Del = function(key) {
+		var $ptr, key, v;
+		v = this.$val;
+		delete v[$String.keyFor(key)];
+	};
+	$ptrType(Values).prototype.Del = function(key) { return new Values(this.$get()).Del(key); };
+	ParseQuery = function(query) {
+		var $ptr, err, m, query;
+		m = false;
+		err = $ifaceNil;
+		m = {};
+		err = parseQuery(m, query);
+		return [m, err];
+	};
+	$pkg.ParseQuery = ParseQuery;
+	parseQuery = function(m, query) {
+		var $ptr, _entry, _key, _tmp, _tmp$1, _tmp$2, _tmp$3, _tuple, _tuple$1, err, err1, i, i$1, key, m, query, value;
+		err = $ifaceNil;
+		while (true) {
+			if (!(!(query === ""))) { break; }
+			key = query;
+			i = strings.IndexAny(key, "&;");
+			if (i >= 0) {
+				_tmp = key.substring(0, i);
+				_tmp$1 = key.substring((i + 1 >> 0));
+				key = _tmp;
+				query = _tmp$1;
+			} else {
+				query = "";
+			}
+			if (key === "") {
+				continue;
+			}
+			value = "";
+			i$1 = strings.Index(key, "=");
+			if (i$1 >= 0) {
+				_tmp$2 = key.substring(0, i$1);
+				_tmp$3 = key.substring((i$1 + 1 >> 0));
+				key = _tmp$2;
+				value = _tmp$3;
+			}
+			_tuple = QueryUnescape(key);
+			key = _tuple[0];
+			err1 = _tuple[1];
+			if (!($interfaceIsEqual(err1, $ifaceNil))) {
+				if ($interfaceIsEqual(err, $ifaceNil)) {
+					err = err1;
+				}
+				continue;
+			}
+			_tuple$1 = QueryUnescape(value);
+			value = _tuple$1[0];
+			err1 = _tuple$1[1];
+			if (!($interfaceIsEqual(err1, $ifaceNil))) {
+				if ($interfaceIsEqual(err, $ifaceNil)) {
+					err = err1;
+				}
+				continue;
+			}
+			_key = key; (m || $throwRuntimeError("assignment to entry in nil map"))[$String.keyFor(_key)] = { k: _key, v: $append((_entry = m[$String.keyFor(key)], _entry !== undefined ? _entry.v : sliceType$2.nil), value) };
+		}
+		err = err;
+		return err;
+	};
+	Values.prototype.Encode = function() {
+		var $ptr, _entry, _entry$1, _i, _i$1, _i$2, _keys, _ref, _ref$1, _ref$2, buf, k, k$1, keys, prefix, v, v$1, vs, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _entry = $f._entry; _entry$1 = $f._entry$1; _i = $f._i; _i$1 = $f._i$1; _i$2 = $f._i$2; _keys = $f._keys; _ref = $f._ref; _ref$1 = $f._ref$1; _ref$2 = $f._ref$2; buf = $f.buf; k = $f.k; k$1 = $f.k$1; keys = $f.keys; prefix = $f.prefix; v = $f.v; v$1 = $f.v$1; vs = $f.vs; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		v = this.$val;
+		if (v === false) {
+			return "";
+		}
+		buf = new bytes.Buffer.ptr(sliceType.nil, 0, arrayType.zero(), arrayType$1.zero(), 0);
+		keys = $makeSlice(sliceType$2, 0, $keys(v).length);
+		_ref = v;
+		_i = 0;
+		_keys = $keys(_ref);
+		while (true) {
+			if (!(_i < _keys.length)) { break; }
+			_entry = _ref[_keys[_i]];
+			if (_entry === undefined) {
+				_i++;
+				continue;
+			}
+			k = _entry.k;
+			keys = $append(keys, k);
+			_i++;
+		}
+		$r = sort.Strings(keys); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		_ref$1 = keys;
+		_i$1 = 0;
+		while (true) {
+			if (!(_i$1 < _ref$1.$length)) { break; }
+			k$1 = ((_i$1 < 0 || _i$1 >= _ref$1.$length) ? $throwRuntimeError("index out of range") : _ref$1.$array[_ref$1.$offset + _i$1]);
+			vs = (_entry$1 = v[$String.keyFor(k$1)], _entry$1 !== undefined ? _entry$1.v : sliceType$2.nil);
+			prefix = QueryEscape(k$1) + "=";
+			_ref$2 = vs;
+			_i$2 = 0;
+			while (true) {
+				if (!(_i$2 < _ref$2.$length)) { break; }
+				v$1 = ((_i$2 < 0 || _i$2 >= _ref$2.$length) ? $throwRuntimeError("index out of range") : _ref$2.$array[_ref$2.$offset + _i$2]);
+				if (buf.Len() > 0) {
+					buf.WriteByte(38);
+				}
+				buf.WriteString(prefix);
+				buf.WriteString(QueryEscape(v$1));
+				_i$2++;
+			}
+			_i$1++;
+		}
+		return buf.String();
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Values.prototype.Encode }; } $f.$ptr = $ptr; $f._entry = _entry; $f._entry$1 = _entry$1; $f._i = _i; $f._i$1 = _i$1; $f._i$2 = _i$2; $f._keys = _keys; $f._ref = _ref; $f._ref$1 = _ref$1; $f._ref$2 = _ref$2; $f.buf = buf; $f.k = k; $f.k$1 = k$1; $f.keys = keys; $f.prefix = prefix; $f.v = v; $f.v$1 = v$1; $f.vs = vs; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$ptrType(Values).prototype.Encode = function() { return new Values(this.$get()).Encode(); };
+	resolvePath = function(base, ref) {
+		var $ptr, _7, _i, _r, _ref, base, dst, elem, full, i, last, ref, src, x, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _7 = $f._7; _i = $f._i; _r = $f._r; _ref = $f._ref; base = $f.base; dst = $f.dst; elem = $f.elem; full = $f.full; i = $f.i; last = $f.last; ref = $f.ref; src = $f.src; x = $f.x; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		full = "";
+		if (ref === "") {
+			full = base;
+		} else if (!((ref.charCodeAt(0) === 47))) {
+			i = strings.LastIndex(base, "/");
+			full = base.substring(0, (i + 1 >> 0)) + ref;
+		} else {
+			full = ref;
+		}
+		if (full === "") {
+			return "";
+		}
+		dst = sliceType$2.nil;
+		src = strings.Split(full, "/");
+		_ref = src;
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.$length)) { break; }
+			elem = ((_i < 0 || _i >= _ref.$length) ? $throwRuntimeError("index out of range") : _ref.$array[_ref.$offset + _i]);
+			_7 = elem;
+			if (_7 === (".")) {
+			} else if (_7 === ("..")) {
+				if (dst.$length > 0) {
+					dst = $subslice(dst, 0, (dst.$length - 1 >> 0));
+				}
+			} else {
+				dst = $append(dst, elem);
+			}
+			_i++;
+		}
+		last = (x = src.$length - 1 >> 0, ((x < 0 || x >= src.$length) ? $throwRuntimeError("index out of range") : src.$array[src.$offset + x]));
+		if (last === "." || last === "..") {
+			dst = $append(dst, "");
+		}
+		_r = strings.TrimLeft(strings.Join(dst, "/"), "/"); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		/* */ $s = 2; case 2:
+		return "/" + _r;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: resolvePath }; } $f.$ptr = $ptr; $f._7 = _7; $f._i = _i; $f._r = _r; $f._ref = _ref; $f.base = base; $f.dst = dst; $f.elem = elem; $f.full = full; $f.i = i; $f.last = last; $f.ref = ref; $f.src = src; $f.x = x; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	URL.ptr.prototype.IsAbs = function() {
+		var $ptr, u;
+		u = this;
+		return !(u.Scheme === "");
+	};
+	URL.prototype.IsAbs = function() { return this.$val.IsAbs(); };
+	URL.ptr.prototype.Parse = function(ref) {
+		var $ptr, _r, _r$1, _tuple, err, ref, refurl, u, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _r$1 = $f._r$1; _tuple = $f._tuple; err = $f.err; ref = $f.ref; refurl = $f.refurl; u = $f.u; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		u = this;
+		_r = Parse(ref); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		_tuple = _r;
+		refurl = _tuple[0];
+		err = _tuple[1];
+		if (!($interfaceIsEqual(err, $ifaceNil))) {
+			return [ptrType.nil, err];
+		}
+		_r$1 = u.ResolveReference(refurl); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		/* */ $s = 3; case 3:
+		return [_r$1, $ifaceNil];
+		/* */ } return; } if ($f === undefined) { $f = { $blk: URL.ptr.prototype.Parse }; } $f.$ptr = $ptr; $f._r = _r; $f._r$1 = _r$1; $f._tuple = _tuple; $f.err = err; $f.ref = ref; $f.refurl = refurl; $f.u = u; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	URL.prototype.Parse = function(ref) { return this.$val.Parse(ref); };
+	URL.ptr.prototype.ResolveReference = function(ref) {
+		var $ptr, _r, _r$1, ref, u, url, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r = $f._r; _r$1 = $f._r$1; ref = $f.ref; u = $f.u; url = $f.url; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		url = [url];
+		u = this;
+		url[0] = $clone(ref, URL);
+		if (ref.Scheme === "") {
+			url[0].Scheme = u.Scheme;
+		}
+		/* */ if (!(ref.Scheme === "") || !(ref.Host === "") || !(ref.User === ptrType$1.nil)) { $s = 1; continue; }
+		/* */ $s = 2; continue;
+		/* if (!(ref.Scheme === "") || !(ref.Host === "") || !(ref.User === ptrType$1.nil)) { */ case 1:
+			_r = resolvePath(ref.Path, ""); /* */ $s = 3; case 3: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+			url[0].Path = _r;
+			return url[0];
+		/* } */ case 2:
+		if (!(ref.Opaque === "")) {
+			url[0].User = ptrType$1.nil;
+			url[0].Host = "";
+			url[0].Path = "";
+			return url[0];
+		}
+		if (ref.Path === "") {
+			if (ref.RawQuery === "") {
+				url[0].RawQuery = u.RawQuery;
+				if (ref.Fragment === "") {
+					url[0].Fragment = u.Fragment;
+				}
+			}
+		}
+		url[0].Host = u.Host;
+		url[0].User = u.User;
+		_r$1 = resolvePath(u.Path, ref.Path); /* */ $s = 4; case 4: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		url[0].Path = _r$1;
+		return url[0];
+		/* */ } return; } if ($f === undefined) { $f = { $blk: URL.ptr.prototype.ResolveReference }; } $f.$ptr = $ptr; $f._r = _r; $f._r$1 = _r$1; $f.ref = ref; $f.u = u; $f.url = url; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	URL.prototype.ResolveReference = function(ref) { return this.$val.ResolveReference(ref); };
+	URL.ptr.prototype.Query = function() {
+		var $ptr, _tuple, u, v;
+		u = this;
+		_tuple = ParseQuery(u.RawQuery);
+		v = _tuple[0];
+		return v;
+	};
+	URL.prototype.Query = function() { return this.$val.Query(); };
+	URL.ptr.prototype.RequestURI = function() {
+		var $ptr, result, u;
+		u = this;
+		result = u.Opaque;
+		if (result === "") {
+			result = u.EscapedPath();
+			if (result === "") {
+				result = "/";
+			}
+		} else {
+			if (strings.HasPrefix(result, "//")) {
+				result = u.Scheme + ":" + result;
+			}
+		}
+		if (!(u.RawQuery === "")) {
+			result = result + ("?" + u.RawQuery);
+		}
+		return result;
+	};
+	URL.prototype.RequestURI = function() { return this.$val.RequestURI(); };
+	ptrType$2.methods = [{prop: "Error", name: "Error", pkg: "", typ: $funcType([], [$String], false)}, {prop: "Timeout", name: "Timeout", pkg: "", typ: $funcType([], [$Bool], false)}, {prop: "Temporary", name: "Temporary", pkg: "", typ: $funcType([], [$Bool], false)}];
+	EscapeError.methods = [{prop: "Error", name: "Error", pkg: "", typ: $funcType([], [$String], false)}];
+	InvalidHostError.methods = [{prop: "Error", name: "Error", pkg: "", typ: $funcType([], [$String], false)}];
+	ptrType.methods = [{prop: "EscapedPath", name: "EscapedPath", pkg: "", typ: $funcType([], [$String], false)}, {prop: "String", name: "String", pkg: "", typ: $funcType([], [$String], false)}, {prop: "IsAbs", name: "IsAbs", pkg: "", typ: $funcType([], [$Bool], false)}, {prop: "Parse", name: "Parse", pkg: "", typ: $funcType([$String], [ptrType, $error], false)}, {prop: "ResolveReference", name: "ResolveReference", pkg: "", typ: $funcType([ptrType], [ptrType], false)}, {prop: "Query", name: "Query", pkg: "", typ: $funcType([], [Values], false)}, {prop: "RequestURI", name: "RequestURI", pkg: "", typ: $funcType([], [$String], false)}];
+	ptrType$1.methods = [{prop: "Username", name: "Username", pkg: "", typ: $funcType([], [$String], false)}, {prop: "Password", name: "Password", pkg: "", typ: $funcType([], [$String, $Bool], false)}, {prop: "String", name: "String", pkg: "", typ: $funcType([], [$String], false)}];
+	Values.methods = [{prop: "Get", name: "Get", pkg: "", typ: $funcType([$String], [$String], false)}, {prop: "Set", name: "Set", pkg: "", typ: $funcType([$String, $String], [], false)}, {prop: "Add", name: "Add", pkg: "", typ: $funcType([$String, $String], [], false)}, {prop: "Del", name: "Del", pkg: "", typ: $funcType([$String], [], false)}, {prop: "Encode", name: "Encode", pkg: "", typ: $funcType([], [$String], false)}];
+	Error.init([{prop: "Op", name: "Op", pkg: "", typ: $String, tag: ""}, {prop: "URL", name: "URL", pkg: "", typ: $String, tag: ""}, {prop: "Err", name: "Err", pkg: "", typ: $error, tag: ""}]);
+	timeout.init([{prop: "Timeout", name: "Timeout", pkg: "", typ: $funcType([], [$Bool], false)}]);
+	temporary.init([{prop: "Temporary", name: "Temporary", pkg: "", typ: $funcType([], [$Bool], false)}]);
+	URL.init([{prop: "Scheme", name: "Scheme", pkg: "", typ: $String, tag: ""}, {prop: "Opaque", name: "Opaque", pkg: "", typ: $String, tag: ""}, {prop: "User", name: "User", pkg: "", typ: ptrType$1, tag: ""}, {prop: "Host", name: "Host", pkg: "", typ: $String, tag: ""}, {prop: "Path", name: "Path", pkg: "", typ: $String, tag: ""}, {prop: "RawPath", name: "RawPath", pkg: "", typ: $String, tag: ""}, {prop: "RawQuery", name: "RawQuery", pkg: "", typ: $String, tag: ""}, {prop: "Fragment", name: "Fragment", pkg: "", typ: $String, tag: ""}]);
+	Userinfo.init([{prop: "username", name: "username", pkg: "net/url", typ: $String, tag: ""}, {prop: "password", name: "password", pkg: "net/url", typ: $String, tag: ""}, {prop: "passwordSet", name: "passwordSet", pkg: "net/url", typ: $Bool, tag: ""}]);
+	Values.init($String, sliceType$2);
+	$init = function() {
+		$pkg.$init = function() {};
+		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		$r = bytes.$init(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = errors.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = fmt.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = sort.$init(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = strconv.$init(); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = strings.$init(); /* */ $s = 6; case 6: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* */ } return; } if ($f === undefined) { $f = { $blk: $init }; } $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.$init = $init;
+	return $pkg;
+})();
 $packages["regexp/syntax"] = (function() {
 	var $pkg = {}, $init, bytes, sort, strconv, strings, unicode, utf8, patchList, frag, compiler, Error, ErrorCode, Flags, parser, charGroup, ranges, Prog, InstOp, EmptyOp, Inst, Regexp, Op, sliceType, sliceType$1, sliceType$2, sliceType$3, ptrType, sliceType$4, ptrType$1, sliceType$5, arrayType, arrayType$1, ptrType$2, ptrType$3, sliceType$6, arrayType$2, arrayType$3, ptrType$4, ptrType$5, ptrType$6, ptrType$7, anyRuneNotNL, anyRune, anyTable, code1, code2, code3, perlGroup, code4, code5, code6, code7, code8, code9, code10, code11, code12, code13, code14, code15, code16, code17, posixGroup, instOpNames, Compile, minFoldRune, repeatIsValid, cleanAlt, literalRegexp, Parse, isValidCaptureName, isCharClass, matchRune, mergeCharClass, unicodeTable, cleanClass, appendLiteral, appendRange, appendFoldedRange, appendClass, appendFoldedClass, appendNegatedClass, appendTable, appendNegatedTable, negateClass, checkUTF8, nextRune, isalnum, unhex, EmptyOpContext, IsWordChar, wordRune, bw, dumpProg, u32, dumpInst, writeRegexp, escape, simplify1;
 	bytes = $packages["bytes"];
@@ -30782,18 +31935,20 @@ $packages["regexp"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/BenLubar/htmlcleaner"] = (function() {
-	var $pkg = {}, $init, bytes, html, atom, regexp, strings, Config, ptrType, sliceType, sliceType$1, arrayType, arrayType$1, ptrType$1, sliceType$2, ptrType$2, mapType, mapType$1, mapType$2, mapType$3, Parse, Render, Clean, CleanNodes, text, CleanNode, cleanNode, cleanChildren, forceMaxDepth;
+	var $pkg = {}, $init, bytes, html, atom, url, regexp, strings, Config, ptrType, sliceType, sliceType$1, arrayType, arrayType$1, ptrType$1, sliceType$2, ptrType$2, mapType, mapType$1, ptrType$3, funcType, mapType$2, mapType$3, Parse, Render, Clean, CleanNodes, text, CleanNode, cleanNode, cleanChildren, forceMaxDepth;
 	bytes = $packages["bytes"];
 	html = $packages["golang.org/x/net/html"];
 	atom = $packages["golang.org/x/net/html/atom"];
+	url = $packages["net/url"];
 	regexp = $packages["regexp"];
 	strings = $packages["strings"];
-	Config = $pkg.Config = $newType(0, $kindStruct, "htmlcleaner.Config", "Config", "github.com/BenLubar/htmlcleaner", function(Elem_, Attr_, AllowJavascriptURL_, EscapeComments_, WrapText_, AttrMatch_) {
+	Config = $pkg.Config = $newType(0, $kindStruct, "htmlcleaner.Config", "Config", "github.com/BenLubar/htmlcleaner", function(Elem_, Attr_, AllowJavascriptURL_, ValidateURL_, EscapeComments_, WrapText_, AttrMatch_) {
 		this.$val = this;
 		if (arguments.length === 0) {
 			this.Elem = false;
 			this.Attr = false;
 			this.AllowJavascriptURL = false;
+			this.ValidateURL = $throwNilPointerError;
 			this.EscapeComments = false;
 			this.WrapText = false;
 			this.AttrMatch = false;
@@ -30802,6 +31957,7 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 		this.Elem = Elem_;
 		this.Attr = Attr_;
 		this.AllowJavascriptURL = AllowJavascriptURL_;
+		this.ValidateURL = ValidateURL_;
 		this.EscapeComments = EscapeComments_;
 		this.WrapText = WrapText_;
 		this.AttrMatch = AttrMatch_;
@@ -30816,6 +31972,8 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 	ptrType$2 = $ptrType(regexp.Regexp);
 	mapType = $mapType(atom.Atom, $Bool);
 	mapType$1 = $mapType(atom.Atom, mapType);
+	ptrType$3 = $ptrType(url.URL);
+	funcType = $funcType([ptrType$3], [$Bool], false);
 	mapType$2 = $mapType(atom.Atom, ptrType$2);
 	mapType$3 = $mapType(atom.Atom, mapType$2);
 	Parse = function(fragment) {
@@ -30970,8 +32128,8 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 	};
 	$pkg.CleanNode = CleanNode;
 	cleanNode = function(c, n) {
-		var $ptr, _entry, _entry$1, _entry$2, _entry$3, _entry$4, _i, _i$1, _r, _r$1, _r$10, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, _r$8, _r$9, _ref, _ref$1, _tuple, _tuple$1, _v, a, a$1, aatom, allowedAttr, attr, c, haveSrc, i, n, ok, ok$1, protocol, re, tmp, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _entry = $f._entry; _entry$1 = $f._entry$1; _entry$2 = $f._entry$2; _entry$3 = $f._entry$3; _entry$4 = $f._entry$4; _i = $f._i; _i$1 = $f._i$1; _r = $f._r; _r$1 = $f._r$1; _r$10 = $f._r$10; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; _r$8 = $f._r$8; _r$9 = $f._r$9; _ref = $f._ref; _ref$1 = $f._ref$1; _tuple = $f._tuple; _tuple$1 = $f._tuple$1; _v = $f._v; a = $f.a; a$1 = $f.a$1; aatom = $f.aatom; allowedAttr = $f.allowedAttr; attr = $f.attr; c = $f.c; haveSrc = $f.haveSrc; i = $f.i; n = $f.n; ok = $f.ok; ok$1 = $f.ok$1; protocol = $f.protocol; re = $f.re; tmp = $f.tmp; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var $ptr, _entry, _entry$1, _entry$2, _entry$3, _entry$4, _i, _i$1, _r, _r$1, _r$10, _r$11, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, _r$8, _r$9, _ref, _ref$1, _tuple, _tuple$1, _tuple$2, _v, _v$1, a, a$1, aatom, allowedAttr, attr, c, err, haveSrc, n, ok, ok$1, re, tmp, u, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _entry = $f._entry; _entry$1 = $f._entry$1; _entry$2 = $f._entry$2; _entry$3 = $f._entry$3; _entry$4 = $f._entry$4; _i = $f._i; _i$1 = $f._i$1; _r = $f._r; _r$1 = $f._r$1; _r$10 = $f._r$10; _r$11 = $f._r$11; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; _r$8 = $f._r$8; _r$9 = $f._r$9; _ref = $f._ref; _ref$1 = $f._ref$1; _tuple = $f._tuple; _tuple$1 = $f._tuple$1; _tuple$2 = $f._tuple$2; _v = $f._v; _v$1 = $f._v$1; a = $f.a; a$1 = $f.a$1; aatom = $f.aatom; allowedAttr = $f.allowedAttr; attr = $f.attr; c = $f.c; err = $f.err; haveSrc = $f.haveSrc; n = $f.n; ok = $f.ok; ok$1 = $f.ok$1; re = $f.re; tmp = $f.tmp; u = $f.u; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		tmp = [tmp];
 		if (c === ptrType$1.nil) {
 			c = $pkg.DefaultConfig;
@@ -31029,30 +32187,45 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 				/* */ if (!c.AllowJavascriptURL && ((aatom === 159748) || (aatom === 246531) || (aatom === 87814))) { $s = 23; continue; }
 				/* */ $s = 24; continue;
 				/* if (!c.AllowJavascriptURL && ((aatom === 159748) || (aatom === 246531) || (aatom === 87814))) { */ case 23:
-					i = strings.IndexRune(a.Val, 58);
-					/* */ if (i >= 0 && strings.IndexRune(a.Val.substring(0, i), 47) < 0) { $s = 25; continue; }
-					/* */ $s = 26; continue;
-					/* if (i >= 0 && strings.IndexRune(a.Val.substring(0, i), 47) < 0) { */ case 25:
-						_r$6 = strings.ToLower(a.Val.substring(0, i)); /* */ $s = 27; case 27: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
-						protocol = _r$6;
-						if (!(protocol === "http") && !(protocol === "https") && !(protocol === "mailto") && !(protocol === "data")) {
-							_i++;
-							/* continue; */ $s = 19; continue;
-						}
-					/* } */ case 26:
+					_r$6 = url.Parse(a.Val); /* */ $s = 25; case 25: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
+					_tuple$1 = _r$6;
+					u = _tuple$1[0];
+					err = _tuple$1[1];
+					/* */ if (!($interfaceIsEqual(err, $ifaceNil))) { $s = 26; continue; }
+					/* */ if (!(u.Scheme === "http") && !(u.Scheme === "https") && !(u.Scheme === "mailto") && !(u.Scheme === "data")) { $s = 27; continue; }
+					if (!(!(c.ValidateURL === $throwNilPointerError))) { _v = false; $s = 31; continue s; }
+					_r$7 = c.ValidateURL(u); /* */ $s = 32; case 32: if($c) { $c = false; _r$7 = _r$7.$blk(); } if (_r$7 && _r$7.$blk !== undefined) { break s; }
+					_v = !_r$7; case 31:
+					/* */ if (_v) { $s = 28; continue; }
+					/* */ $s = 29; continue;
+					/* if (!($interfaceIsEqual(err, $ifaceNil))) { */ case 26:
+						_i++;
+						/* continue; */ $s = 19; continue;
+						$s = 30; continue;
+					/* } else if (!(u.Scheme === "http") && !(u.Scheme === "https") && !(u.Scheme === "mailto") && !(u.Scheme === "data")) { */ case 27:
+						_i++;
+						/* continue; */ $s = 19; continue;
+						$s = 30; continue;
+					/* } else if (_v) { */ case 28:
+						_i++;
+						/* continue; */ $s = 19; continue;
+						$s = 30; continue;
+					/* } else { */ case 29:
+						a.Val = u.String();
+					/* } */ case 30:
 				/* } */ case 24:
-				_tuple$1 = (_entry$3 = (_entry$4 = c.AttrMatch[atom.Atom.keyFor(n.DataAtom)], _entry$4 !== undefined ? _entry$4.v : false)[atom.Atom.keyFor(aatom)], _entry$3 !== undefined ? [_entry$3.v, true] : [ptrType$2.nil, false]);
-				re = _tuple$1[0];
-				ok$1 = _tuple$1[1];
-				if (!(ok$1)) { _v = false; $s = 30; continue s; }
-				_r$7 = re.MatchString(a.Val); /* */ $s = 31; case 31: if($c) { $c = false; _r$7 = _r$7.$blk(); } if (_r$7 && _r$7.$blk !== undefined) { break s; }
-				_v = !_r$7; case 30:
-				/* */ if (_v) { $s = 28; continue; }
-				/* */ $s = 29; continue;
-				/* if (_v) { */ case 28:
+				_tuple$2 = (_entry$3 = (_entry$4 = c.AttrMatch[atom.Atom.keyFor(n.DataAtom)], _entry$4 !== undefined ? _entry$4.v : false)[atom.Atom.keyFor(aatom)], _entry$3 !== undefined ? [_entry$3.v, true] : [ptrType$2.nil, false]);
+				re = _tuple$2[0];
+				ok$1 = _tuple$2[1];
+				if (!(ok$1)) { _v$1 = false; $s = 35; continue s; }
+				_r$8 = re.MatchString(a.Val); /* */ $s = 36; case 36: if($c) { $c = false; _r$8 = _r$8.$blk(); } if (_r$8 && _r$8.$blk !== undefined) { break s; }
+				_v$1 = !_r$8; case 35:
+				/* */ if (_v$1) { $s = 33; continue; }
+				/* */ $s = 34; continue;
+				/* if (_v$1) { */ case 33:
 					_i++;
 					/* continue; */ $s = 19; continue;
-				/* } */ case 29:
+				/* } */ case 34:
 				n.Attr = $append(n.Attr, a);
 				_i++;
 			/* } */ $s = 19; continue; case 20:
@@ -31075,12 +32248,12 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 			}
 			return n;
 		/* } */ case 17:
-		_r$8 = Render(new sliceType$2([n])); /* */ $s = 32; case 32: if($c) { $c = false; _r$8 = _r$8.$blk(); } if (_r$8 && _r$8.$blk !== undefined) { break s; }
-		_r$9 = html.UnescapeString(_r$8); /* */ $s = 33; case 33: if($c) { $c = false; _r$9 = _r$9.$blk(); } if (_r$9 && _r$9.$blk !== undefined) { break s; }
-		_r$10 = text(_r$9); /* */ $s = 34; case 34: if($c) { $c = false; _r$10 = _r$10.$blk(); } if (_r$10 && _r$10.$blk !== undefined) { break s; }
-		/* */ $s = 35; case 35:
-		return _r$10;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: cleanNode }; } $f.$ptr = $ptr; $f._entry = _entry; $f._entry$1 = _entry$1; $f._entry$2 = _entry$2; $f._entry$3 = _entry$3; $f._entry$4 = _entry$4; $f._i = _i; $f._i$1 = _i$1; $f._r = _r; $f._r$1 = _r$1; $f._r$10 = _r$10; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._r$8 = _r$8; $f._r$9 = _r$9; $f._ref = _ref; $f._ref$1 = _ref$1; $f._tuple = _tuple; $f._tuple$1 = _tuple$1; $f._v = _v; $f.a = a; $f.a$1 = a$1; $f.aatom = aatom; $f.allowedAttr = allowedAttr; $f.attr = attr; $f.c = c; $f.haveSrc = haveSrc; $f.i = i; $f.n = n; $f.ok = ok; $f.ok$1 = ok$1; $f.protocol = protocol; $f.re = re; $f.tmp = tmp; $f.$s = $s; $f.$r = $r; return $f;
+		_r$9 = Render(new sliceType$2([n])); /* */ $s = 37; case 37: if($c) { $c = false; _r$9 = _r$9.$blk(); } if (_r$9 && _r$9.$blk !== undefined) { break s; }
+		_r$10 = html.UnescapeString(_r$9); /* */ $s = 38; case 38: if($c) { $c = false; _r$10 = _r$10.$blk(); } if (_r$10 && _r$10.$blk !== undefined) { break s; }
+		_r$11 = text(_r$10); /* */ $s = 39; case 39: if($c) { $c = false; _r$11 = _r$11.$blk(); } if (_r$11 && _r$11.$blk !== undefined) { break s; }
+		/* */ $s = 40; case 40:
+		return _r$11;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: cleanNode }; } $f.$ptr = $ptr; $f._entry = _entry; $f._entry$1 = _entry$1; $f._entry$2 = _entry$2; $f._entry$3 = _entry$3; $f._entry$4 = _entry$4; $f._i = _i; $f._i$1 = _i$1; $f._r = _r; $f._r$1 = _r$1; $f._r$10 = _r$10; $f._r$11 = _r$11; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._r$8 = _r$8; $f._r$9 = _r$9; $f._ref = _ref; $f._ref$1 = _ref$1; $f._tuple = _tuple; $f._tuple$1 = _tuple$1; $f._tuple$2 = _tuple$2; $f._v = _v; $f._v$1 = _v$1; $f.a = a; $f.a$1 = a$1; $f.aatom = aatom; $f.allowedAttr = allowedAttr; $f.attr = attr; $f.c = c; $f.err = err; $f.haveSrc = haveSrc; $f.n = n; $f.ok = ok; $f.ok$1 = ok$1; $f.re = re; $f.tmp = tmp; $f.u = u; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	cleanChildren = function(c, parent) {
 		var $ptr, _i, _r, _ref, c, child, child$1, children, i, parent, x, x$1, $s, $r;
@@ -31136,25 +32309,28 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 			c = c.NextSibling;
 		}
 	};
-	Config.init([{prop: "Elem", name: "Elem", pkg: "", typ: mapType$1, tag: ""}, {prop: "Attr", name: "Attr", pkg: "", typ: mapType, tag: ""}, {prop: "AllowJavascriptURL", name: "AllowJavascriptURL", pkg: "", typ: $Bool, tag: ""}, {prop: "EscapeComments", name: "EscapeComments", pkg: "", typ: $Bool, tag: ""}, {prop: "WrapText", name: "WrapText", pkg: "", typ: $Bool, tag: ""}, {prop: "AttrMatch", name: "AttrMatch", pkg: "", typ: mapType$3, tag: ""}]);
+	Config.init([{prop: "Elem", name: "Elem", pkg: "", typ: mapType$1, tag: ""}, {prop: "Attr", name: "Attr", pkg: "", typ: mapType, tag: ""}, {prop: "AllowJavascriptURL", name: "AllowJavascriptURL", pkg: "", typ: $Bool, tag: ""}, {prop: "ValidateURL", name: "ValidateURL", pkg: "", typ: funcType, tag: ""}, {prop: "EscapeComments", name: "EscapeComments", pkg: "", typ: $Bool, tag: ""}, {prop: "WrapText", name: "WrapText", pkg: "", typ: $Bool, tag: ""}, {prop: "AttrMatch", name: "AttrMatch", pkg: "", typ: mapType$3, tag: ""}]);
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		$r = bytes.$init(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$r = html.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$r = atom.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = regexp.$init(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = strings.$init(); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$pkg.DefaultConfig = new Config.ptr($makeMap(atom.Atom.keyFor, [{ k: 1, v: $makeMap(atom.Atom.keyFor, [{ k: 159748, v: true }]) }, { k: 172291, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 17667, v: true }]) }, { k: 164101, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 87814, v: true }, { k: 100360, v: true }]) }, { k: 42501, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 100360, v: true }]) }, { k: 257, v: false }, { k: 1537, v: false }, { k: 2817, v: false }, { k: 11265, v: false }, { k: 25858, v: false }, { k: 350470, v: false }, { k: 340742, v: false }, { k: 74755, v: false }, { k: 102149, v: false }, { k: 400643, v: false }, { k: 370947, v: false }, { k: 108547, v: false }, { k: 257795, v: false }, { k: 4, v: false }, { k: 324359, v: false }, { k: 247812, v: false }, { k: 78081, v: false }, { k: 3073, v: false }, { k: 76810, v: false }, { k: 155139, v: false }, { k: 84228, v: false }, { k: 6403, v: false }, { k: 21250, v: false }, { k: 18439, v: false }, { k: 398855, v: false }]), $makeMap(atom.Atom.keyFor, [{ k: 41221, v: true }]), false, false, false, false);
+		$r = url.$init(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = regexp.$init(); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = strings.$init(); /* */ $s = 6; case 6: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$pkg.DefaultConfig = new Config.ptr($makeMap(atom.Atom.keyFor, [{ k: 1, v: $makeMap(atom.Atom.keyFor, [{ k: 159748, v: true }]) }, { k: 172291, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 17667, v: true }]) }, { k: 164101, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 87814, v: true }, { k: 100360, v: true }]) }, { k: 42501, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 100360, v: true }]) }, { k: 257, v: false }, { k: 1537, v: false }, { k: 2817, v: false }, { k: 11265, v: false }, { k: 25858, v: false }, { k: 350470, v: false }, { k: 340742, v: false }, { k: 74755, v: false }, { k: 102149, v: false }, { k: 400643, v: false }, { k: 370947, v: false }, { k: 108547, v: false }, { k: 257795, v: false }, { k: 4, v: false }, { k: 324359, v: false }, { k: 247812, v: false }, { k: 78081, v: false }, { k: 3073, v: false }, { k: 76810, v: false }, { k: 155139, v: false }, { k: 84228, v: false }, { k: 6403, v: false }, { k: 21250, v: false }, { k: 18439, v: false }, { k: 398855, v: false }]), $makeMap(atom.Atom.keyFor, [{ k: 41221, v: true }]), false, $throwNilPointerError, false, false, false);
 		/* */ } return; } if ($f === undefined) { $f = { $blk: $init }; } $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.$init = $init;
 	return $pkg;
 })();
 $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"] = (function() {
-	var $pkg = {}, $init, htmlcleaner, atom, regexp, _r, _r$1, _r$2, Clean;
+	var $pkg = {}, $init, htmlcleaner, js, atom, url, regexp, _r, _r$1, _r$2, Clean;
 	htmlcleaner = $packages["github.com/BenLubar/htmlcleaner"];
+	js = $packages["github.com/gopherjs/gopherjs/js"];
 	atom = $packages["golang.org/x/net/html/atom"];
+	url = $packages["net/url"];
 	regexp = $packages["regexp"];
 	Clean = function(content) {
 		var $ptr, _r$3, content, $s, $r;
@@ -31169,12 +32345,28 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"] = (function()
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		$r = htmlcleaner.$init(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = atom.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = regexp.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		_r = regexp.MustCompile("\\A((emoji|img-markdown|img-responsive)(\\s+|\\s*\\z))*\\z"); /* */ $s = 4; case 4: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-		_r$1 = regexp.MustCompile("\\A((markdown-highlight)(\\s+|\\s*\\z))*\\z"); /* */ $s = 5; case 5: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
-		_r$2 = regexp.MustCompile("\\A((hljs|language-[a-z0-9]+)(\\s+|\\s*\\z))*\\z"); /* */ $s = 6; case 6: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
-		$pkg.Config = new htmlcleaner.Config.ptr($makeMap(atom.Atom.keyFor, [{ k: 1, v: $makeMap(atom.Atom.keyFor, [{ k: 159748, v: true }]) }, { k: 172291, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 17667, v: true }, { k: 318981, v: true }, { k: 329477, v: true }, { k: 151814, v: true }]) }, { k: 164101, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 87814, v: true }, { k: 100360, v: true }]) }, { k: 42501, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 100360, v: true }]) }, { k: 257, v: false }, { k: 1537, v: false }, { k: 2817, v: false }, { k: 11265, v: false }, { k: 25858, v: false }, { k: 350470, v: false }, { k: 340742, v: false }, { k: 74755, v: false }, { k: 102149, v: false }, { k: 400643, v: false }, { k: 370947, v: false }, { k: 108547, v: false }, { k: 257795, v: false }, { k: 4, v: false }, { k: 324359, v: false }, { k: 247812, v: false }, { k: 78081, v: false }, { k: 3073, v: false }, { k: 76810, v: false }, { k: 155139, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: true }]) }, { k: 84228, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: true }]) }, { k: 6403, v: false }, { k: 21250, v: false }, { k: 18439, v: false }, { k: 398855, v: false }, { k: 159234, v: false }, { k: 168962, v: false }, { k: 173826, v: false }, { k: 190722, v: false }, { k: 193282, v: false }, { k: 330498, v: false }, { k: 35330, v: $makeMap(atom.Atom.keyFor, [{ k: 230917, v: true }]) }, { k: 51458, v: $makeMap(atom.Atom.keyFor, [{ k: 230917, v: true }]) }, { k: 4610, v: $makeMap(atom.Atom.keyFor, [{ k: 16389, v: true }]) }, { k: 159746, v: false }, { k: 514, v: false }, { k: 70403, v: false }, { k: 273669, v: false }, { k: 185349, v: false }, { k: 11781, v: false }, { k: 35845, v: false }, { k: 66818, v: false }, { k: 142850, v: false }, { k: 18178, v: false }, { k: 113415, v: false }]), $makeMap(atom.Atom.keyFor, [{ k: 41221, v: true }]), false, true, true, $makeMap(atom.Atom.keyFor, [{ k: 172291, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r }]) }, { k: 155139, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r$1 }]) }, { k: 84228, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r$2 }]) }]));
+		$r = js.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = atom.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = url.$init(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = regexp.$init(); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		_r = regexp.MustCompile("\\A((emoji|img-markdown|img-responsive)(\\s+|\\s*\\z))*\\z"); /* */ $s = 6; case 6: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		_r$1 = regexp.MustCompile("\\A((markdown-highlight)(\\s+|\\s*\\z))*\\z"); /* */ $s = 7; case 7: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		_r$2 = regexp.MustCompile("\\A((hljs|language-[a-z0-9]+)(\\s+|\\s*\\z))*\\z"); /* */ $s = 8; case 8: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+		$pkg.Config = new htmlcleaner.Config.ptr($makeMap(atom.Atom.keyFor, [{ k: 1, v: $makeMap(atom.Atom.keyFor, [{ k: 159748, v: true }]) }, { k: 172291, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 17667, v: true }, { k: 318981, v: true }, { k: 329477, v: true }, { k: 151814, v: true }]) }, { k: 164101, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 87814, v: true }, { k: 100360, v: true }]) }, { k: 42501, v: $makeMap(atom.Atom.keyFor, [{ k: 246531, v: true }, { k: 100360, v: true }]) }, { k: 257, v: false }, { k: 1537, v: false }, { k: 2817, v: false }, { k: 11265, v: false }, { k: 25858, v: false }, { k: 350470, v: false }, { k: 340742, v: false }, { k: 74755, v: false }, { k: 102149, v: false }, { k: 400643, v: false }, { k: 370947, v: false }, { k: 108547, v: false }, { k: 257795, v: false }, { k: 4, v: false }, { k: 324359, v: false }, { k: 247812, v: false }, { k: 78081, v: false }, { k: 3073, v: false }, { k: 76810, v: false }, { k: 155139, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: true }]) }, { k: 84228, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: true }]) }, { k: 6403, v: false }, { k: 21250, v: false }, { k: 18439, v: false }, { k: 398855, v: false }, { k: 159234, v: false }, { k: 168962, v: false }, { k: 173826, v: false }, { k: 190722, v: false }, { k: 193282, v: false }, { k: 330498, v: false }, { k: 35330, v: $makeMap(atom.Atom.keyFor, [{ k: 230917, v: true }]) }, { k: 51458, v: $makeMap(atom.Atom.keyFor, [{ k: 230917, v: true }]) }, { k: 4610, v: $makeMap(atom.Atom.keyFor, [{ k: 16389, v: true }]) }, { k: 159746, v: false }, { k: 514, v: false }, { k: 70403, v: false }, { k: 273669, v: false }, { k: 185349, v: false }, { k: 11781, v: false }, { k: 35845, v: false }, { k: 66818, v: false }, { k: 142850, v: false }, { k: 18178, v: false }, { k: 113415, v: false }]), $makeMap(atom.Atom.keyFor, [{ k: 41221, v: true }]), false, (function(u) {
+			var $ptr, ok, u, $deferred;
+			/* */ var $err = null; try { $deferred = []; $deferred.index = $curGoroutine.deferStack.length; $curGoroutine.deferStack.push($deferred);
+			ok = false;
+			$deferred.push([(function() {
+				var $ptr;
+				if (!($interfaceIsEqual($recover(), $ifaceNil))) {
+					ok = false;
+				}
+			}), []]);
+			$global.url.parse($externalize(u.String(), $String));
+			ok = true;
+			return ok;
+			/* */ } catch(err) { $err = err; } finally { $callDeferred($deferred, $err); if (!$curGoroutine.asleep) { return  ok; } }
+		}), true, true, $makeMap(atom.Atom.keyFor, [{ k: 172291, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r }]) }, { k: 155139, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r$1 }]) }, { k: 84228, v: $makeMap(atom.Atom.keyFor, [{ k: 318981, v: _r$2 }]) }]));
 		/* */ } return; } if ($f === undefined) { $f = { $blk: $init }; } $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.$init = $init;
