@@ -114,7 +114,7 @@ var Config = &htmlcleaner.Config{
 				ok = false
 			}
 		}()
-		js.Global.Get("url").Call("parse", u.String())
+		js.Global.Call("require", "url").Call("parse", u.String())
 		return true
 	},
 

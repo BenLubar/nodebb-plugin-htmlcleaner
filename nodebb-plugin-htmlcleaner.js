@@ -32192,7 +32192,7 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 					u = _tuple$1[0];
 					err = _tuple$1[1];
 					/* */ if (!($interfaceIsEqual(err, $ifaceNil))) { $s = 26; continue; }
-					/* */ if (!(u.Scheme === "http") && !(u.Scheme === "https") && !(u.Scheme === "mailto") && !(u.Scheme === "data")) { $s = 27; continue; }
+					/* */ if (!(u.Scheme === "http") && !(u.Scheme === "https") && !(u.Scheme === "mailto") && !(u.Scheme === "data") && !(u.Scheme === "")) { $s = 27; continue; }
 					if (!(!(c.ValidateURL === $throwNilPointerError))) { _v = false; $s = 31; continue s; }
 					_r$7 = c.ValidateURL(u); /* */ $s = 32; case 32: if($c) { $c = false; _r$7 = _r$7.$blk(); } if (_r$7 && _r$7.$blk !== undefined) { break s; }
 					_v = !_r$7; case 31:
@@ -32202,7 +32202,7 @@ $packages["github.com/BenLubar/htmlcleaner"] = (function() {
 						_i++;
 						/* continue; */ $s = 19; continue;
 						$s = 30; continue;
-					/* } else if (!(u.Scheme === "http") && !(u.Scheme === "https") && !(u.Scheme === "mailto") && !(u.Scheme === "data")) { */ case 27:
+					/* } else if (!(u.Scheme === "http") && !(u.Scheme === "https") && !(u.Scheme === "mailto") && !(u.Scheme === "data") && !(u.Scheme === "")) { */ case 27:
 						_i++;
 						/* continue; */ $s = 19; continue;
 						$s = 30; continue;
@@ -32362,7 +32362,7 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"] = (function()
 					ok = false;
 				}
 			}), []]);
-			$global.url.parse($externalize(u.String(), $String));
+			$global.require($externalize("url", $String)).parse($externalize(u.String(), $String));
 			ok = true;
 			return ok;
 			/* */ } catch(err) { $err = err; } finally { $callDeferred($deferred, $err); if (!$curGoroutine.asleep) { return  ok; } }
