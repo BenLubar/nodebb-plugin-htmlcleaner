@@ -65,7 +65,9 @@ var Config = &htmlcleaner.Config{
 		atom.Kbd: nil,
 		atom.Tt:  nil,
 
-		atom.Details: nil,
+		atom.Details: {
+			atom.Open: true,
+		},
 		atom.Summary: nil,
 
 		atom.H1: nil,
