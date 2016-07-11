@@ -3,8 +3,6 @@ package cleaner
 import "github.com/BenLubar/htmlcleaner"
 
 func Clean(content string) string {
-	if s, err := htmlcleaner.Preprocess(Config, content); err == nil {
-		content = s
-	}
+	content = htmlcleaner.Preprocess(Config, content)
 	return htmlcleaner.Clean(Config, content)
 }
