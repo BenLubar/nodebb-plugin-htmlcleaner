@@ -13,6 +13,7 @@ var Config = &htmlcleaner.Config{
 	Elem: map[atom.Atom]map[atom.Atom]bool{
 		atom.A: {
 			atom.Href: true,
+			atom.Rel:  true,
 		},
 		atom.Img: {
 			atom.Src:    true,
@@ -125,6 +126,9 @@ var Config = &htmlcleaner.Config{
 	WrapText: true,
 
 	AttrMatch: map[atom.Atom]map[atom.Atom]*regexp.Regexp{
+		atom.A: {
+			atom.Rel: regexp.MustCompile(`\Anofollow\z`),
+		},
 		atom.Img: {
 			atom.Class: regexp.MustCompile(`\A((emoji|img-markdown|img-responsive)(\s+|\s*\z))*\z`),
 		},
