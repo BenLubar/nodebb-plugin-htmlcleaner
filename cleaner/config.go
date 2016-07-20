@@ -138,5 +138,8 @@ var Config = &htmlcleaner.Config{
 		atom.Code: {
 			atom.Class: regexp.MustCompile(`\A((hljs|language-[a-z0-9]+)(\s+|\s*\z))*\z`),
 		},
+		atom.Table: {
+			atom.Class: regexp.MustCompile(`\A((table|table-bordered|table-striped)(\s+|\s*\z))*\z`),
+		},
 	},
 }
