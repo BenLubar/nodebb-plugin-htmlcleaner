@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/url"
+	"regexp"
 	"strings"
 
 	"github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"
@@ -10,11 +11,10 @@ import (
 
 // zero width non-breaking space is illegal anyway, so removing it won't cause
 // any problems as long as another plugin isn't using the same hack.
-var fixer = strings.NewReplacer("\n<", "\n\ufeff<")
-var remover = strings.NewReplacer("\ufeff", "")
+var fixer = regexp.MustCompile(`^([>\s]*)<`)
 
 func fix(s, uid string) string {
-	return fixer.Replace(s)
+	return fixer.ReplaceAllString(s, "$1\ufeff<")
 }
 
 var nconfURL, _ = url.Parse(js.Module.Get("parent").Call("require", "nconf").Call("get", "url").String())
@@ -39,5 +39,5 @@ func clean(s, uid string) (content string) {
 		}
 	}()
 
-	return cleaner.Clean(remover.Replace(s))
+	return cleaner.Clean(strings.Replace(s, "\ufeff", "", -1))
 }
