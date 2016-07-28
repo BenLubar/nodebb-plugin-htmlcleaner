@@ -92,6 +92,7 @@ var Config = &htmlcleaner.Config{
 		atom.Br: nil,
 
 		atom.Div:   nil,
+		atom.Span:  nil,
 		atom.Table: nil,
 
 		atom.Thead: nil,
@@ -103,6 +104,10 @@ var Config = &htmlcleaner.Config{
 		atom.Td: nil,
 
 		atom.Caption: nil,
+
+		atom.Dl: nil,
+		atom.Dt: nil,
+		atom.Dd: nil,
 	},
 
 	Attr: map[atom.Atom]bool{
