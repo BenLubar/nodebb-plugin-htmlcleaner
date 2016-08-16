@@ -91,9 +91,11 @@ var Config = &htmlcleaner.Config{
 		atom.Hr: nil,
 		atom.Br: nil,
 
-		atom.Div:   nil,
-		atom.Span:  nil,
-		atom.Table: nil,
+		atom.Div:  nil,
+		atom.Span: nil,
+		atom.Table: {
+			atom.Class: true,
+		},
 
 		atom.Thead: nil,
 		atom.Tbody: nil,
