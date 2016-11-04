@@ -2,7 +2,10 @@
 
 package main
 
-import "github.com/gopherjs/gopherjs/js"
+import (
+	"github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"
+	"github.com/gopherjs/gopherjs/js"
+)
 
 func main() {
 	exports := js.Module.Get("exports")
@@ -48,4 +51,8 @@ func raw(fn func(content, uid string) string) func(raw, callback *js.Object) {
 	return func(raw, callback *js.Object) {
 		callback.Invoke(nil, fn(raw.String(), ""))
 	}
+}
+
+func renderHelp(helpContent string, callback *js.Object) {
+	callback.Invoke(nil, helpContent+cleaner.HelpString)
 }
