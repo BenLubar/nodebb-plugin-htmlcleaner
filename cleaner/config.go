@@ -26,7 +26,7 @@ var Config = (&htmlcleaner.Config{
 
 	EscapeComments: true, // work around https://github.com/psychobunny/templates.js/issues/54
 
-	WrapText: true,
+	WrapText: false, // https://what.thedailywtf.com/post/1049805
 }).
 	GlobalAttrAtom(atom.Title).
 	ElemAttrAtom(atom.A, atom.Href).
