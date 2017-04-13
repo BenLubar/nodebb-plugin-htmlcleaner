@@ -22,6 +22,10 @@ func main() {
 
 	exports.Set("renderHelp", renderHelp)
 
+	exports.Set("template", cleanTemplate)
+	exports.Set("templatePost", async(post(cleanTemplate)))
+	exports.Set("templateSignature", async(signature(cleanTemplate)))
+	exports.Set("templateRaw", async(raw(cleanTemplate)))
 	exports.Set("templateTopic", templateTopic)
 	exports.Set("templateTopics", templateTopics)
 }
@@ -77,8 +81,8 @@ func cleanTopic(topic *js.Object) {
 	if topic.Get("tags").Bool() {
 		tags := topic.Get("tags")
 		for i := 0; i < tags.Length(); i++ {
-			tags.Index(i).Set("value", cleanTemplate(tags.Index(i).Get("value").String()))
+			tags.Index(i).Set("value", cleanTemplate(tags.Index(i).Get("value").String(), ""))
 		}
 	}
-	topic.Set("title", cleanTemplate(topic.Get("title").String()))
+	topic.Set("title", cleanTemplate(topic.Get("title").String(), ""))
 }

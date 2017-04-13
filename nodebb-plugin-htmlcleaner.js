@@ -32895,8 +32895,8 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: fix }; } $f.$ptr = $ptr; $f._r$2 = _r$2; $f.s = s; $f.uid = uid; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	clean = function(s, uid) {
-		var $ptr, _r$2, _r$3, content, s, uid, $s, $deferred, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$2 = $f._r$2; _r$3 = $f._r$3; content = $f.content; s = $f.s; uid = $f.uid; $s = $f.$s; $deferred = $f.$deferred; $r = $f.$r; } var $err = null; try { s: while (true) { switch ($s) { case 0: $deferred = []; $deferred.index = $curGoroutine.deferStack.length; $curGoroutine.deferStack.push($deferred);
+		var $ptr, _r$2, content, s, uid, $s, $deferred, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$2 = $f._r$2; content = $f.content; s = $f.s; uid = $f.uid; $s = $f.$s; $deferred = $f.$deferred; $r = $f.$r; } var $err = null; try { s: while (true) { switch ($s) { case 0: $deferred = []; $deferred.index = $curGoroutine.deferStack.length; $curGoroutine.deferStack.push($deferred);
 		content = [content];
 		uid = [uid];
 		content[0] = "";
@@ -32934,17 +32934,16 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$ptr = $ptr; $f._r$2 = _r$2; $f._r$3 = _r$3; $f.id = id; $f.rep = rep; $f.$s = $s; $f.$r = $r; return $f;
 		}; })(content, uid), []]);
 		_r$2 = cleaner.Clean(strings.Replace(s, "\xEF\xBB\xBF", "", -1)); /* */ $s = 1; case 1: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
-		_r$3 = cleanTemplate(_r$2); /* */ $s = 2; case 2: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
-		content[0] = _r$3;
+		content[0] = _r$2;
 		$s = -1; return content[0];
-		/* */ } return; } } catch(err) { $err = err; $s = -1; } finally { $callDeferred($deferred, $err); if (!$curGoroutine.asleep) { return  content[0]; } if($curGoroutine.asleep) { if ($f === undefined) { $f = { $blk: clean }; } $f.$ptr = $ptr; $f._r$2 = _r$2; $f._r$3 = _r$3; $f.content = content; $f.s = s; $f.uid = uid; $f.$s = $s; $f.$deferred = $deferred; $f.$r = $r; return $f; } }
+		/* */ } return; } } catch(err) { $err = err; $s = -1; } finally { $callDeferred($deferred, $err); if (!$curGoroutine.asleep) { return  content[0]; } if($curGoroutine.asleep) { if ($f === undefined) { $f = { $blk: clean }; } $f.$ptr = $ptr; $f._r$2 = _r$2; $f.content = content; $f.s = s; $f.uid = uid; $f.$s = $s; $f.$deferred = $deferred; $f.$r = $r; return $f; } }
 	};
-	cleanTemplate = function(text) {
-		var $ptr, _r$2, text, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$2 = $f._r$2; text = $f.text; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+	cleanTemplate = function(text, param) {
+		var $ptr, _r$2, param, text, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$2 = $f._r$2; param = $f.param; text = $f.text; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		_r$2 = templateCleaner.Replace(text); /* */ $s = 1; case 1: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
 		$s = -1; return _r$2;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: cleanTemplate }; } $f.$ptr = $ptr; $f._r$2 = _r$2; $f.text = text; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: cleanTemplate }; } $f.$ptr = $ptr; $f._r$2 = _r$2; $f.param = param; $f.text = text; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	main = function() {
 		var $ptr, exports;
@@ -32958,6 +32957,10 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 		exports.cleanSignature = $externalize(async(signature(clean)), funcType$2);
 		exports.cleanRaw = $externalize(async(raw(clean)), funcType$2);
 		exports.renderHelp = $externalize(renderHelp, funcType$3);
+		exports.template = $externalize(cleanTemplate, funcType$1);
+		exports.templatePost = $externalize(async(post(cleanTemplate)), funcType$2);
+		exports.templateSignature = $externalize(async(signature(cleanTemplate)), funcType$2);
+		exports.templateRaw = $externalize(async(raw(cleanTemplate)), funcType$2);
 		exports.templateTopic = $externalize(templateTopic, funcType$2);
 		exports.templateTopics = $externalize(templateTopics, funcType$2);
 	};
@@ -33047,12 +33050,12 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 			i = 0;
 			/* while (true) { */ case 3:
 				/* if (!(i < $parseInt(tags.length))) { break; } */ if(!(i < $parseInt(tags.length))) { $s = 4; continue; }
-				_r$2 = cleanTemplate($internalize(tags[i].value, $String)); /* */ $s = 5; case 5: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+				_r$2 = cleanTemplate($internalize(tags[i].value, $String), ""); /* */ $s = 5; case 5: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
 				tags[i].value = $externalize(_r$2, $String);
 				i = i + (1) >> 0;
 			/* } */ $s = 3; continue; case 4:
 		/* } */ case 2:
-		_r$3 = cleanTemplate($internalize(topic.title, $String)); /* */ $s = 6; case 6: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
+		_r$3 = cleanTemplate($internalize(topic.title, $String), ""); /* */ $s = 6; case 6: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
 		topic.title = $externalize(_r$3, $String);
 		$s = -1; return;
 		/* */ } return; } if ($f === undefined) { $f = { $blk: cleanTopic }; } $f.$ptr = $ptr; $f._r$2 = _r$2; $f._r$3 = _r$3; $f.i = i; $f.tags = tags; $f.topic = topic; $f.$s = $s; $f.$r = $r; return $f;

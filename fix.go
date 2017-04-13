@@ -39,11 +39,11 @@ func clean(s, uid string) (content string) {
 		}
 	}()
 
-	return cleanTemplate(cleaner.Clean(strings.Replace(s, "\ufeff", "", -1)))
+	return cleaner.Clean(strings.Replace(s, "\ufeff", "", -1))
 }
 
 var templateCleaner = strings.NewReplacer("@", "&#64;", "[", "&#91;", "]", "&#93;")
 
-func cleanTemplate(text string) string {
+func cleanTemplate(text, _ string) string {
 	return templateCleaner.Replace(text)
 }
