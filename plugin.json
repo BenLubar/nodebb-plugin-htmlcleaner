@@ -13,6 +13,7 @@
 		{"hook": "filter:parse.signature", "method": "cleanSignature", "priority": 6},
 		{"hook": "filter:parse.aboutme", "method": "cleanRaw", "priority": 6},
 		{"hook": "filter:parse.raw", "method": "cleanRaw", "priority": 6},
-		{"hook": "filter:composer.help", "method": "renderHelp"}
+		{"hook": "filter:composer.help", "method": "renderHelp"},
+		{"hook": "filter:topic.get", "method": "templateTopic"}
 	]
 }

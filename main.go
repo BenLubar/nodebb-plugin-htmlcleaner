@@ -21,6 +21,8 @@ func main() {
 	exports.Set("cleanRaw", async(raw(clean)))
 
 	exports.Set("renderHelp", renderHelp)
+
+	exports.Set("templateTopic", templateTopic)
 }
 
 func async(fn func(data, callback *js.Object)) func(data, callback *js.Object) {
@@ -55,4 +57,12 @@ func raw(fn func(content, uid string) string) func(raw, callback *js.Object) {
 
 func renderHelp(helpContent string, callback *js.Object) {
 	callback.Invoke(nil, helpContent+cleaner.HelpString)
+}
+
+func templateTopic(data, callback *js.Object) {
+	topics := data.Get("topics")
+	for i := 0; i < topics.Length(); i++ {
+		topics.Index(i).Set("title", cleanTemplate(topics.Index(i).Get("title").String()))
+	}
+	callback.Invoke(nil, data)
 }
