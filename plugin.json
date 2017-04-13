@@ -14,6 +14,7 @@
 		{"hook": "filter:parse.aboutme", "method": "cleanRaw", "priority": 6},
 		{"hook": "filter:parse.raw", "method": "cleanRaw", "priority": 6},
 		{"hook": "filter:composer.help", "method": "renderHelp"},
-		{"hook": "filter:topic.get", "method": "templateTopic"}
+		{"hook": "filter:topic.get", "method": "templateTopic"},
+		{"hook": "filter:topics.get", "method": "templateTopics"}
 	]
 }

@@ -32874,7 +32874,7 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"] = (function()
 	return $pkg;
 })();
 $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
-	var $pkg = {}, $init, cleaner, js, url, regexp, strings, sliceType, ptrType, funcType, funcType$1, ptrType$1, funcType$2, funcType$3, fixer, nconfURL, user, templateCleaner, _r, _tuple, _r$1, fix, clean, cleanTemplate, main, async, post, signature, raw, renderHelp, templateTopic;
+	var $pkg = {}, $init, cleaner, js, url, regexp, strings, sliceType, ptrType, funcType, funcType$1, ptrType$1, funcType$2, funcType$3, fixer, nconfURL, user, templateCleaner, _r, _tuple, _r$1, fix, clean, cleanTemplate, main, async, post, signature, raw, renderHelp, templateTopic, templateTopics, cleanTopic;
 	cleaner = $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"];
 	js = $packages["github.com/gopherjs/gopherjs/js"];
 	url = $packages["net/url"];
@@ -32959,6 +32959,7 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 		exports.cleanRaw = $externalize(async(raw(clean)), funcType$2);
 		exports.renderHelp = $externalize(renderHelp, funcType$3);
 		exports.templateTopic = $externalize(templateTopic, funcType$2);
+		exports.templateTopics = $externalize(templateTopics, funcType$2);
 	};
 	async = function(fn) {
 		var $ptr, fn;
@@ -33015,19 +33016,46 @@ $packages["github.com/BenLubar/nodebb-plugin-htmlcleaner"] = (function() {
 		callback(null, $externalize(helpContent + "<h2>Safe HTML</h2>\n<p>You are allowed to use a safe subset of HTML.</p>\n<p>The <code>title</code> attribute is allowed on all elements.</p>\n<p><code>&lt;a href&gt;</code> is allowed for HTTP, HTTPS, MAILTO, and DATA links. <code>rel=\"nofollow\"</code> is allowed and will be added automatically for users with less than 10 reputation.</p>\n<p><code>&lt;img src&gt;</code> is allowed with the same restrictions for URLs as links. The <code>alt</code>, <code>width</code>, and <code>height</code> attributes are allowed, but optional. The <code>class</code> attribute may be specified with a value of <code>emoji</code> to simulate the appearance of an emoji.</p>\n<p><code>&lt;video src&gt;</code> and <code>&lt;audio src&gt;</code> are allowed with the same restrictions for URLs. The <code>poster</code> attribute is allowed on videos, but not required. <code>controls</code> will automatically be added.</p>\n<p>Basic formatting tags are allowed: <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;u&gt;</code>, <code>&lt;s&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;strong&gt;</code>, <code>&lt;strike&gt;</code>, <code>&lt;big&gt;</code>, <code>&lt;small&gt;</code>, <code>&lt;sup&gt;</code>, <code>&lt;sub&gt;</code>, <code>&lt;ins&gt;</code>, <code>&lt;del&gt;</code>, <code>&lt;abbr&gt;</code>, <code>&lt;address&gt;</code>, <code>&lt;cite&gt;</code>, and <code>&lt;q&gt;</code></p>\n<p><code>&lt;p&gt;</code>, <code>&lt;blockquote&gt;</code>, <code>&lt;br&gt;</code>, <code>&lt;hr&gt;</code>, and headings <code>&lt;h1&gt;</code> through <code>&lt;h6&gt;</code> are supported.</p>\n<p>For code, <code>&lt;pre&gt;</code>, <code>&lt;code&gt;</code>, <code>&lt;kbd&gt;</code>, and <code>&lt;tt&gt;</code> are allowed.</p>\n<p><code>&lt;table&gt;</code> is supported with an optional <code>class</code> of any combination of <code>table</code>, <code>table-bordered</code>, and <code>table-striped</code>.</p>\n<p><code>&lt;ul&gt;</code> and <code>&lt;ol&gt;</code> are supported with an optional <code>start</code> attribute, and <code>&lt;li&gt;</code> allows an optional <code>value</code> attribute.</p>\n<p>For spoilers, use <code>&lt;details&gt;</code> with an optional <code>&lt;summary&gt;</code>. <code>open</code> may be specified to start the spoiler visible.</p>\n<p>Definition lists are supported using <code>&lt;dl&gt;</code>, <code>&lt;dt&gt;</code>, and <code>&lt;dd&gt;</code>.</p>", $String));
 	};
 	templateTopic = function(data, callback) {
-		var $ptr, _r$2, callback, data, i, topics, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$2 = $f._r$2; callback = $f.callback; data = $f.data; i = $f.i; topics = $f.topics; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var $ptr, callback, data, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; callback = $f.callback; data = $f.data; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		$r = cleanTopic(data.topic); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		callback(null, data);
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: templateTopic }; } $f.$ptr = $ptr; $f.callback = callback; $f.data = data; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	templateTopics = function(data, callback) {
+		var $ptr, callback, data, i, topics, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; callback = $f.callback; data = $f.data; i = $f.i; topics = $f.topics; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		topics = data.topics;
 		i = 0;
 		/* while (true) { */ case 1:
 			/* if (!(i < $parseInt(topics.length))) { break; } */ if(!(i < $parseInt(topics.length))) { $s = 2; continue; }
-			_r$2 = cleanTemplate($internalize(topics[i].title, $String)); /* */ $s = 3; case 3: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
-			topics[i].title = $externalize(_r$2, $String);
+			$r = cleanTopic(topics[i]); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 			i = i + (1) >> 0;
 		/* } */ $s = 1; continue; case 2:
 		callback(null, data);
 		$s = -1; return;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: templateTopic }; } $f.$ptr = $ptr; $f._r$2 = _r$2; $f.callback = callback; $f.data = data; $f.i = i; $f.topics = topics; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: templateTopics }; } $f.$ptr = $ptr; $f.callback = callback; $f.data = data; $f.i = i; $f.topics = topics; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	cleanTopic = function(topic) {
+		var $ptr, _r$2, _r$3, i, tags, topic, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $ptr = $f.$ptr; _r$2 = $f._r$2; _r$3 = $f._r$3; i = $f.i; tags = $f.tags; topic = $f.topic; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		/* */ if (!!(topic.tags)) { $s = 1; continue; }
+		/* */ $s = 2; continue;
+		/* if (!!(topic.tags)) { */ case 1:
+			tags = topic.tags;
+			i = 0;
+			/* while (true) { */ case 3:
+				/* if (!(i < $parseInt(tags.length))) { break; } */ if(!(i < $parseInt(tags.length))) { $s = 4; continue; }
+				_r$2 = cleanTemplate($internalize(tags[i].value, $String)); /* */ $s = 5; case 5: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+				tags[i].value = $externalize(_r$2, $String);
+				i = i + (1) >> 0;
+			/* } */ $s = 3; continue; case 4:
+		/* } */ case 2:
+		_r$3 = cleanTemplate($internalize(topic.title, $String)); /* */ $s = 6; case 6: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
+		topic.title = $externalize(_r$3, $String);
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: cleanTopic }; } $f.$ptr = $ptr; $f._r$2 = _r$2; $f._r$3 = _r$3; $f.i = i; $f.tags = tags; $f.topic = topic; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$init = function() {
 		$pkg.$init = function() {};
