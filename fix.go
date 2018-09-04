@@ -4,32 +4,44 @@ import (
 	"net/url"
 	"regexp"
 	"strings"
+	"syscall/js"
 
 	"github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/BenLubar/nodebb-plugin-htmlcleaner/jsext"
 )
 
 // zero width non-breaking space is illegal anyway, so removing it won't cause
 // any problems as long as another plugin isn't using the same hack.
-var fixer = regexp.MustCompile(`^([>\s]*)<`)
+var fixer1 = regexp.MustCompile(`^([>\s]*)<`)
+var fixer2 = regexp.MustCompile(`\[([ Xx])\]`)
+var fixer3 = regexp.MustCompile(`<!--`)
 
 func fix(s, uid string) string {
-	return fixer.ReplaceAllString(s, "$1\ufeff<")
+	s = fixer1.ReplaceAllString(s, "$1\ufeff<")
+	s = fixer2.ReplaceAllString(s, "[\ufeff$1]")
+	s = fixer3.ReplaceAllLiteralString(s, "<!--\u200b") // prevent templating system from barfing
+	return s
 }
 
-var nconfURL, _ = url.Parse(js.Module.Get("parent").Call("require", "nconf").Call("get", "url").String())
-var user = js.Module.Get("parent").Call("require", "./user.js")
+var nconfURL, _ = url.Parse(jsext.Module().Get("parent").Call("require", "nconf").Call("get", "url").String())
+var user = jsext.Module().Get("parent").Call("require", "./user.js")
 
 func clean(s, uid string) (content string) {
 	defer func() {
 		rep := make(chan int, 1)
-		if id := js.Global.Call("parseInt", uid, 10).Int(); id > 0 {
-			user.Call("getUserField", id, "reputation", func(err *js.Error, reputation int) {
-				if err != nil {
-					reputation = 0
+		if id := js.Global().Call("parseInt", uid, 10).Int(); id > 0 {
+			var cb js.Callback
+			cb = js.NewCallback(func(args []js.Value) {
+				var reputation int
+				if len(args) > 1 && (args[0].Type() == js.TypeUndefined || args[0].Type() == js.TypeNull) {
+					reputation = args[1].Int()
 				}
 				rep <- reputation
+
+				cb.Release()
 			})
+
+			user.Call("getUserField", id, "reputation", cb)
 		} else {
 			rep <- 0
 		}

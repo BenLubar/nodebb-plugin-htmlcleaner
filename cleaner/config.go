@@ -3,9 +3,9 @@ package cleaner
 import (
 	"net/url"
 	"regexp"
+	"syscall/js"
 
 	"github.com/BenLubar/htmlcleaner"
-	"github.com/gopherjs/gopherjs/js"
 	"golang.org/x/net/html/atom"
 )
 
@@ -20,11 +20,9 @@ var Config = (&htmlcleaner.Config{
 				ok = false
 			}
 		}()
-		js.Global.Call("require", "url").Call("parse", u.String())
+		js.Global().Call("require", "url").Call("parse", u.String())
 		return true
 	},
-
-	EscapeComments: true, // work around https://github.com/psychobunny/templates.js/issues/54
 
 	WrapText: false, // https://what.thedailywtf.com/post/1049805
 }).
@@ -32,7 +30,7 @@ var Config = (&htmlcleaner.Config{
 	ElemAttrAtom(atom.A, atom.Href).
 	ElemAttrAtomMatch(atom.A, atom.Rel, regexp.MustCompile(`\Anofollow\z`)).
 	ElemAttrAtom(atom.Img, atom.Src, atom.Alt, atom.Width, atom.Height).
-	ElemAttrAtomMatch(atom.Img, atom.Class, regexp.MustCompile(`\A((emoji|img-markdown|img-responsive)(\s+|\s*\z))*\z`)).
+	ElemAttrAtomMatch(atom.Img, atom.Class, regexp.MustCompile(`\A((emoji|img-markdown|img-responsive|2ac3a3adc5551647133578b5d9c21ea4)(\s+|\s*\z))*\z`)).
 	ElemAttrAtom(atom.Video, atom.Src, atom.Poster, atom.Controls).
 	ElemAttrAtom(atom.Audio, atom.Src, atom.Controls).
 	ElemAtom(atom.B, atom.I, atom.U, atom.S).
