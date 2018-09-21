@@ -12,6 +12,7 @@ func Clean(content string) string {
 	nodes := htmlcleaner.ParseDepth(content, 0)
 	for _, n := range nodes {
 		ensureControls(n)
+		neuterIframely(n)
 	}
 	return htmlcleaner.Render(nodes...)
 }
@@ -35,5 +36,18 @@ func ensureControls(n *html.Node) {
 		n.Attr = append(n.Attr, html.Attribute{
 			Key: "controls",
 		})
+	}
+}
+
+func neuterIframely(n *html.Node) {
+	if n.Type != html.ElementNode || n.DataAtom != atom.P {
+		return
+	}
+
+	if n.FirstChild == nil || n.FirstChild.Type != html.ElementNode || n.FirstChild.DataAtom != atom.A || len(n.FirstChild.Attr) == 0 || n.FirstChild.NextSibling != nil && (n.FirstChild.NextSibling.Type != html.ElementNode || n.FirstChild.NextSibling.DataAtom != atom.Br) {
+		n.InsertBefore(&html.Node{
+			Type: html.CommentNode,
+			Data: " goddamnit iframely ",
+		}, n.FirstChild)
 	}
 }
