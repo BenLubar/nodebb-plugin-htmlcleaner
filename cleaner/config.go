@@ -33,6 +33,7 @@ var Config = (&htmlcleaner.Config{
 	ElemAttrAtomMatch(atom.Img, atom.Class, regexp.MustCompile(`\A((emoji|img-markdown|img-responsive|2ac3a3adc5551647133578b5d9c21ea4)(\s+|\s*\z))*\z`)).
 	ElemAttrAtom(atom.Video, atom.Src, atom.Poster, atom.Controls).
 	ElemAttrAtom(atom.Audio, atom.Src, atom.Controls).
+	ElemAttrAtom(atom.Source, atom.Src, atom.Type).
 	ElemAtom(atom.B, atom.I, atom.U, atom.S).
 	ElemAtom(atom.Em, atom.Strong, atom.Strike).
 	ElemAtom(atom.Big, atom.Small, atom.Sup, atom.Sub).
