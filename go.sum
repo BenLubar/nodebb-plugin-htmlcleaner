@@ -1,0 +1,4 @@
+github.com/BenLubar/htmlcleaner v3.1.0+incompatible h1:dHx3BRCrpzF+4GotadSNOX0DGOrrERLLz2dLAiTVsyU=
+github.com/BenLubar/htmlcleaner v3.1.0+incompatible/go.mod h1:dZEqZ46SXWKXw6n3JegFvFT7ECWyYWh4i3yLBMSSY8s=
+golang.org/x/net v0.0.0-20181129055619-fae4c4e3ad76 h1:xx5MUFyRQRbPk6VjWjIE1epE/K5AoDD8QUN116NCy8k=
+golang.org/x/net v0.0.0-20181129055619-fae4c4e3ad76/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=

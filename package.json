@@ -1,6 +1,6 @@
 {
   "name": "nodebb-plugin-htmlcleaner",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "HTML cleaner for NodeBB, written in Go",
   "main": "nodebb-plugin-htmlcleaner.js",
   "scripts": {
@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/BenLubar/nodebb-plugin-htmlcleaner#readme",
   "nbbpm": {
-    "compatibility": "^1.0.0"
+    "compatibility": "^1.11.0"
   }
 }

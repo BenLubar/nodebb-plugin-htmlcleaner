@@ -322,7 +322,6 @@
 				global,
 				this._inst.exports.mem,
 				this,
-				module, // jsext
 			];
 			this._refs = new Map();
 			this._callbackShutdown = false;

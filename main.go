@@ -8,11 +8,10 @@ import (
 	"syscall/js"
 
 	"github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"
-	"github.com/BenLubar/nodebb-plugin-htmlcleaner/jsext"
 )
 
 func main() {
-	exports := jsext.Module().Get("exports")
+	exports := js.Global().Get("module").Get("exports")
 
 	exports.Set("fixPost", cb(async(post(fix))))
 	exports.Set("fixSignature", cb(async(signature(fix))))
@@ -39,7 +38,7 @@ func cb(fn func(args []js.Value)) js.Callback {
 		defer func() {
 			if r := recover(); r != nil {
 				stack := debug.Stack()
-				winston := jsext.Module().Get("parent").Call("require", "winston")
+				winston := js.Global().Get("require").Get("main").Call("require", "winston")
 				winston.Call("error", fmt.Sprintf("[nodebb-plugin-htmlcleaner] !!PANIC!! %v\n%s", r, stack))
 
 				callback := args[len(args)-1]

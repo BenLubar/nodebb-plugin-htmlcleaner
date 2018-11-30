@@ -7,7 +7,6 @@ import (
 	"syscall/js"
 
 	"github.com/BenLubar/nodebb-plugin-htmlcleaner/cleaner"
-	"github.com/BenLubar/nodebb-plugin-htmlcleaner/jsext"
 )
 
 // zero width non-breaking space is illegal anyway, so removing it won't cause
@@ -23,8 +22,8 @@ func fix(s, uid string) string {
 	return s
 }
 
-var nconfURL, _ = url.Parse(jsext.Module().Get("parent").Call("require", "nconf").Call("get", "url").String())
-var user = jsext.Module().Get("parent").Call("require", "./user.js")
+var nconfURL, _ = url.Parse(js.Global().Get("require").Get("main").Call("require", "nconf").Call("get", "url").String())
+var user = js.Global().Get("require").Get("main").Call("require", "./src/user")
 
 func clean(s, uid string) (content string) {
 	defer func() {
