@@ -23,6 +23,7 @@
 
 	const isNodeJS = true;
 	global.require = require;
+	global.module = module;
 	global.fs = require("fs");
 
 	const nodeCrypto = require("crypto");
